@@ -8,8 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy
 
 @Configuration
-//@EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = false, jsr250Enabled = false)
 class WebSecurityConfigurator(
         val authMethodRegistrants : List<AuthMethodRegistrant>
 ) : WebSecurityConfigurerAdapter() {

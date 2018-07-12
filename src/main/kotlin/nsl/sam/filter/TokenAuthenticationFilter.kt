@@ -1,6 +1,6 @@
 package nsl.sam.filter
 
-import nsl.sam.authenticator.TokenAuthenticator
+import nsl.sam.authenticator.localtokens.TokenToUserMapper
 import nsl.sam.logger.logger
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse
 
 const val AUTHORIZATION_HEADER = "Authorization"
 
-class TokenAuthenticationFilter(val tokenAuthenticator: TokenAuthenticator) : OncePerRequestFilter() {
+class TokenAuthenticationFilter(val tokenAuthenticator: TokenToUserMapper) : OncePerRequestFilter() {
 
     companion object { val log by logger() }
 

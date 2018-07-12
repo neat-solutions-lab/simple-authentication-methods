@@ -1,12 +1,11 @@
 package nsl.sam.authenticator.localtokens
 
-import nsl.sam.authenticator.TokenAuthenticator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import javax.naming.AuthenticationException
 
-@Component
-class LocalFileTokensAuthenticator : TokenAuthenticator {
+//@Component
+class LocalFileTokensToUserMapper : TokenToUserMapper {
 
     @Autowired
     lateinit var localTokensStore: LocalTokensStore

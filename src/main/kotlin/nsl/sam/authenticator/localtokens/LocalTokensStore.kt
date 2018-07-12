@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
-@Component
+//@Component
 class LocalTokensStore {
 
     companion object { val log by logger() }

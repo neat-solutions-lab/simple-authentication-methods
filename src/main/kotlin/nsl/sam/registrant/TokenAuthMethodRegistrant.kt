@@ -1,6 +1,6 @@
 package nsl.sam.registrant
 
-import nsl.sam.authenticator.TokenAuthenticator
+import nsl.sam.authenticator.localtokens.TokenToUserMapper
 import nsl.sam.authenticator.localtokens.TokenFileImporter
 import nsl.sam.filter.TokenAuthenticationFilter
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,9 +9,7 @@ import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.stereotype.Component
-import java.io.File
 
-@Component
 @Order(20)
 class TokenAuthMethodRegistrant : AuthMethodRegistrant {
 
@@ -22,7 +20,7 @@ class TokenAuthMethodRegistrant : AuthMethodRegistrant {
     lateinit var serverAddress: String
 
     @Autowired
-    lateinit var tokenAuthenticator : TokenAuthenticator
+    lateinit var tokenAuthenticator : TokenToUserMapper
 
     override fun isActive(): Boolean {
         if(tokensFilePath.isNotBlank()) {

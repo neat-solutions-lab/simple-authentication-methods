@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
-@Component
+//@Component
 class LocalFileUsersSource: UsersSource {
 
     companion object { val log by logger() }

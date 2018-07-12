@@ -10,11 +10,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.stereotype.Component
 import java.io.File
+import org.springframework.security.core.userdetails.UserDetailsService
 
-@Component
 @Order(10)
 class BasicAuthMethodRegistrant(
-        @Qualifier("localUsersDetailsService") val localUsersDetailsService: LocalUserDetailsService ) : AuthMethodRegistrant {
+        @Qualifier("localUsersDetailsService") val localUsersDetailsService: UserDetailsService ) : AuthMethodRegistrant {
 
     @Value("\${sms.passwords-file:}")
     lateinit var passwordsFile: String
