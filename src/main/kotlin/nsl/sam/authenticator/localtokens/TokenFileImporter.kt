@@ -1,7 +1,6 @@
 package nsl.sam.authenticator.localtokens
 
 import nsl.sam.logger.logger
-import nsl.sam.user.UserAndRoles
 import java.io.BufferedReader
 import java.io.Closeable
 import java.io.File
@@ -42,7 +41,7 @@ class TokenFileImporter(val path: String) : Closeable, Iterator<LocalToken> {
 
         val roles = if (lineParts.size > 2) lineParts.subList(2, lineParts.lastIndex+1) else listOf("USER")
 
-        return LocalToken(tokenValue, UserAndRoles(userName, roles.map{"ROLE_${it}"}.toTypedArray()))
+        return LocalToken(tokenValue, UserAndRoles(userName, roles.map { "ROLE_${it}" }.toTypedArray()))
     }
 
 

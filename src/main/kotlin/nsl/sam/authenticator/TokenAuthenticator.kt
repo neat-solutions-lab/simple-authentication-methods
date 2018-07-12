@@ -1,9 +1,9 @@
 package nsl.sam.authenticator
 
-import nsl.sam.user.UserAndRoles
+import nsl.sam.authenticator.localtokens.UserAndRoles
 
 interface TokenAuthenticator {
 
-    fun mapToUser(token:String):UserAndRoles
+    fun mapToUser(token:String): UserAndRoles
 
 }

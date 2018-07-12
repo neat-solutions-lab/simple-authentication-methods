@@ -1,7 +1,6 @@
 package nsl.sam.authenticator.localtokens
 
 import nsl.sam.authenticator.TokenAuthenticator
-import nsl.sam.user.UserAndRoles
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import javax.naming.AuthenticationException
