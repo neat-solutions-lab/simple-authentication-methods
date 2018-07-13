@@ -1,7 +1,7 @@
 package nsl.sam.configurator
 
-import nsl.sam.registrant.AuthMethodRegistrant
-import nsl.sam.registrant.BasicAuthMethodRegistrant
+import nsl.sam.ragistar.AuthMethodRegistar
+import nsl.sam.ragistar.BasicAuthMethodRegistar
 import nsl.sam.userdetails.LocalFileUsersSource
 import nsl.sam.userdetails.LocalUserDetailsService
 import nsl.sam.userdetails.UsersSource
@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.core.userdetails.UserDetailsService
 
-@Configuration
 class BasicAuthConfigurator {
 
     @Bean
@@ -26,8 +25,8 @@ class BasicAuthConfigurator {
     @Bean
     fun basicAuthRegistar(
             @Qualifier("localUsersDetailsService")  localUsersDetailsService: UserDetailsService)
-            : AuthMethodRegistrant {
-        return BasicAuthMethodRegistrant(localUsersDetailsService)
+            : AuthMethodRegistar {
+        return BasicAuthMethodRegistar(localUsersDetailsService)
     }
 
 }

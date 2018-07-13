@@ -1,15 +1,17 @@
 package nsl.sam.configurator
 
-import nsl.sam.registrant.AuthMethodRegistrant
+import nsl.sam.ragistar.AuthMethodRegistar
 import nsl.sam.logger.logger
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 
-@Configuration
+//@Configuration
+@EnableWebSecurity
 class WebSecurityConfigurator(
-        val authMethodRegistrants : List<AuthMethodRegistrant>
+        val authMethodRegistars : List<AuthMethodRegistar>
 ) : WebSecurityConfigurerAdapter() {
 
     companion object { val log by logger() }
@@ -27,7 +29,7 @@ class WebSecurityConfigurator(
     }
 
     private fun isAuthMechanismAvailable() : Boolean {
-        authMethodRegistrants.asSequence().find { it.isActive() }?.let{
+        authMethodRegistars.asSequence().find { it.isActive() }?.let{
             return true
         }
         return false
@@ -36,7 +38,7 @@ class WebSecurityConfigurator(
     private fun activateAuthenticationMechanisms(http: HttpSecurity) {
         http.authorizeRequests().anyRequest().fullyAuthenticated()
 
-        authMethodRegistrants.filter { it.isActive() }.forEach {
+        authMethodRegistars.filter { it.isActive() }.forEach {
             log.info("Registering authentication mechanism: ${it.methodName()}")
             it.register(http)
         }

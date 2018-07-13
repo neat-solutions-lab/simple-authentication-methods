@@ -3,12 +3,11 @@ package nsl.sam.configurator
 import nsl.sam.authenticator.localtokens.LocalFileTokensToUserMapper
 import nsl.sam.authenticator.localtokens.LocalTokensStore
 import nsl.sam.authenticator.localtokens.TokenToUserMapper
-import nsl.sam.registrant.AuthMethodRegistrant
-import nsl.sam.registrant.TokenAuthMethodRegistrant
+import nsl.sam.ragistar.AuthMethodRegistar
+import nsl.sam.ragistar.TokenAuthMethodRegistar
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-@Configuration
 class TokenAuthConfigurator {
 
     @Bean
@@ -22,8 +21,8 @@ class TokenAuthConfigurator {
     }
 
     @Bean
-    fun tokenRegisar():AuthMethodRegistrant {
-        return TokenAuthMethodRegistrant()
+    fun tokenRegisar():AuthMethodRegistar {
+        return TokenAuthMethodRegistar()
     }
 
 }

@@ -1,20 +1,17 @@
-package nsl.sam.registrant
+package nsl.sam.ragistar
 
 import nsl.sam.userdetails.LocalFileUsersImporter
-import nsl.sam.userdetails.LocalUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.stereotype.Component
-import java.io.File
 import org.springframework.security.core.userdetails.UserDetailsService
 
 @Order(10)
-class BasicAuthMethodRegistrant(
-        @Qualifier("localUsersDetailsService") val localUsersDetailsService: UserDetailsService ) : AuthMethodRegistrant {
+class BasicAuthMethodRegistar(
+        @Qualifier("localUsersDetailsService") val localUsersDetailsService: UserDetailsService ) : AuthMethodRegistar {
 
     @Value("\${sms.passwords-file:}")
     lateinit var passwordsFile: String

@@ -12,18 +12,15 @@ class TokenFileImporter(val path: String) : Closeable, Iterator<LocalToken> {
 
     private var currentLine : String? = null
 
-
     private val file : File by lazy {
         log.debug("File initialization")
         File(this.path)
     }
 
-
     private val bufferedReader : BufferedReader by lazy {
         log.debug("BufferedReader initialization")
         BufferedReader(FileReader(this.file))
     }
-
 
     override  fun next() : LocalToken {
 
@@ -43,7 +40,6 @@ class TokenFileImporter(val path: String) : Closeable, Iterator<LocalToken> {
 
         return LocalToken(tokenValue, UserAndRoles(userName, roles.map { "ROLE_${it}" }.toTypedArray()))
     }
-
 
     override fun hasNext(): Boolean {
 

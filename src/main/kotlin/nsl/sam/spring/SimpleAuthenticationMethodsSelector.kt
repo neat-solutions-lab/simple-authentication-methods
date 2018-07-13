@@ -26,9 +26,9 @@ class SimpleAuthenticationMethodsSelector: ImportSelector {
 
         attributes ?: return configurationClasses.toTypedArray()
 
-        val methods: Array<AuthenticationMethod> = attributes[("methods")] as Array<AuthenticationMethod>
+        val enabledAuthMethods: Array<AuthenticationMethod> = attributes[("methods")] as Array<AuthenticationMethod>
 
-        methods.forEach {
+        enabledAuthMethods.forEach {
             when(it) {
                 AuthenticationMethod.SIMPLE_TOKEN ->
                     configurationClasses.add(TokenAuthConfigurator::class.qualifiedName!!)

@@ -1,4 +1,4 @@
-package nsl.sam.registrant
+package nsl.sam.ragistar
 
 import nsl.sam.authenticator.localtokens.TokenToUserMapper
 import nsl.sam.authenticator.localtokens.TokenFileImporter
@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import org.springframework.stereotype.Component
 
 @Order(20)
-class TokenAuthMethodRegistrant : AuthMethodRegistrant {
+class TokenAuthMethodRegistar : AuthMethodRegistar {
 
     @Value("\${sms.tokens-file:}")
     lateinit var tokensFilePath: String

@@ -1,10 +1,14 @@
 package nsl.sam.authenticator.localtokens
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
 import javax.naming.AuthenticationException
 
-//@Component
+/**
+ * With help of "local tokens store" maps tokens to associated users, and more precisely to
+ * structure which represents user and his roles.
+ *
+ * @see TokenToUserMapper
+ */
 class LocalFileTokensToUserMapper : TokenToUserMapper {
 
     @Autowired
