@@ -163,16 +163,6 @@
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
                 <version>${dokka.version}</version>
-                <executions>
-                    <execution>
-                        <phase>pre-site</phase>
-                        <goals>
-                            <goal>dokka</goal>
-                            <goal>javadoc</goal>
-                            <goal>javadocJar</goal>
-                        </goals>
-                    </execution>
-                </executions>
                 <configuration>
                     <jdkVersion>10</jdkVersion>
                     <sourceRoots>
