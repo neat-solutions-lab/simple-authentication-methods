@@ -1,4 +1,4 @@
-package nsl.sam.ragistar
+package nsl.sam.registar
 
 import nsl.sam.logger.logger
 import nsl.sam.userdetails.LocalFileUsersImporter

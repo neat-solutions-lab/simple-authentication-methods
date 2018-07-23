@@ -1,6 +1,6 @@
 package nsl.sam.configurator
 
-import nsl.sam.ragistar.AuthMethodRegistar
+import nsl.sam.registar.AuthMethodRegistar
 import nsl.sam.logger.logger
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

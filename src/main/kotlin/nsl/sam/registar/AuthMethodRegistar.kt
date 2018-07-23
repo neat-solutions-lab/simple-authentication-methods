@@ -1,4 +1,4 @@
-package nsl.sam.ragistar
+package nsl.sam.registar
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 

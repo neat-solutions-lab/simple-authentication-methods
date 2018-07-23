@@ -1,4 +1,4 @@
-package nsl.sam.ragistar
+package nsl.sam.registar
 
 import nsl.sam.authenticator.localtokens.TokenToUserMapper
 import nsl.sam.authenticator.localtokens.TokenFileImporter
