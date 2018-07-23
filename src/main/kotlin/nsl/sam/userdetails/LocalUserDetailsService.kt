@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
-//@Service("localUsersDetailsService")
 class LocalUserDetailsService : UserDetailsService {
 
     companion object { val log by logger() }

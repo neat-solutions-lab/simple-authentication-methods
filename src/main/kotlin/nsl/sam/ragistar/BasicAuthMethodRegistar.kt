@@ -1,5 +1,6 @@
 package nsl.sam.ragistar
 
+import nsl.sam.logger.logger
 import nsl.sam.userdetails.LocalFileUsersImporter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -13,7 +14,9 @@ import org.springframework.security.core.userdetails.UserDetailsService
 class BasicAuthMethodRegistar(
         @Qualifier("localUsersDetailsService") val localUsersDetailsService: UserDetailsService ) : AuthMethodRegistar {
 
-    @Value("\${sms.passwords-file:}")
+    companion object { val log by logger() }
+
+    @Value("\${sam.passwords-file:}")
     lateinit var passwordsFile: String
 
     @Value("\${server.address:localhost}")
@@ -34,7 +37,7 @@ class BasicAuthMethodRegistar(
 
 
     override fun register(http: HttpSecurity): HttpSecurity {
-
+        log.info("Enabling Basic Http Auth method.")
         return http.httpBasic().and()
 
     }

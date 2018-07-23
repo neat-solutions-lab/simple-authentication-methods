@@ -14,6 +14,12 @@ class SimpleAuthenticationMethodsSelectorTest {
 
     companion object { val log by logger() }
 
+
+    //    @Rule // or instead of below @JvmField use only @get:Rule
+    //    @JvmField
+    //    final val thrown: ExpectedException = ExpectedException.none()
+
+
     @Mock
     lateinit var importingClassMetadata: AnnotationMetadata
 

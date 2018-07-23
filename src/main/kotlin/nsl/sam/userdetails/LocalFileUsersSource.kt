@@ -6,12 +6,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
-//@Component
 class LocalFileUsersSource: UsersSource {
 
     companion object { val log by logger() }
 
-    @Value("\${sms.passwords-file:}")
+    @Value("\${sam.passwords-file:}")
     lateinit var passwordsFile: String
 
     val usersPasswordsAndRolesMap: MutableMap<String, Pair<String, Array<String>>> = mutableMapOf()

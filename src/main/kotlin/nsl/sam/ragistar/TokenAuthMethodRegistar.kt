@@ -3,6 +3,7 @@ package nsl.sam.ragistar
 import nsl.sam.authenticator.localtokens.TokenToUserMapper
 import nsl.sam.authenticator.localtokens.TokenFileImporter
 import nsl.sam.filter.TokenAuthenticationFilter
+import nsl.sam.logger.logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order
@@ -11,6 +12,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 @Order(20)
 class TokenAuthMethodRegistar : AuthMethodRegistar {
+
+    companion object { val log by logger() }
 
     @Value("\${sms.tokens-file:}")
     lateinit var tokensFilePath: String
@@ -30,6 +33,7 @@ class TokenAuthMethodRegistar : AuthMethodRegistar {
     }
 
     override fun register(http: HttpSecurity): HttpSecurity {
+        log.info("Registering ${TokenAuthenticationFilter::class.qualifiedName} fileter.")
         return http.addFilterBefore(TokenAuthenticationFilter(tokenAuthenticator), BasicAuthenticationFilter::class.java)
     }
 

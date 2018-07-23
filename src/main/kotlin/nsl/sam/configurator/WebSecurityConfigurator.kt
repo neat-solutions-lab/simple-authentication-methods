@@ -2,14 +2,16 @@ package nsl.sam.configurator
 
 import nsl.sam.ragistar.AuthMethodRegistar
 import nsl.sam.logger.logger
-import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
-//@Configuration
+@EnableWebMvc
 @EnableWebSecurity
+@Order(90)
 class WebSecurityConfigurator(
         val authMethodRegistars : List<AuthMethodRegistar>
 ) : WebSecurityConfigurerAdapter() {
@@ -17,6 +19,7 @@ class WebSecurityConfigurator(
     companion object { val log by logger() }
 
     override fun configure(http: HttpSecurity) {
+        log.info("HttpSecurity configuration entry point called.")
         if(isAuthMechanismAvailable()) {
             log.info("Enabling authentication mechanisms")
             activateAuthenticationMechanisms(http)
@@ -29,7 +32,12 @@ class WebSecurityConfigurator(
     }
 
     private fun isAuthMechanismAvailable() : Boolean {
-        authMethodRegistars.asSequence().find { it.isActive() }?.let{
+        authMethodRegistars.asSequence().find {
+            log.info("Checking if authentication method ${it.methodName()} is active.")
+            val isActive = it.isActive()
+            log.info("Check result for authentication method ${it.methodName()}: $isActive")
+            isActive
+        }?.let{
             return true
         }
         return false
@@ -38,7 +46,12 @@ class WebSecurityConfigurator(
     private fun activateAuthenticationMechanisms(http: HttpSecurity) {
         http.authorizeRequests().anyRequest().fullyAuthenticated()
 
-        authMethodRegistars.filter { it.isActive() }.forEach {
+        authMethodRegistars.filter {
+            log.info("Checking if authentication method ${it.methodName()} is active.")
+            val isActive = it.isActive()
+            log.info("Check result for authentication method ${it.methodName()}: $isActive")
+            isActive
+        }.forEach {
             log.info("Registering authentication mechanism: ${it.methodName()}")
             it.register(http)
         }

@@ -1,0 +1,6 @@
+package nsl.sam.integration.basicauth
+
+import nsl.sam.spring.EnableSimpleAuthenticationMethods
+
+@EnableSimpleAuthenticationMethods
+class FakeIntegrationApplicationConfig
