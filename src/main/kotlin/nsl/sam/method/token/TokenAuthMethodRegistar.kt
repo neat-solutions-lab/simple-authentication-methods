@@ -26,8 +26,14 @@ class TokenAuthMethodRegistar : AuthMethodRegistar {
     lateinit var tokenAuthenticator : TokenToUserMapper
 
     override fun isActive(): Boolean {
+        val tokensNumber = tokensNumber()
+
+        log.info("tokensFilePath: $tokensFilePath")
+        log.info("serverAddress: $serverAddress")
+        log.info("tokensNumber: $tokensNumber")
+
         if(tokensFilePath.isNotBlank()) {
-            if(serverAddress in arrayOf("localhost", "127.0.0.1") && tokensNumber() == 0L) return false
+            if(serverAddress in arrayOf("localhost", "127.0.0.1") && tokensNumber == 0L) return false
             return true
         }
         return false

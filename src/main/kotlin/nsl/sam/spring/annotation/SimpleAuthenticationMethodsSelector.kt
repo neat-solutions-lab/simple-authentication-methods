@@ -4,6 +4,7 @@ import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
 import nsl.sam.spring.config.WebSecurityConfigurer
 import nsl.sam.logger.logger
+import nsl.sam.spring.config.DisableBasicAuthConfig
 import org.springframework.context.annotation.ImportSelector
 import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.type.AnnotationMetadata
@@ -42,6 +43,13 @@ class SimpleAuthenticationMethodsSelector: ImportSelector {
                 }
             }
         }
+
+        val foundClass = configurationClasses.find { it::class == BasicAuthConfig::class }
+        if(null == foundClass) {
+            log.info("${DisableBasicAuthConfig::class.qualifiedName} added to configuration classes")
+            configurationClasses.add(DisableBasicAuthConfig::class.qualifiedName!!)
+        }
+
         return configurationClasses.toTypedArray()
     }
 }

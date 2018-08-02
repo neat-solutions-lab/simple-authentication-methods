@@ -47,7 +47,7 @@ class TokenAuthIT {
 
     // it should be unauthorized
     @Test
-    fun forbiddenWithIncorrectToken() {
+    fun unauthorizedWithIncorrectToken() {
         // ARRANGE
         val headers = HttpHeaders()
         headers.set(IntegrationTestConstants.TOKEN_AUTH_HEADER_NAME, IntegrationTestConstants.TOKEN_AUTH_HEADER_NOT_AUTHORIZED_VALUE)
@@ -58,19 +58,23 @@ class TokenAuthIT {
                 .exchange(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT, HttpMethod.GET, requestHttpEntity, String::class.java)
 
         // ASSERT
-        Assertions.assertThat(exchange.statusCode).isEqualTo(HttpStatus.FORBIDDEN)
+        Assertions.assertThat(exchange.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
     }
 
     // HTTP unauthorized status, for simple-authentication-methods library, really means unauthenticated
     @Test
-    fun unauthorizedHttpBasicWhenOnlyTokenMethodIsEnabled() {
+    fun forbiddenHttpBasicWhenOnlyTokenMethodIsEnabled() {
         // ACT
         val response: ResponseEntity<String> = testRestTemplate.withBasicAuth(
                 IntegrationTestConstants.EXISTING_BASIC_AUTH_USER_NAME,
                 IntegrationTestConstants.EXISTING_BASIC_AUTH_USER_CORRECT_PASSWORD
         ).getForEntity<String>(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT)
 
+        log.info("################################################################################")
+        log.info("response: ${response.body}")
+        log.info("################################################################################")
+
         // ASSERT
-        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
+        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.FORBIDDEN)
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.web.filter.OncePerRequestFilter
-import javax.naming.AuthenticationException
+import org.springframework.security.core.AuthenticationException
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -37,7 +37,11 @@ class TokenAuthenticationFilter(val tokenAuthenticator: TokenToUserMapper) : Onc
         } catch (e: AuthenticationException) {
             SecurityContextHolder.clearContext()
             log.debug("Access denied by ${this::class.qualifiedName} filter")
-            response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
+            //response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
+            // TODO: Add ObjectMapper to prepare body of error response in JSON format
+            response.status = HttpStatus.UNAUTHORIZED.value()
+            response.writer.print("TUTAJ BEDZIE LADNY JSON")
+            response.flushBuffer()
             return
         }
 
