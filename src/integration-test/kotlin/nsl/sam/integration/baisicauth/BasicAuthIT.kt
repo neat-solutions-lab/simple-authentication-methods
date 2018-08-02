@@ -45,7 +45,6 @@ class BasicAuthIT {
         assertThat(response.body).isEqualTo(IntegrationTestConstants.FAKE_CONTROLLER_RESPONSE_BODY)
     }
 
-
     @Test
     fun failedAuthenticationWithBasicAuthWhenWrongPassword() {
         // ACT

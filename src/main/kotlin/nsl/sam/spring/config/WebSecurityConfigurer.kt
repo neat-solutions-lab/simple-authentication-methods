@@ -2,7 +2,7 @@ package nsl.sam.spring.config
 
 import nsl.sam.registar.AuthMethodRegistar
 import nsl.sam.logger.logger
-import nsl.sam.spring.entrypoint.Simple401EntryPoint
+import nsl.sam.spring.entrypoint.SimpleFailedAuthenticationEntryPoint
 import nsl.sam.spring.handler.SimpleAccessDeniedHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.core.annotation.Order
@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.access.AccessDeniedHandler
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 @EnableWebMvc
@@ -81,8 +80,8 @@ class WebSecurityConfigurer : WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    fun authenticationEntryPoint(): AuthenticationEntryPoint {
-        return Simple401EntryPoint()
+    fun simpleAuthenticationEntryPoint(): AuthenticationEntryPoint {
+        return SimpleFailedAuthenticationEntryPoint()
     }
 
     private fun applyCommonSecuritySettings(http: HttpSecurity) {
@@ -94,7 +93,7 @@ class WebSecurityConfigurer : WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
-                //.authenticationEntryPoint(authenticationEntryPoint())
+                .authenticationEntryPoint(simpleAuthenticationEntryPoint())
     }
 
 }

@@ -11,11 +11,13 @@ import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.stereotype.Component
 
 @Order(10)
 class BasicAuthMethodRegistar(
-        @Qualifier("localUsersDetailsService") val localUsersDetailsService: UserDetailsService ) : AuthMethodRegistar {
+        private val localUsersDetailsService: UserDetailsService,
+        private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint) : AuthMethodRegistar {
 
     companion object { val log by logger() }
 
@@ -41,7 +43,7 @@ class BasicAuthMethodRegistar(
 
     override fun register(http: HttpSecurity): HttpSecurity {
         log.info("Enabling HttpBasic Auth method.")
-        return http.httpBasic().and()
+        return http.httpBasic().authenticationEntryPoint(simpleAuthenticationEntryPoint).and()
 
     }
 

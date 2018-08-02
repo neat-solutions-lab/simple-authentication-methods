@@ -68,11 +68,11 @@ class TokenAuthIT {
                 testRestTemplate.getForEntity<String>(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT)
 
         // ASSERT
-        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.FORBIDDEN)
+        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
     }
 
     @Test
-    fun forbiddenHttpBasicWhenOnlyTokenIsEnabled() {
+    fun failedHttpBasicWhenOnlyTokenIsEnabled() {
         // ACT
         val response: ResponseEntity<String> = testRestTemplate.withBasicAuth(
                 IntegrationTestConstants.EXISTING_BASIC_AUTH_USER_NAME,
@@ -80,6 +80,6 @@ class TokenAuthIT {
         ).getForEntity<String>(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT)
 
         // ASSERT
-        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.FORBIDDEN)
+        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
     }
 }

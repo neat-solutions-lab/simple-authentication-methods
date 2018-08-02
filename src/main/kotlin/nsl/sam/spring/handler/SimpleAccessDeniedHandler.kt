@@ -15,7 +15,7 @@ class SimpleAccessDeniedHandler: AccessDeniedHandler {
             request: HttpServletRequest, response: HttpServletResponse, accessDeniedException: AccessDeniedException) {
 
         response.status = HttpStatus.INTERNAL_SERVER_ERROR.value()
-        // toto: dodaj generowanie JSON (ObjectMapper)
+        // todo: dodaj generowanie JSON (ObjectMapper)
         response.writer.print("TUTAJ ZNOWU JAKIS GENEROWANY JSON")
         response.flushBuffer()
     }

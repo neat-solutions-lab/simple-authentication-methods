@@ -66,7 +66,7 @@ class NarrowConfTokenAuthFunctionalTest {
     }
 
     @Test
-    fun forbiddenTokenWhenNoTokenProvided() {
+    fun failedTokenWhenNoTokenProvided() {
 
         // ACT
         val response: MockHttpServletResponse = mvc
@@ -74,11 +74,11 @@ class NarrowConfTokenAuthFunctionalTest {
                 .andReturn().response
 
         // ASSERT
-        assertThat(response.status).isEqualTo(HttpStatus.FORBIDDEN.value())
+        assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
     }
 
     @Test
-    fun forbiddenHttpBasicWhenOnlyTokenIsEnabled() {
+    fun failedHttpBasicWhenOnlyTokenIsEnabled() {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
@@ -91,6 +91,6 @@ class NarrowConfTokenAuthFunctionalTest {
                 .andReturn().response
 
         // ASSERT
-        assertThat(response.status).isEqualTo(HttpStatus.FORBIDDEN.value())
+        assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
     }
 }
