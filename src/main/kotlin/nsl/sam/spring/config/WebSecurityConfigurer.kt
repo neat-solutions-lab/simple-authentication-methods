@@ -2,6 +2,7 @@ package nsl.sam.spring.config
 
 import nsl.sam.registar.AuthMethodRegistar
 import nsl.sam.logger.logger
+import nsl.sam.spring.entrypoint.Simple401EntryPoint
 import nsl.sam.spring.handler.SimpleAccessDeniedHandler
 import org.springframework.context.annotation.Bean
 import org.springframework.core.annotation.Order
@@ -9,17 +10,23 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.access.AccessDeniedHandler
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 @EnableWebMvc
 @EnableWebSecurity
 @Order(90)
-class WebSecurityConfigurer(
-        val authMethodRegistars : List<AuthMethodRegistar>
-) : WebSecurityConfigurerAdapter() {
+class WebSecurityConfigurer : WebSecurityConfigurerAdapter {
 
     companion object { val log by logger() }
+
+    val authMethodRegistars: List<AuthMethodRegistar>
+
+    constructor(authMethodRegistars: List<AuthMethodRegistar>) : super() {
+        this.authMethodRegistars = authMethodRegistars
+    }
 
     override fun configure(http: HttpSecurity) {
         log.info("HttpSecurity configuration entry point called.")
@@ -73,6 +80,11 @@ class WebSecurityConfigurer(
         return SimpleAccessDeniedHandler()
     }
 
+    @Bean
+    fun authenticationEntryPoint(): AuthenticationEntryPoint {
+        return Simple401EntryPoint()
+    }
+
     private fun applyCommonSecuritySettings(http: HttpSecurity) {
 
         log.info("Applying common security settings for simple-authentication-methods")
@@ -82,6 +94,7 @@ class WebSecurityConfigurer(
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+                //.authenticationEntryPoint(authenticationEntryPoint())
     }
 
 }

@@ -1,13 +1,13 @@
-package nsl.sam.functional.token
+package nsl.sam.functional.basicauth
 
 import nsl.sam.functional.controller.FunctionalTestController
-import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import org.springframework.context.annotation.Bean
 
-@EnableSimpleAuthenticationMethods([AuthenticationMethod.SIMPLE_TOKEN])
-//@EnableSimpleAuthenticationMethods
-class TokenAuthFunctionalTestConfig {
+@EnableSimpleAuthenticationMethods
+class DefaultConfBasicAuthFunctionalTestConfig {
+
     @Bean
     fun fakeController() = FunctionalTestController()
+
 }

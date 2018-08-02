@@ -71,7 +71,7 @@ class BasicAuthIT {
     }
 
     @Test
-    fun failedAuthenticationWithBasicAuthWhenNotAuthenticationHeader() {
+    fun failedHttpBasicWhenNotAuthenticationHeader() {
         // ACT
         val response: ResponseEntity<String> = testRestTemplate
                 .getForEntity<String>(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT)
@@ -81,7 +81,7 @@ class BasicAuthIT {
     }
 
     @Test
-    fun failedAuthenticationWithTokenWhenOnlyBasicAuthIsEnabled() {
+    fun failedTokenWhenOnlyHttpBasicIsEnabled() {
 
         // ARRANGE
         val headers = HttpHeaders()

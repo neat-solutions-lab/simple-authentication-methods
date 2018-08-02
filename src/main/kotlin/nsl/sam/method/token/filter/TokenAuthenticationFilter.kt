@@ -23,6 +23,11 @@ class TokenAuthenticationFilter(val tokenAuthenticator: TokenToUserMapper) : Onc
         log.debug("TokenAuthenticationFilter >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
 
         val authorizationHeader = request.getHeader(AUTHORIZATION_HEADER)
+        if(null == authorizationHeader) {
+            log.debug("No ($AUTHORIZATION_HEADER) header found in request")
+            chain.doFilter(request, response)
+            return
+        }
 
         try {
             authorizationHeader?.let {
@@ -47,16 +52,7 @@ class TokenAuthenticationFilter(val tokenAuthenticator: TokenToUserMapper) : Onc
 
         chain.doFilter(request, response)
 
-//        val securityContext = SecurityContextHolder.getContext()
-//        if (securityContext.authentication == null || !securityContext.authentication.isAuthenticated) {
-//            SecurityContextHolder.clearContext()
-//            log.debug("Access denied by ${this::class.qualifiedName} filter after delegation result check")
-//            response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
-//            return
-//        }
-
         log.debug("TokenAuthenticationFilter <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
-
     }
 
     private fun isBearerToken(header: String) : Boolean {

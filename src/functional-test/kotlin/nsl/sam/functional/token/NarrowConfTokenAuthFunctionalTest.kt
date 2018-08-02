@@ -20,12 +20,12 @@ import org.springframework.http.HttpStatus
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [TokenAuthFunctionalTestConfig::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NarrowConfTokenAuthFunctionalTestConfig::class])
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
     "sam.passwords-file=src/functional-test/config/passwords.conf",
     "sam.tokens-file=src/functional-test/config/tokens.conf"])
-class TokenAuthFunctionalTest {
+class NarrowConfTokenAuthFunctionalTest {
 
     companion object { val log by logger() }
 
@@ -48,26 +48,6 @@ class TokenAuthFunctionalTest {
         assertThat(response.contentAsString).isEqualTo(FAKE_CONTROLLER_RESPONSE_BODY)
     }
 
-    @Test
-    fun forbiddenAuthenticationWithBasicAuthWhenOnlyTokenIsEnabled() {
-        // ACT
-        val response: MockHttpServletResponse = mvc
-                .perform(
-                    get(MOCK_MVC_TEST_ENDPOINT)
-                        .with(SecurityMockMvcRequestPostProcessors.httpBasic(
-                                FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_NAME,
-                                FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_CORRECT_PASSWORD)
-                        )
-                )
-                .andReturn().response
-
-        log.info("###########################################################################")
-        log.info("content: ${response.contentAsString}")
-        log.info("###########################################################################")
-
-        // ASSERT
-        assertThat(response.status).isEqualTo(HttpStatus.FORBIDDEN.value())
-    }
 
     @Test
     fun failedAuthenticationWithTokenWhenWrongToken() {
@@ -86,16 +66,29 @@ class TokenAuthFunctionalTest {
     }
 
     @Test
-    fun failedAuthenticationWithTokenWhenNoAuthenticationHeader() {
+    fun forbiddenTokenWhenNoTokenProvided() {
 
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(get(MOCK_MVC_TEST_ENDPOINT))
                 .andReturn().response
 
-        log.info("###########################################################################")
-        log.info("content: ${response.contentAsString}")
-        log.info("###########################################################################")
+        // ASSERT
+        assertThat(response.status).isEqualTo(HttpStatus.FORBIDDEN.value())
+    }
+
+    @Test
+    fun forbiddenHttpBasicWhenOnlyTokenIsEnabled() {
+        // ACT
+        val response: MockHttpServletResponse = mvc
+                .perform(
+                        get(MOCK_MVC_TEST_ENDPOINT)
+                                .with(SecurityMockMvcRequestPostProcessors.httpBasic(
+                                        FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_NAME,
+                                        FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_CORRECT_PASSWORD)
+                                )
+                )
+                .andReturn().response
 
         // ASSERT
         assertThat(response.status).isEqualTo(HttpStatus.FORBIDDEN.value())

@@ -24,12 +24,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.springframework.http.HttpStatus
 
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [BasicAuthFunctionalTestConfig::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NarrowConfBasicAuthFunctionalTestConfig::class])
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
     "sam.passwords-file=src/functional-test/config/passwords.conf",
     "sam.tokens-file=src/functional-test/config/tokens.conf"])
-class BasicAuthFunctionalTest {
+class NarrowConfBasicAuthFunctionalTest {
 
     @Autowired
     lateinit var mvc: MockMvc
@@ -79,7 +79,7 @@ class BasicAuthFunctionalTest {
     }
 
     @Test
-    fun failedAuthenticationWithBasicAuthWhenNotAuthenticationHeader() {
+    fun unauthorizedHttpBasicWhenNotAuthenticationHeader() {
 
         // ACT
         val response: MockHttpServletResponse = mvc
@@ -91,7 +91,7 @@ class BasicAuthFunctionalTest {
     }
 
     @Test
-    fun failedAuthenticationWithTokenWhenOnlyBasicAuthIsEnabled() {
+    fun failedTokenWhenOnlyHttpBasicIsEnabled() {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(

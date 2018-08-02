@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import org.springframework.stereotype.Component
 
 @Order(20)
 class TokenAuthMethodRegistar : AuthMethodRegistar {
@@ -40,7 +41,7 @@ class TokenAuthMethodRegistar : AuthMethodRegistar {
     }
 
     override fun register(http: HttpSecurity): HttpSecurity {
-        log.info("Registering ${TokenAuthenticationFilter::class.qualifiedName} fileter.")
+        log.info("Registering ${TokenAuthenticationFilter::class.qualifiedName} filter.")
         return http.addFilterBefore(TokenAuthenticationFilter(tokenAuthenticator), BasicAuthenticationFilter::class.java)
     }
 
