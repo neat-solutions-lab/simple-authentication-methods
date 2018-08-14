@@ -6,7 +6,9 @@ import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.registar.AuthMethodRegistar
 import nsl.sam.method.token.TokenAuthMethodRegistar
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 
+@Configuration
 class TokenAuthConfig {
 
     @Bean
@@ -20,8 +22,9 @@ class TokenAuthConfig {
     }
 
     @Bean
-    fun tokenRegisar():AuthMethodRegistar {
+    fun tokenRegistar():AuthMethodRegistar {
         return TokenAuthMethodRegistar()
     }
+
 
 }

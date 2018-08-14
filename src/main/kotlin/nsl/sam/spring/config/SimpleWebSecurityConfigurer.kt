@@ -1,30 +1,41 @@
 package nsl.sam.spring.config
 
+import nsl.sam.config.SimpleAuthConfigurer
 import nsl.sam.registar.AuthMethodRegistar
 import nsl.sam.logger.logger
+import nsl.sam.sender.ResponseSender
 import nsl.sam.spring.entrypoint.SimpleFailedAuthenticationEntryPoint
-import nsl.sam.spring.handler.SimpleAccessDeniedHandler
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.AuthenticationEntryPoint
-import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 @EnableWebMvc
 @EnableWebSecurity
 @Order(90)
-class WebSecurityConfigurer : WebSecurityConfigurerAdapter {
+class SimpleWebSecurityConfigurer : WebSecurityConfigurerAdapter {
 
     companion object { val log by logger() }
 
-    val authMethodRegistars: List<AuthMethodRegistar>
+    @Autowired
+    @Qualifier("unauthenticatedAccessResponseSender")
+    lateinit var errorResponseSender: ResponseSender
 
-    constructor(authMethodRegistars: List<AuthMethodRegistar>) : super() {
-        this.authMethodRegistars = authMethodRegistars
+    val authMethodRegistars: List<AuthMethodRegistar>
+    var simpleAuthConfigurers: List<SimpleAuthConfigurer>
+
+    constructor(@Autowired(required = false) authMethodRegistars: List<AuthMethodRegistar>?,
+                @Autowired(required = false) simpleConfigurers: List<SimpleAuthConfigurer>?) : super() {
+        this.authMethodRegistars = authMethodRegistars ?: emptyList()
+        this.simpleAuthConfigurers = simpleConfigurers ?: emptyList()
     }
 
     override fun configure(http: HttpSecurity) {
@@ -38,6 +49,17 @@ class WebSecurityConfigurer : WebSecurityConfigurerAdapter {
         }
 
         applyCommonSecuritySettings(http)
+
+        for(simpleAuthConfigurer in this.simpleAuthConfigurers) {
+            simpleAuthConfigurer.configure(http)
+        }
+    }
+
+    @Autowired
+    fun globalConfig(authBuilder: AuthenticationManagerBuilder) {
+        for(simpleAuthConfigurer in this.simpleAuthConfigurers) {
+            simpleAuthConfigurer.configure(authBuilder)
+        }
     }
 
     private fun isAuthMechanismAvailable() : Boolean {
@@ -74,14 +96,10 @@ class WebSecurityConfigurer : WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().permitAll()
     }
 
-    @Bean
-    fun accessDeniedHandler(): AccessDeniedHandler {
-        return SimpleAccessDeniedHandler()
-    }
 
     @Bean
     fun simpleAuthenticationEntryPoint(): AuthenticationEntryPoint {
-        return SimpleFailedAuthenticationEntryPoint()
+        return SimpleFailedAuthenticationEntryPoint(errorResponseSender)
     }
 
     private fun applyCommonSecuritySettings(http: HttpSecurity) {
@@ -92,8 +110,7 @@ class WebSecurityConfigurer : WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
-                .authenticationEntryPoint(simpleAuthenticationEntryPoint())
+                .exceptionHandling().authenticationEntryPoint(simpleAuthenticationEntryPoint())
     }
 
 }

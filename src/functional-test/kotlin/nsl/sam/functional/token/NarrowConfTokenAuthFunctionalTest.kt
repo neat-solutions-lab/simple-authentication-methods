@@ -12,12 +12,24 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import nsl.sam.FunctionalTestConstants.FAKE_CONTROLLER_RESPONSE_BODY
 import nsl.sam.FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT
+import nsl.sam.config.DisableBasicAuthSimpleConfigurer
 import nsl.sam.logger.logger
+import nsl.sam.method.token.filter.TokenAuthenticationFilter
+import nsl.sam.spring.config.BasicAuthConfig
+import nsl.sam.spring.config.TokenAuthConfig
 import org.springframework.mock.web.MockHttpServletResponse
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Rule
+import org.junit.rules.ExpectedException
+import org.springframework.beans.factory.NoSuchBeanDefinitionException
+import org.springframework.context.ApplicationContext
 import org.springframework.http.HttpStatus
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+import org.springframework.security.web.FilterChainProxy
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NarrowConfTokenAuthFunctionalTestConfig::class])
@@ -29,8 +41,48 @@ class NarrowConfTokenAuthFunctionalTest {
 
     companion object { val log by logger() }
 
+    @get:Rule
+    val thrown: ExpectedException = ExpectedException.none()
+
+    @Autowired
+    lateinit var ctx: ApplicationContext
+
+    @Autowired
+    lateinit var filterChain: FilterChainProxy
+
+
     @Autowired
     lateinit var mvc: MockMvc
+
+    @Test
+    fun basicAuthConfigBeanNotPresent() {
+        thrown.expect(NoSuchBeanDefinitionException::class.java)
+        this.ctx.getBean(BasicAuthConfig::class.java)
+    }
+
+    @Test
+    fun tokenAuthConfigBeanPresent() {
+        this.ctx.getBean(TokenAuthConfig::class.java)
+    }
+
+
+    @Test
+    fun noBasicAuthenticationFilterInFilterChainWhenOnlySimpleTokenIsEnabled() {
+        val filter = filterChain.getFilters("/").find { it::class == BasicAuthenticationFilter::class }
+        assertNull(filter)
+    }
+
+    @Test
+    fun tokenAuthenticationFilterInFilterChainWhenSimpleTokenIsEnabled() {
+        val filter = filterChain.getFilters("/").find { it::class == TokenAuthenticationFilter::class }
+        assertNotNull(filter)
+    }
+
+
+    @Test
+    fun disableBasicAuthSimpleConfigurerBeanPresent() {
+        ctx.getBean(DisableBasicAuthSimpleConfigurer::class.java)
+    }
 
     @Test
     fun successAuthenticationWithTokenAuth() {

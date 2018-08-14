@@ -18,9 +18,15 @@ import nsl.sam.FunctionalTestConstants.FAKE_CONTROLLER_RESPONSE_BODY
 import nsl.sam.FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT
 import nsl.sam.FunctionalTestConstants.NOT_EXISTING_BASIC_AUTH_USER_NAME
 import nsl.sam.FunctionalTestConstants.NOT_EXISTING_BASIC_AUTH_USER_PASSWORD
+import nsl.sam.spring.config.BasicAuthConfig
+//import nsl.sam.spring.config.DisableBasicAuthConfigurer
 import org.springframework.mock.web.MockHttpServletResponse
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Rule
+import org.junit.rules.ExpectedException
+import org.springframework.beans.factory.NoSuchBeanDefinitionException
+import org.springframework.context.ApplicationContext
 import org.springframework.http.HttpStatus
 
 @RunWith(SpringRunner::class)
@@ -31,8 +37,25 @@ import org.springframework.http.HttpStatus
     "sam.tokens-file=src/functional-test/config/tokens.conf"])
 class NarrowConfBasicAuthFunctionalTest {
 
+    @get:Rule
+    val thrown: ExpectedException = ExpectedException.none()
+
     @Autowired
     lateinit var mvc: MockMvc
+
+    @Autowired
+    lateinit var ctx: ApplicationContext
+
+//    @Test
+//    fun disableBasicAuthConfigurerBeanNotPresent() {
+//        this.thrown.expect(NoSuchBeanDefinitionException::class.java)
+//        this.ctx.getBean(DisableBasicAuthConfigurer::class.java)
+//    }
+
+    @Test
+    fun basicAuthConfigBeanPresent() {
+        this.ctx.getBean(BasicAuthConfig::class.java)
+    }
 
     @Test
     fun successAuthenticationWithBasicAuth() {

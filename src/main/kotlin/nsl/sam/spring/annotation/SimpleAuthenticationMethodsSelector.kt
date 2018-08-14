@@ -2,9 +2,10 @@ package nsl.sam.spring.annotation
 
 import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
-import nsl.sam.spring.config.WebSecurityConfigurer
+import nsl.sam.spring.config.SimpleWebSecurityConfigurer
 import nsl.sam.logger.logger
 import nsl.sam.spring.config.DisableBasicAuthConfig
+//import nsl.sam.spring.config.DisableBasicAuthConfigurer
 import org.springframework.context.annotation.ImportSelector
 import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.type.AnnotationMetadata
@@ -18,8 +19,8 @@ class SimpleAuthenticationMethodsSelector: ImportSelector {
 
         val configurationClasses : ArrayList<String> = ArrayList(5)
 
-        log.info("${WebSecurityConfigurer::class.qualifiedName} added to configuration classes [${Instant.now().nano}]")
-        configurationClasses.add(WebSecurityConfigurer::class.qualifiedName!!)
+        log.info("${SimpleWebSecurityConfigurer::class.qualifiedName} added to configuration classes [${Instant.now().nano}]")
+        configurationClasses.add(SimpleWebSecurityConfigurer::class.qualifiedName!!)
 
         val attributes: AnnotationAttributes? =
                 AnnotationAttributes.fromMap(
@@ -27,9 +28,9 @@ class SimpleAuthenticationMethodsSelector: ImportSelector {
                                 EnableSimpleAuthenticationMethods::class.qualifiedName!!, false)
                 )
 
-        attributes ?: return configurationClasses.toTypedArray()
-
-        val enabledAuthMethods: Array<AuthenticationMethod> = attributes[("methods")] as Array<AuthenticationMethod>
+        val enabledAuthMethods: Array<AuthenticationMethod> = attributes?.let {
+            attributes[("methods")] as Array<AuthenticationMethod>
+        } ?: emptyArray()
 
         enabledAuthMethods.forEach {
             when(it) {
@@ -44,11 +45,18 @@ class SimpleAuthenticationMethodsSelector: ImportSelector {
             }
         }
 
-        val foundClass = configurationClasses.find { it::class == BasicAuthConfig::class }
-        if(null == foundClass) {
+//        val basicAuthConfigClass = configurationClasses.find { it == BasicAuthConfig::class.qualifiedName }
+//        if(null == basicAuthConfigClass) {
+//            log.info("${DisableBasicAuthSimpleConfigurer::class.qualifiedName} added to configuration classes")
+//            configurationClasses.add(DisableBasicAuthSimpleConfigurer::class.qualifiedName!!)
+//        }
+
+        val basicAuthConfigClass = configurationClasses.find { it == BasicAuthConfig::class.qualifiedName }
+        if(null == basicAuthConfigClass) {
             log.info("${DisableBasicAuthConfig::class.qualifiedName} added to configuration classes")
             configurationClasses.add(DisableBasicAuthConfig::class.qualifiedName!!)
         }
+
 
         return configurationClasses.toTypedArray()
     }

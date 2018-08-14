@@ -5,12 +5,13 @@ import nsl.sam.method.token.localtokens.TokenFileImporter
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.logger.logger
 import nsl.sam.registar.AuthMethodRegistar
+import nsl.sam.sender.ResponseSender
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import org.springframework.stereotype.Component
 
 @Order(20)
 class TokenAuthMethodRegistar : AuthMethodRegistar {
@@ -26,23 +27,43 @@ class TokenAuthMethodRegistar : AuthMethodRegistar {
     @Autowired
     lateinit var tokenAuthenticator : TokenToUserMapper
 
-    override fun isActive(): Boolean {
+    @Autowired
+    @Qualifier("unauthenticatedAccessResponseSender")
+    lateinit var unauthenticatedResponseSender: ResponseSender
+
+    private var isActiveVariableCalculated = false
+    private var isActiveValue = false
+
+    private fun isActiveInternal(): Boolean {
+
+        if (tokensFilePath.isBlank()) {
+            log.info("Simple Token Authentication method is not active. Path to tokens file is blank.")
+            return false
+        }
+
         val tokensNumber = tokensNumber()
 
         log.info("tokensFilePath: $tokensFilePath")
         log.info("serverAddress: $serverAddress")
         log.info("tokensNumber: $tokensNumber")
 
-        if(tokensFilePath.isNotBlank()) {
-            if(serverAddress in arrayOf("localhost", "127.0.0.1") && tokensNumber == 0L) return false
-            return true
+        if(serverAddress in arrayOf("localhost", "127.0.0.1") && tokensNumber == 0L) return false
+        return true
+    }
+
+    override fun isActive(): Boolean {
+        if (!isActiveVariableCalculated) {
+            isActiveValue = isActiveInternal()
+            isActiveVariableCalculated = true
         }
-        return false
+        return isActiveValue
     }
 
     override fun register(http: HttpSecurity): HttpSecurity {
         log.info("Registering ${TokenAuthenticationFilter::class.qualifiedName} filter.")
-        return http.addFilterBefore(TokenAuthenticationFilter(tokenAuthenticator), BasicAuthenticationFilter::class.java)
+        return http.addFilterBefore(
+                TokenAuthenticationFilter(tokenAuthenticator, unauthenticatedResponseSender),
+                BasicAuthenticationFilter::class.java)
     }
 
     override fun methodName(): String {

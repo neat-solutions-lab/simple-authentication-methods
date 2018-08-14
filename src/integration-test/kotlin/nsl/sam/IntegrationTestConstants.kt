@@ -1,7 +1,7 @@
 package nsl.sam
 
 object IntegrationTestConstants {
-    const val FAKE_CONTROLLER_RESPONSE_BODY = "Integration test response!"
+    const val FAKE_CONTROLLER_RESPONSE_BODY = "Integration test sender!"
     const val INTEGRATION_TEST_ENDPOINT = "/integration-test"
     const val EXISTING_BASIC_AUTH_USER_NAME = "tester"
     const val EXISTING_BASIC_AUTH_USER_CORRECT_PASSWORD = "integration"

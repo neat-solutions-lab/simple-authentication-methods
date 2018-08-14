@@ -1,7 +1,8 @@
 package nsl.sam.method.token.filter
 
+import nsl.sam.dto.UnauthenticatedResponseDto
 import nsl.sam.logger.logger
-import org.springframework.http.HttpStatus
+import nsl.sam.sender.ResponseSender
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -14,7 +15,9 @@ import javax.servlet.http.HttpServletResponse
 
 const val AUTHORIZATION_HEADER = "Authorization"
 
-class TokenAuthenticationFilter(val tokenAuthenticator: TokenToUserMapper) : OncePerRequestFilter() {
+class TokenAuthenticationFilter(
+        private val tokenAuthenticator: TokenToUserMapper,
+        private val errorResponseSender: ResponseSender) : OncePerRequestFilter() {
 
     companion object { val log by logger() }
 
@@ -42,11 +45,7 @@ class TokenAuthenticationFilter(val tokenAuthenticator: TokenToUserMapper) : Onc
         } catch (e: AuthenticationException) {
             SecurityContextHolder.clearContext()
             log.debug("Access denied by ${this::class.qualifiedName} filter")
-            //response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
-            // TODO: Add ObjectMapper to prepare body of error response in JSON format
-            response.status = HttpStatus.UNAUTHORIZED.value()
-            response.writer.print("TUTAJ BEDZIE LADNY JSON")
-            response.flushBuffer()
+            errorResponseSender.send(response, UnauthenticatedResponseDto.Builder(request).build())
             return
         }
 
