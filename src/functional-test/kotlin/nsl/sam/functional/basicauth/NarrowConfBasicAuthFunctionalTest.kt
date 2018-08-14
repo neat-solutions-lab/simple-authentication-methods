@@ -19,15 +19,16 @@ import nsl.sam.FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT
 import nsl.sam.FunctionalTestConstants.NOT_EXISTING_BASIC_AUTH_USER_NAME
 import nsl.sam.FunctionalTestConstants.NOT_EXISTING_BASIC_AUTH_USER_PASSWORD
 import nsl.sam.spring.config.BasicAuthConfig
-//import nsl.sam.spring.config.DisableBasicAuthConfigurer
 import org.springframework.mock.web.MockHttpServletResponse
-
 import org.assertj.core.api.Assertions.assertThat
+import org.hamcrest.Matchers
 import org.junit.Rule
 import org.junit.rules.ExpectedException
-import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.context.ApplicationContext
 import org.springframework.http.HttpStatus
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NarrowConfBasicAuthFunctionalTestConfig::class])
@@ -46,15 +47,30 @@ class NarrowConfBasicAuthFunctionalTest {
     @Autowired
     lateinit var ctx: ApplicationContext
 
-//    @Test
-//    fun disableBasicAuthConfigurerBeanNotPresent() {
-//        this.thrown.expect(NoSuchBeanDefinitionException::class.java)
-//        this.ctx.getBean(DisableBasicAuthConfigurer::class.java)
-//    }
+    //
+    // Main beans arrangement
+    //
 
     @Test
     fun basicAuthConfigBeanPresent() {
         this.ctx.getBean(BasicAuthConfig::class.java)
+    }
+
+    //
+    // Requests against MockMVC
+    //
+
+    @Test
+    fun userAuthenticatedAsValidUserFromPasswordsFile() {
+        mvc.perform(
+                MockMvcRequestBuilders
+                        .get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT)
+                        .with(
+                                httpBasic(
+                                        FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_NAME,
+                                        FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_CORRECT_PASSWORD)
+                        )
+        ).andExpect(jsonPath("$.username", Matchers.equalTo("test")))
     }
 
     @Test

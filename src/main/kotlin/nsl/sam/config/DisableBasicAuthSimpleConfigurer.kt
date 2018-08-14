@@ -6,7 +6,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.stereotype.Component
+
+const val USERNAME_NOT_FOUND_EXCEPTION_MESSAGE =
+        "Fake UserDetailsService doesn't provide any users."
+
 
 class DisableBasicAuthSimpleConfigurer: SimpleAuthConfigurerAdapter() {
 
@@ -23,7 +26,7 @@ class DisableBasicAuthSimpleConfigurer: SimpleAuthConfigurerAdapter() {
         log.info("Configuring fake UserDetailsService (to suppress UserDetailsServiceAutoConfiguration in case of SpringBoot app)")
         authBuilder.userDetailsService(object : UserDetailsService {
             override fun loadUserByUsername(username: String?): UserDetails {
-                throw UsernameNotFoundException("Fake UserDetailsService doesn't provide any users.")
+                throw UsernameNotFoundException(USERNAME_NOT_FOUND_EXCEPTION_MESSAGE)
             }
         })
 

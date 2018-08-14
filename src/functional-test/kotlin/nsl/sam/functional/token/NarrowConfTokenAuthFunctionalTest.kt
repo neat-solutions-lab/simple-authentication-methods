@@ -13,21 +13,28 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import nsl.sam.FunctionalTestConstants.FAKE_CONTROLLER_RESPONSE_BODY
 import nsl.sam.FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT
 import nsl.sam.config.DisableBasicAuthSimpleConfigurer
+import nsl.sam.config.USERNAME_NOT_FOUND_EXCEPTION_MESSAGE
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
+import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
 import org.springframework.mock.web.MockHttpServletResponse
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hamcrest.Matchers
 import org.junit.Rule
 import org.junit.rules.ExpectedException
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.context.ApplicationContext
 import org.springframework.http.HttpStatus
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
@@ -50,9 +57,18 @@ class NarrowConfTokenAuthFunctionalTest {
     @Autowired
     lateinit var filterChain: FilterChainProxy
 
-
     @Autowired
     lateinit var mvc: MockMvc
+
+    @Autowired
+    private lateinit var securityConfigurer: WebSecurityConfigurerAdapter
+
+    @Autowired
+    private lateinit var localFileTokensToUserMapper: TokenToUserMapper
+
+    //
+    // Main beans arrangement
+    //
 
     @Test
     fun basicAuthConfigBeanNotPresent() {
@@ -65,6 +81,14 @@ class NarrowConfTokenAuthFunctionalTest {
         this.ctx.getBean(TokenAuthConfig::class.java)
     }
 
+    @Test
+    fun disableBasicAuthSimpleConfigurerBeanPresent() {
+        ctx.getBean(DisableBasicAuthSimpleConfigurer::class.java)
+    }
+
+    //
+    // Main filters arrangement
+    //
 
     @Test
     fun noBasicAuthenticationFilterInFilterChainWhenOnlySimpleTokenIsEnabled() {
@@ -78,10 +102,37 @@ class NarrowConfTokenAuthFunctionalTest {
         assertNotNull(filter)
     }
 
+    //
+    // Users mappings
+    //
+    @Test
+    fun localFileTokensToUserMapperActiveWhenSimpleTokenMethodIsEnabled() {
+        val userAndRoles = localFileTokensToUserMapper.mapToUser("12345")
+        assertEquals("tester", userAndRoles.name)
+    }
 
     @Test
-    fun disableBasicAuthSimpleConfigurerBeanPresent() {
-        ctx.getBean(DisableBasicAuthSimpleConfigurer::class.java)
+    fun fakeUserDetailsServiceActive() {
+        val userDetailsService = securityConfigurer.userDetailsServiceBean()
+        thrown.expect(UsernameNotFoundException::class.java)
+        thrown.expectMessage(USERNAME_NOT_FOUND_EXCEPTION_MESSAGE)
+        userDetailsService.loadUserByUsername("test")
+    }
+
+
+    //
+    // Request against MockMVC
+    //
+
+    @Test
+    fun userAuthenticatedAsValidUserFromTokensFile() {
+        mvc.perform(
+                get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT)
+                        .header(
+                                FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME,
+                                FunctionalTestConstants.TOKEN_AUTH_HEADER_AUTHORIZED_VALUE
+                        )
+        ).andExpect(MockMvcResultMatchers.jsonPath("$.username", Matchers.equalTo("tester")))
     }
 
     @Test

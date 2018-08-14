@@ -1,10 +1,15 @@
 package nsl.sam.functional.disabled
 
+import nsl.sam.FunctionalTestConstants
+import nsl.sam.config.USERNAME_NOT_FOUND_EXCEPTION_MESSAGE
+import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
+import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.DisableBasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
 import nsl.sam.spring.config.SimpleWebSecurityConfigurer
+import org.assertj.core.api.Assertions
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
@@ -14,18 +19,30 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
+import org.springframework.http.HttpStatus
+import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.MvcResult
+import org.springframework.test.web.servlet.ResultActions
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.web.context.WebApplicationContext
+import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NoAuthMethodEnabledFunctionalTestConfig::class])
 @AutoConfigureMockMvc
 class NoAuthMethodEnabledFunctionalTest {
+
+    companion object { val log by logger() }
+
     @get:Rule
     var thrown: ExpectedException = ExpectedException.none()
 
@@ -38,29 +55,16 @@ class NoAuthMethodEnabledFunctionalTest {
     @Autowired
     lateinit var filterChain: FilterChainProxy
 
-    @Test
-    fun fakeUserDetailsServiceActive() {
-        val userDetailsService = webSecurityConfigurer.userDetailsServiceBean()
-        thrown.expect(UsernameNotFoundException::class.java)
-        thrown.expectMessage("Fake UserDetailsService doesn't provide any users.")
-        userDetailsService.loadUserByUsername("fake")
-    }
+    @Autowired
+    lateinit var mvc: MockMvc
 
-    @Test
-    fun noTokenAuthenticationFilterInFilterChainWhenNoMethodIsEnabled() {
-        val filter = filterChain.getFilters("/").find { it::class == TokenAuthenticationFilter::class }
-        assertNull(filter)
-    }
 
-    @Test
-    fun noBasicAuthenticationFilterInFilterChainWhenNoMethodIsEnabled() {
-        val filter = filterChain.getFilters("/").find { it::class == BasicAuthenticationFilter::class }
-        assertNull(filter)
-    }
-
+    //
+    // Main beans arrangement
+    //
     @Test
     fun disableBasicAuthConfigBeanPresent() {
-        ctx.getBean(DisableBasicAuthConfig::class.java)
+        this.ctx.getBean(DisableBasicAuthConfig::class.java)
     }
 
     @Test
@@ -79,5 +83,89 @@ class NoAuthMethodEnabledFunctionalTest {
         this.thrown.expect(NoSuchBeanDefinitionException::class.java)
         this.ctx.getBean(TokenAuthConfig::class.java)
     }
+
+    //
+    // Main filters arrangement
+    //
+
+    @Test
+    fun noTokenAuthenticationFilterInFilterChainWhenNoMethodIsEnabled() {
+        val filter = this.filterChain.getFilters("/").find { it::class == TokenAuthenticationFilter::class }
+        assertNull(filter)
+    }
+
+    @Test
+    fun noBasicAuthenticationFilterInFilterChainWhenNoMethodIsEnabled() {
+        val filter = this.filterChain.getFilters("/").find { it::class == BasicAuthenticationFilter::class }
+        assertNull(filter)
+    }
+
+    //
+    // Users mappings
+    //
+
+    @Test
+    fun fakeUserDetailsServiceActive() {
+        val userDetailsService = webSecurityConfigurer.userDetailsServiceBean()
+        this.thrown.expect(UsernameNotFoundException::class.java)
+        this.thrown.expectMessage(USERNAME_NOT_FOUND_EXCEPTION_MESSAGE)
+        userDetailsService.loadUserByUsername("fake")
+    }
+
+    @Test
+    fun localFileTokensToUserMapperBeanNotPresentWhenSimpleTokenMethodDisabled() {
+        this.thrown.expect(NoSuchBeanDefinitionException::class.java)
+        this.ctx.getBean(TokenToUserMapper::class.java)
+    }
+
+    //
+    // Requests against MockMVC
+    //
+
+    @Test
+    fun authenticatedAsAnonymousUserWhenBasicAuthUsedButNoMethodEnabled() {
+        // ACT
+        val response: MockHttpServletResponse = mvc
+                .perform(
+                        MockMvcRequestBuilders
+                                .get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT)
+                                .with(httpBasic(
+                                        FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_NAME,
+                                        FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_CORRECT_PASSWORD)
+                                )
+                )
+                .andReturn().response
+
+        // ASSERT
+        assertEquals("anonymousUser", response.contentAsString)
+    }
+
+    @Test
+    fun authenticatedAsAnonymousUserWhenTokenUsedButNoMethodEnabled() {
+        // ACT
+        val response: MockHttpServletResponse = mvc
+                .perform(
+                        MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT).header(
+                                FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME, FunctionalTestConstants.TOKEN_AUTH_HEADER_AUTHORIZED_VALUE
+                        )
+                )
+                .andReturn().response
+
+        // ASSERT
+        assertEquals("anonymousUser", response.contentAsString)
+    }
+
+    @Test
+    fun authenticatedAsAnonymousUserWhenNoAnyCredentialsUsedAndNoMethodEnabled() {
+        // ACT
+        val response: MockHttpServletResponse = mvc
+                .perform(MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT))
+                .andReturn().response
+
+        // ASSERT
+        assertEquals("anonymousUser", response.contentAsString)
+    }
+
+
 
 }
