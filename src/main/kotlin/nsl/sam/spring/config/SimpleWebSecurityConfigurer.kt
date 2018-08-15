@@ -8,7 +8,7 @@ import nsl.sam.spring.entrypoint.SimpleFailedAuthenticationEntryPoint
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Scope
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -33,13 +33,13 @@ class SimpleWebSecurityConfigurer : WebSecurityConfigurerAdapter {
     var simpleAuthConfigurers: List<SimpleAuthConfigurer>
 
     constructor(@Autowired(required = false) authMethodRegistars: List<AuthMethodRegistar>?,
-                @Autowired(required = false) simpleConfigurers: List<SimpleAuthConfigurer>?) : super() {
+                @Autowired(required = false) simpleAuthConfigurers: List<SimpleAuthConfigurer>?) : super() {
         this.authMethodRegistars = authMethodRegistars ?: emptyList()
-        this.simpleAuthConfigurers = simpleConfigurers ?: emptyList()
+        this.simpleAuthConfigurers = simpleAuthConfigurers ?: emptyList()
     }
 
     override fun configure(http: HttpSecurity) {
-        log.info("HttpSecurity configuration entry point called.")
+        log.info("${this::class.simpleName} configuration entry point called.")
         if(isAuthMechanismAvailable()) {
             log.info("Enabling authentication mechanisms")
             activateAuthenticationMechanisms(http)

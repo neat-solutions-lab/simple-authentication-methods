@@ -45,18 +45,11 @@ class SimpleAuthenticationMethodsSelector: ImportSelector {
             }
         }
 
-//        val basicAuthConfigClass = configurationClasses.find { it == BasicAuthConfig::class.qualifiedName }
-//        if(null == basicAuthConfigClass) {
-//            log.info("${DisableBasicAuthSimpleConfigurer::class.qualifiedName} added to configuration classes")
-//            configurationClasses.add(DisableBasicAuthSimpleConfigurer::class.qualifiedName!!)
-//        }
-
         val basicAuthConfigClass = configurationClasses.find { it == BasicAuthConfig::class.qualifiedName }
         if(null == basicAuthConfigClass) {
             log.info("${DisableBasicAuthConfig::class.qualifiedName} added to configuration classes")
             configurationClasses.add(DisableBasicAuthConfig::class.qualifiedName!!)
         }
-
 
         return configurationClasses.toTypedArray()
     }
