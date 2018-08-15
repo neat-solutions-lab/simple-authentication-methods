@@ -8,6 +8,7 @@ import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.DisableBasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
 import org.assertj.core.api.Assertions
+import org.hamcrest.Matchers.equalTo
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
@@ -20,17 +21,16 @@ import org.springframework.context.ApplicationContext
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import org.hamcrest.Matchers.equalTo
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [DefaultConfBasicAuthFunctionalTestConfig::class])
@@ -40,7 +40,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
     "sam.tokens-file=src/functional-test/config/tokens.conf"])
 class DefaultConfBasicAuthFunctionalTest {
 
-    companion object { val log by logger() }
+    companion object {
+        val log by logger()
+    }
 
     @get:Rule
     val thrown: ExpectedException = ExpectedException.none()
@@ -59,7 +61,6 @@ class DefaultConfBasicAuthFunctionalTest {
 
     @Autowired
     private lateinit var localFileTokensToUserMapper: TokenToUserMapper
-
 
     //
     // Main beans arrangement
@@ -122,14 +123,13 @@ class DefaultConfBasicAuthFunctionalTest {
     @Test
     fun userAuthenticatedAsValidUserFromPasswordsFile() {
         mvc.perform(
-                MockMvcRequestBuilders
-                        .get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT)
+                get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT)
                         .with(
                                 httpBasic(
                                         FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_NAME,
                                         FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_CORRECT_PASSWORD)
                         )
-            ).andExpect(jsonPath("$.username", equalTo("test")))
+        ).andExpect(jsonPath("$.username", equalTo("test")))
     }
 
     @Test
@@ -137,8 +137,7 @@ class DefaultConfBasicAuthFunctionalTest {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
-                        MockMvcRequestBuilders
-                                .get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT)
+                        get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT)
                                 .with(
                                         httpBasic(
                                                 FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_NAME,
@@ -157,7 +156,7 @@ class DefaultConfBasicAuthFunctionalTest {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
-                        MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT)
+                        get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT)
                                 .with(httpBasic(FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_NAME, FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_INCORRECT_PASSWORD))
                 )
                 .andReturn().response
@@ -172,7 +171,7 @@ class DefaultConfBasicAuthFunctionalTest {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
-                        MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT)
+                        get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT)
                                 .with(httpBasic(FunctionalTestConstants.NOT_EXISTING_BASIC_AUTH_USER_NAME, FunctionalTestConstants.NOT_EXISTING_BASIC_AUTH_USER_PASSWORD))
                 )
                 .andReturn().response
@@ -186,7 +185,7 @@ class DefaultConfBasicAuthFunctionalTest {
 
         // ACT
         val response: MockHttpServletResponse = mvc
-                .perform(MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT))
+                .perform(get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT))
                 .andReturn().response
 
         // ASSERT

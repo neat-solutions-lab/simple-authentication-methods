@@ -58,10 +58,10 @@ class NoAuthMethodEnabledFunctionalTest {
     @Autowired
     lateinit var mvc: MockMvc
 
-
     //
     // Main beans arrangement
     //
+
     @Test
     fun disableBasicAuthConfigBeanPresent() {
         this.ctx.getBean(DisableBasicAuthConfig::class.java)
