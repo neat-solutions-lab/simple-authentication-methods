@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.AuthenticationEntryPoint
 
 @Configuration
-class BasicAuthConfig {
+class_ BasicAuthConfig {
 
     @Autowired
     @Qualifier("unauthenticatedAccessResponseSender")

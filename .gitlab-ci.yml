@@ -4,3 +4,4 @@ build:
   script:
   - chmod +x ~/.sdkman/bin/sdkman-init.sh
   - source ~/.sdkman/bin/sdkman-init.sh; mvn package -Dmaven.test.skip=true
+
