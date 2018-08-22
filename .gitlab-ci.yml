@@ -3,4 +3,4 @@ build:
   image: registry.gitlab.com/neatsolutionslab/compiling-environment-containers/jvm10.0.2-kotlin-1.2.51
   script:
   - chmod +x ~/.sdkman/bin/sdkman-init.sh
-  - ~/.sdkman/bin/sdkman-init.sh; mvn package -Dmaven.test.skip=true
+  - source ~/.sdkman/bin/sdkman-init.sh && mvn package -Dmaven.test.skip=true
