@@ -10,9 +10,7 @@ build:
     - devel
   tags:
   - nsl-private
-  - java
-  - kotlin
-  - maven
+  - docker
   script:
   - sdk current java 10.0.2-zulu
   - sdk current kotlin 1.2.51
@@ -26,9 +24,7 @@ test:
     - devel
   tags:
   - nsl-private
-  - java
-  - kotlin
-  - maven
+  - docker
   script:
   - sdk current java 10.0.2-zulu
   - sdk current kotlin 1.2.51
