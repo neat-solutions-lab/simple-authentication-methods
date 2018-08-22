@@ -1,4 +1,8 @@
 image: registry.gitlab.com/neatsolutionslab/compiling-environment-containers/jvm10.0.2-kotlin-1.2.51
+
+before_script:
+- source ~/.sdkman/bin/sdkman-init.sh
+
 build:
   stage: build
   tags:
@@ -7,8 +11,7 @@ build:
   - kotlin
   - maven
   script:
-  - chmod +x ~/.sdkman/bin/sdkman-init.sh
-  - source ~/.sdkman/bin/sdkman-init.sh; mvn package -Dmaven.test.skip=true
+  - mvn package -Dmaven.test.skip=true
 
 test:
   stage: test
@@ -18,5 +21,4 @@ test:
   - kotlin
   - maven
   script:
-  - chmod +x ~/.sdkman/bin/sdkman-init.sh
-  - source ~/.sdkman/bin/sdkman-init.sh; mvn verify
+  - mvn verify
