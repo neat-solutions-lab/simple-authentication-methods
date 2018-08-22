@@ -5,6 +5,9 @@ before_script:
 
 build:
   stage: build
+  only:
+    - master
+    - devel
   tags:
   - nsl-private
   - java
@@ -15,6 +18,9 @@ build:
 
 test:
   stage: test
+  only:
+    - master
+    - devel
   tags:
   - nsl-private
   - java
