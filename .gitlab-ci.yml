@@ -3,6 +3,9 @@ build:
   stage: build
   tags:
   - nsl-private
+  - java
+  - kotlin
+  - maven
   script:
   - chmod +x ~/.sdkman/bin/sdkman-init.sh
   - source ~/.sdkman/bin/sdkman-init.sh; mvn package -Dmaven.test.skip=true
@@ -11,6 +14,9 @@ test:
   stage: test
   tags:
   - nsl-private
+  - java
+  - kotlin
+  - maven
   script:
   - chmod +x ~/.sdkman/bin/sdkman-init.sh
   - source ~/.sdkman/bin/sdkman-init.sh; mvn verify
