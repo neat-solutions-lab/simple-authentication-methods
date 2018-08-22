@@ -16,7 +16,7 @@ build:
   script:
   - sdk current java 10.0.2-zulu
   - sdk current kotlin 1.2.51
-  - sdk current mvn 3.5.3
+  - sdk current maven 3.5.3
   - mvn package -Dmaven.test.skip=true
 
 test:
@@ -32,5 +32,5 @@ test:
   script:
   - sdk current java 10.0.2-zulu
   - sdk current kotlin 1.2.51
-  - sdk current mvn 3.5.3
+  - sdk current maven 3.5.3
   - mvn verify
