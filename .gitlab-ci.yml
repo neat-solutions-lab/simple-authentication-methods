@@ -5,9 +5,6 @@ before_script:
 
 build-on-java10.0.2-kotlin1.2.51:
   stage: build
-  only:
-    - master
-    - devel
   tags:
   - nsl-private
   - docker
@@ -19,9 +16,6 @@ build-on-java10.0.2-kotlin1.2.51:
 
 test-on-java10.0.2-kotlin1.2.51:
   stage: test
-  only:
-    - master
-    - devel
   tags:
   - nsl-private
   - docker

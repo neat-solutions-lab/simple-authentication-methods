@@ -1,6 +1,7 @@
 package nsl.sam.spring.annotation
 
-import nsl.sam.spring.config.SharedConfig
+import nsl.sam.spring.config.GeneralConfigurationActivator
+import nsl.sam.spring.config.SimpleAuthenticationMethodsGeneralConfiguration
 import org.springframework.context.annotation.Import
 
 /**
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Import
  * @param methods array of authentication methods to be enabled
  */
 @Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS)
-@Import(value = [SharedConfig::class, SimpleAuthenticationMethodsSelector::class])
+@Import(value = [GeneralConfigurationActivator::class, EnabledEntrypointsSelector::class])
 annotation class EnableSimpleAuthenticationMethods(
 
         val methods: Array<AuthenticationMethod> =
