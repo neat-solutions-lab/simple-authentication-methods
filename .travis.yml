@@ -12,3 +12,4 @@ matrix:
 
 script:
   - mvn package
+
