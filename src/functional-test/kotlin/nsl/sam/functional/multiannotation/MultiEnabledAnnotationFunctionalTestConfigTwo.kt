@@ -2,5 +2,5 @@ package nsl.sam.functional.multiannotation
 
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 
-@EnableSimpleAuthenticationMethods
+@EnableSimpleAuthenticationMethods(debug = true)
 class MultiEnabledAnnotationFunctionalTestConfigTwo
