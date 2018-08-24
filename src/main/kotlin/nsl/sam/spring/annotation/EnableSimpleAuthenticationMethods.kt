@@ -1,7 +1,8 @@
 package nsl.sam.spring.annotation
 
+import nsl.sam.spring.config.EnableWebSecurityInDebugMode
+import nsl.sam.spring.config.EnableWebSecurityInDefaultMode
 import nsl.sam.spring.config.GeneralConfigurationActivator
-import nsl.sam.spring.config.SimpleAuthenticationMethodsGeneralConfiguration
 import org.springframework.context.annotation.Import
 
 /**
@@ -13,7 +14,14 @@ import org.springframework.context.annotation.Import
  * @param methods array of authentication methods to be enabled
  */
 @Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS)
-@Import(value = [GeneralConfigurationActivator::class, EnabledEntrypointsSelector::class])
+@Import(value =
+    [
+        GeneralConfigurationActivator::class,
+        EnabledEntrypointsSelector::class,
+        //EnableWebSecurityConfiguration::class,
+        EnableWebSecurityInDebugMode::class,
+        EnableWebSecurityInDefaultMode::class
+    ])
 annotation class EnableSimpleAuthenticationMethods(
 
         val methods: Array<AuthenticationMethod> =
@@ -27,5 +35,7 @@ annotation class EnableSimpleAuthenticationMethods(
 
         val order: Int = 100,
 
-        val authorizations: String = ""
+        val authorizations: String = "",
+
+        val debug: Boolean = false
 )

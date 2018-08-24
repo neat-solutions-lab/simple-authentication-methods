@@ -12,6 +12,7 @@ class GeneralConfigurationActivatorReseter: ApplicationListener<ContextRefreshed
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
         log.info("Reseting ${GeneralConfigurationActivator::class.simpleName} state on ContextRefreshedEvent event")
         GeneralConfigurationActivator.alreadyCalled = false
+        DynamicBeansRegistar.enableAnnotations = mutableListOf()
     }
 
 }

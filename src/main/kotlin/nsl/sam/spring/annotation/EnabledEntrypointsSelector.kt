@@ -20,6 +20,7 @@ class EnabledEntrypointsSelector: ImportSelector {
 
         val configurationClasses : ArrayList<String> = ArrayList(5)
 
+
         log.info("${SimpleWebSecurityConfigurer::class.qualifiedName} added to configuration classes [${Instant.now().nano}]")
         configurationClasses.add(SimpleWebSecurityConfigurer::class.qualifiedName!!)
 
