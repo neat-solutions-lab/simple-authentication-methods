@@ -1,4 +1,5 @@
-image: registry.gitlab.com/neatsolutionslab/compiling-environment-containers/jvm10.0.2-kotlin1.2.51
+#image: registry.gitlab.com/neatsolutionslab/compiling-environment-containers/jvm10.0.2-kotlin1.2.51
+image: neatsolutionslab/jdk-kotlin:10.0.2-1.2.51
 
 before_script:
 - source ~/.sdkman/bin/sdkman-init.sh
