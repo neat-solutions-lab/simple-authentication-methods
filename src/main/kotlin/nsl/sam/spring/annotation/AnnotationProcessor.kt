@@ -5,7 +5,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.util.Assert
 import org.springframework.util.ClassUtils
-import kotlin.test.assertNotNull
 
 class AnnotationProcessor {
 
