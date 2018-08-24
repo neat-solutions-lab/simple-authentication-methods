@@ -1,13 +1,11 @@
-image: registry.gitlab.com/neatsolutionslab/compiling-environment-containers/jvm10.0.2-kotlin-1.2.51
+#image: registry.gitlab.com/neatsolutionslab/compiling-environment-containers/jvm10.0.2-kotlin1.2.51
+image: neatsolutionslab/jdk-kotlin:10.0.2-1.2.51
 
 before_script:
 - source ~/.sdkman/bin/sdkman-init.sh
 
-build:
+build-on-java10.0.2-kotlin1.2.51:
   stage: build
-  only:
-    - master
-    - devel
   tags:
   - nsl-private
   - docker
@@ -17,11 +15,8 @@ build:
   - sdk current maven 3.5.3
   - mvn package -Dmaven.test.skip=true
 
-test:
+test-on-java10.0.2-kotlin1.2.51:
   stage: test
-  only:
-    - master
-    - devel
   tags:
   - nsl-private
   - docker

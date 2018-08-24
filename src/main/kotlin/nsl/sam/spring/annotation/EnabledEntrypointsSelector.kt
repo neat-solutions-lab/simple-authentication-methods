@@ -1,23 +1,25 @@
 package nsl.sam.spring.annotation
 
-import nsl.sam.spring.config.BasicAuthConfig
-import nsl.sam.spring.config.TokenAuthConfig
-import nsl.sam.spring.config.SimpleWebSecurityConfigurer
 import nsl.sam.logger.logger
-import nsl.sam.spring.config.DisableBasicAuthConfig
-//import nsl.sam.spring.config.DisableBasicAuthConfigurer
+import nsl.sam.spring.config.*
 import org.springframework.context.annotation.ImportSelector
 import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.type.AnnotationMetadata
 import java.time.Instant
 
-class SimpleAuthenticationMethodsSelector: ImportSelector {
+class EnabledEntrypointsSelector: ImportSelector {
 
-    companion object { val log by logger() }
+    companion object {
+        val log by logger()
+    }
 
     override fun selectImports(importingClassMetadata: AnnotationMetadata): Array<String> {
 
+        DynamicBeansRegistar.enableAnnotations.add(importingClassMetadata)
+
+
         val configurationClasses : ArrayList<String> = ArrayList(5)
+
 
         log.info("${SimpleWebSecurityConfigurer::class.qualifiedName} added to configuration classes [${Instant.now().nano}]")
         configurationClasses.add(SimpleWebSecurityConfigurer::class.qualifiedName!!)

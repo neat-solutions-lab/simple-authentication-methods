@@ -18,8 +18,6 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
-@EnableWebMvc
-@EnableWebSecurity
 @Order(90)
 class SimpleWebSecurityConfigurer : WebSecurityConfigurerAdapter {
 

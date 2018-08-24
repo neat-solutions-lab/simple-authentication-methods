@@ -10,7 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.springframework.core.type.AnnotationMetadata
 
 @RunWith(MockitoJUnitRunner::class)
-class SimpleAuthenticationMethodsSelectorTest {
+class EnabledEntrypointsSelectorTest {
 
     companion object { val log by logger() }
 
@@ -27,7 +27,7 @@ class SimpleAuthenticationMethodsSelectorTest {
     fun selectImports() {
 
 //        // ARRANGE
-//        val subject = SimpleAuthenticationMethodsSelector()
+//        val subject = EnabledEntrypointsSelector()
 //
 //        // ACT
 //        val result = subject.selectImports(importingClassMetadata)
