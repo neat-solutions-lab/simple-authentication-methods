@@ -43,7 +43,7 @@ import kotlin.test.assertNull
 @TestPropertySource(properties = [
     "sam.passwords-file=src/functional-test/config/passwords.conf",
     "sam.tokens-file=src/functional-test/config/tokens.conf"])
-class NarrowConfBasicAuthFunctionalTest {
+class NarrowConfBasicAuthFT {
 
     @get:Rule
     val thrown: ExpectedException = ExpectedException.none()

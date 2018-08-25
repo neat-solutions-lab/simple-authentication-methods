@@ -18,7 +18,7 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NoBasicAuthEnabledFunctionalTestConfig::class])
 @AutoConfigureMockMvc
-class NoBasicAuthEnabledFunctionalTest {
+class NoBasicAuthEnabledFT {
 
     @get:Rule
     var thrown = ExpectedException.none()

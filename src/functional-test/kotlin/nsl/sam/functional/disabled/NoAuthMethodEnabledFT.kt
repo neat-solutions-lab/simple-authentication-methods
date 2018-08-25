@@ -39,7 +39,7 @@ import kotlin.test.assertNull
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NoAuthMethodEnabledFunctionalTestConfig::class])
 @AutoConfigureMockMvc
-class NoAuthMethodEnabledFunctionalTest {
+class NoAuthMethodEnabledFT {
 
     companion object { val log by logger() }
 

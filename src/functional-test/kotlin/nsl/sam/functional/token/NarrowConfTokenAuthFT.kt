@@ -44,7 +44,7 @@ import kotlin.test.assertNull
 @TestPropertySource(properties = [
     "sam.passwords-file=src/functional-test/config/passwords.conf",
     "sam.tokens-file=src/functional-test/config/tokens.conf"])
-class NarrowConfTokenAuthFunctionalTest {
+class NarrowConfTokenAuthFT {
 
     companion object { val log by logger() }
 

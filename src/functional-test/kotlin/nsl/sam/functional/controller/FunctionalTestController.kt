@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 import org.springframework.security.core.context.SecurityContextHolder
 
-
-
 @RestController
 class FunctionalTestController {
     @GetMapping(path = [FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT])
@@ -19,5 +17,4 @@ class FunctionalTestController {
         val authentication = SecurityContextHolder.getContext().authentication
         return authentication.principal
     }
-
 }

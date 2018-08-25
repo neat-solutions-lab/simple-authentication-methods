@@ -8,7 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner
  * The file with passwords is empty
  */
 @RunWith(SpringRunner::class)
-class EmptyPasswordsFileFunctionalTest {
+class EmptyPasswordsFileFT {
 
     @Test
     fun noBasicAuthWhenEmptyPasswordFile() {

@@ -39,7 +39,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 @TestPropertySource(properties = [
     "sam.passwords-file=src/functional-test/config/passwords.conf",
     "sam.tokens-file=src/functional-test/config/tokens.conf"])
-class DefaultConfTokenAuthFunctionalTest {
+class DefaultConfTokenAuthFT {
 
     companion object { val log by logger() }
 
