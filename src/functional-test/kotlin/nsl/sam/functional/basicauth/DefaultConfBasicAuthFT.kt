@@ -1,9 +1,11 @@
 package nsl.sam.functional.basicauth
 
 import nsl.sam.FunctionalTestConstants
+import nsl.sam.functional.controller.FunctionalTestController
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
+import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.DisableBasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
@@ -18,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -33,12 +37,13 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [DefaultConfBasicAuthFunctionalTestConfig::class])
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [DefaultConfBasicAuthFunctionalTestConfig::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
     "sam.passwords-file=src/functional-test/config/passwords.conf",
     "sam.tokens-file=src/functional-test/config/tokens.conf"])
-class DefaultConfBasicAuthFunctionalTest {
+class DefaultConfBasicAuthFT {
 
     companion object {
         val log by logger()
@@ -190,6 +195,13 @@ class DefaultConfBasicAuthFunctionalTest {
 
         // ASSERT
         Assertions.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
+    }
+
+    @Configuration
+    @EnableSimpleAuthenticationMethods
+    class TestConfiguration {
+        @Bean
+        fun fakeController() = FunctionalTestController()
     }
 
 }
