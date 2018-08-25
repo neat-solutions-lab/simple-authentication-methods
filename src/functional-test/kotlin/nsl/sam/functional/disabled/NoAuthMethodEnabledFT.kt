@@ -2,9 +2,11 @@ package nsl.sam.functional.disabled
 
 import nsl.sam.FunctionalTestConstants
 import nsl.sam.config.USERNAME_NOT_FOUND_EXCEPTION_MESSAGE
+import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
+import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.DisableBasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -37,7 +40,8 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NoAuthMethodEnabledFunctionalTestConfig::class])
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NoAuthMethodEnabledFunctionalTestConfig::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 class NoAuthMethodEnabledFT {
 
@@ -166,6 +170,8 @@ class NoAuthMethodEnabledFT {
         assertEquals("anonymousUser", response.contentAsString)
     }
 
-
+    @Configuration
+    @EnableSimpleAuthenticationMethods([])
+    class TestConfiguration: FakeControllerConfiguration()
 
 }

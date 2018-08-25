@@ -1,6 +1,7 @@
 package nsl.sam.functional.basicauth
 
 import nsl.sam.FunctionalTestConstants
+import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.functional.controller.FunctionalTestController
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
@@ -37,7 +38,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @RunWith(SpringRunner::class)
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [DefaultConfBasicAuthFunctionalTestConfig::class])
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
@@ -199,9 +199,6 @@ class DefaultConfBasicAuthFT {
 
     @Configuration
     @EnableSimpleAuthenticationMethods
-    class TestConfiguration {
-        @Bean
-        fun fakeController() = FunctionalTestController()
-    }
+    class TestConfiguration : FakeControllerConfiguration()
 
 }

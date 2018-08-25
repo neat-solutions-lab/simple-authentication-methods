@@ -3,6 +3,7 @@ package nsl.sam.functional.debugmode
 import nsl.sam.spring.config.EnableWebSecurityInDebugMode
 import nsl.sam.spring.config.EnableWebSecurityInDefaultMode
 import org.assertj.core.api.Assertions
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,15 +22,13 @@ class NoEnableSimpleAuthenticationMethodsAnnotationAtAllFT {
     @Autowired
     lateinit var applicationContext: ApplicationContext
 
+
+    //TODO: After introduction of dynamic configurators this test shuld pass
+    @Ignore
     @Test
     fun noBeanWithEnableWebSecurityAnnotationInApplicationContext() {
-
-        //TODO: After introduction of dynamic configurators this test shuld pass
         val beanNames = applicationContext.getBeanNamesForAnnotation(EnableWebSecurity::class.java)
-        beanNames.forEach {
-            println("Bean annotated with EnableWebSecurity: ${it}")
-        }
-        //Assertions.assertThat(beanNames).isEmpty()
+        Assertions.assertThat(beanNames).isEmpty()
     }
 
 

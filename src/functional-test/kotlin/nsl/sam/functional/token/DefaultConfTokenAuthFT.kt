@@ -1,6 +1,7 @@
 package nsl.sam.functional.token
 
 import nsl.sam.FunctionalTestConstants
+import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
@@ -171,4 +172,7 @@ class DefaultConfTokenAuthFT {
         // ASSERT
         Assertions.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
     }
+
+    //class TestConfiguration: FakeControllerConfiguration()
+
 }

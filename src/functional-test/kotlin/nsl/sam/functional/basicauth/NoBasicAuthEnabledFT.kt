@@ -1,6 +1,10 @@
 package nsl.sam.functional.basicauth
 
+import nsl.sam.functional.configuration.FakeControllerConfiguration
+import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.spring.config.BasicAuthConfig
+import nsl.sam.spring.config.DisableBasicAuthConfig
+import org.junit.Ignore
 //import nsl.sam.spring.config.DisableBasicAuthConfigurer
 import org.junit.Rule
 import org.junit.Test
@@ -13,10 +17,11 @@ import org.springframework.test.context.junit4.SpringRunner
 import kotlin.test.assertNotNull
 import org.junit.rules.ExpectedException
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
+import org.springframework.context.annotation.Configuration
 
 
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NoBasicAuthEnabledFunctionalTestConfig::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 class NoBasicAuthEnabledFT {
 
@@ -26,15 +31,20 @@ class NoBasicAuthEnabledFT {
     @Autowired
     private lateinit var ctx: ApplicationContext
 
-//    @Test
-//    fun disableBasicAuthConfigurerBeanPresent() {
-//        ctx.getBean(DisableBasicAuthConfigurer::class.java)
-//    }
+    @Test
+    fun disableBasicAuthConfigurerBeanPresent() {
+        ctx.getBean(DisableBasicAuthConfig::class.java)
+    }
 
+    // TODO: Activate this test when dynamic web security configurers are finished.
+    @Ignore
     @Test
     fun basicAuthConfigBeanNotPresent() {
         this.thrown.expect(NoSuchBeanDefinitionException::class.java)
         this.ctx.getBean(BasicAuthConfig::class.java)
     }
 
+    @Configuration
+    @EnableSimpleAuthenticationMethods([])
+    class TestConfiguration: FakeControllerConfiguration()
 }

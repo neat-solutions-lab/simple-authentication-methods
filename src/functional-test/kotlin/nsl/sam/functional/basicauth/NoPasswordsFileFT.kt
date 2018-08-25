@@ -1,5 +1,7 @@
 package nsl.sam.functional.basicauth
 
+import nsl.sam.functional.configuration.FakeControllerConfiguration
+import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.spring.config.BasicAuthConfig
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Configuration
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
 import kotlin.test.assertNotNull
@@ -22,12 +25,10 @@ import kotlin.test.assertNull
  *      <li>BasicAuthConfig bean not present in ApplicationContext</li>
  *  </ul>
  */
+//TODO: Finish this test after dynamic web configurators are finished.
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [DefaultConfBasicAuthFunctionalTestConfig::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-//@TestPropertySource(properties = [
-//    "sam.passwords-file=src/functional-test/config/passwords.conf",
-//    "sam.tokens-file=src/functional-test/config/tokens.conf"])
 class NoPasswordsFileFT {
 
     @Autowired
@@ -42,13 +43,10 @@ class NoPasswordsFileFT {
 
     @Test
     fun noBasicAuthWhenNoPasswordsFile() {
-
-        // ACT
-        //ctx.getBean()
-
-        println("#######################################")
-        //println("ApplicationContext: $ctx")
-        println("#######################################")
     }
+
+    @Configuration
+    @EnableSimpleAuthenticationMethods
+    class TestConfiguration : FakeControllerConfiguration()
 
 }

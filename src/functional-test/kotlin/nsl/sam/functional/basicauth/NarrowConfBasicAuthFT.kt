@@ -18,7 +18,10 @@ import nsl.sam.FunctionalTestConstants.FAKE_CONTROLLER_RESPONSE_BODY
 import nsl.sam.FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT
 import nsl.sam.FunctionalTestConstants.NOT_EXISTING_BASIC_AUTH_USER_NAME
 import nsl.sam.FunctionalTestConstants.NOT_EXISTING_BASIC_AUTH_USER_PASSWORD
+import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
+import nsl.sam.spring.annotation.AuthenticationMethod
+import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.DisableBasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
@@ -29,6 +32,7 @@ import org.junit.Rule
 import org.junit.rules.ExpectedException
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
@@ -38,7 +42,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NarrowConfBasicAuthFunctionalTestConfig::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
     "sam.passwords-file=src/functional-test/config/passwords.conf",
@@ -181,4 +185,9 @@ class NarrowConfBasicAuthFT {
         // ASSERT
         assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
     }
+
+    @Configuration
+    @EnableSimpleAuthenticationMethods([AuthenticationMethod.SIMPLE_BASIC_AUTH])
+    class TestConfiguration : FakeControllerConfiguration()
+
 }
