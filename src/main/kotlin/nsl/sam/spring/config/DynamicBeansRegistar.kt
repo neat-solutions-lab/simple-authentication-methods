@@ -38,6 +38,8 @@ class DynamicBeansRegistar: BeanDefinitionRegistryPostProcessor {
             println("moja annotacja: $it")
         }
 
+        //beanFactory.getBeanNamesForAnnotation()
+
         //val beanDefinition = beanFactory.getBeanDefinition("nsl.sam.spring.config.EnableWebSecurityConfiguration")
         //beanDefinition.
     }

@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Import
     [
         GeneralConfigurationActivator::class,
         EnabledEntrypointsSelector::class,
-        //EnableWebSecurityConfiguration::class,
         EnableWebSecurityInDebugMode::class,
         EnableWebSecurityInDefaultMode::class
     ])

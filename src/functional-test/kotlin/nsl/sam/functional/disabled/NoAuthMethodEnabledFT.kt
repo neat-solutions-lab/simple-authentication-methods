@@ -11,7 +11,6 @@ import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.DisableBasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
 import nsl.sam.spring.config.SimpleWebSecurityConfigurer
-import org.assertj.core.api.Assertions
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExpectedException
@@ -22,30 +21,26 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.MvcResult
-import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.web.context.WebApplicationContext
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 @RunWith(SpringRunner::class)
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NoAuthMethodEnabledFunctionalTestConfig::class])
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [TestConfiguration::class])
 @AutoConfigureMockMvc
 class NoAuthMethodEnabledFT {
 
-    companion object { val log by logger() }
+    companion object {
+        val log by logger()
+    }
 
     @get:Rule
     var thrown: ExpectedException = ExpectedException.none()
@@ -170,8 +165,8 @@ class NoAuthMethodEnabledFT {
         assertEquals("anonymousUser", response.contentAsString)
     }
 
-    @Configuration
-    @EnableSimpleAuthenticationMethods([])
-    class TestConfiguration: FakeControllerConfiguration()
-
 }
+
+@Configuration
+@EnableSimpleAuthenticationMethods([])
+class TestConfiguration: FakeControllerConfiguration()

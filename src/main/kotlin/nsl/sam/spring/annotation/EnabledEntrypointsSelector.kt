@@ -9,11 +9,12 @@ import java.time.Instant
 
 class EnabledEntrypointsSelector: ImportSelector {
 
-    companion object {
-        val log by logger()
-    }
+    companion object { val log by logger() }
 
     override fun selectImports(importingClassMetadata: AnnotationMetadata): Array<String> {
+
+        log.info("enclosing: " + importingClassMetadata.enclosingClassName)
+        importingClassMetadata.hasEnclosingClass()
 
         DynamicBeansRegistar.enableAnnotations.add(importingClassMetadata)
 
@@ -35,6 +36,7 @@ class EnabledEntrypointsSelector: ImportSelector {
         } ?: emptyArray()
 
         enabledAuthMethods.forEach {
+            log.info("ddd: $it")
             when(it) {
                 AuthenticationMethod.SIMPLE_TOKEN -> {
                     log.info("${TokenAuthConfig::class.qualifiedName} added to configuration classes.")

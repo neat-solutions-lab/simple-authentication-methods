@@ -1,4 +1,4 @@
-image: neatsolutionslab/jdk-kotlin:10.0.2-1.2.51
+image: neatsolutionslab/jdk:10.0.2open
 
 before_script:
 - source ~/.sdkman/bin/sdkman-init.sh
@@ -6,21 +6,13 @@ before_script:
 build-on-java10.0.2-kotlin1.2.51:
   stage: build
   tags:
-  - nsl-private
   - docker
   script:
-  - sdk current java 10.0.2-zulu
-  - sdk current kotlin 1.2.51
-  - sdk current maven 3.5.3
   - mvn package -Dmaven.test.skip=true
 
 test-on-java10.0.2-kotlin1.2.51:
   stage: test
   tags:
-  - nsl-private
   - docker
   script:
-  - sdk current java 10.0.2-zulu
-  - sdk current kotlin 1.2.51
-  - sdk current maven 3.5.3
   - mvn verify

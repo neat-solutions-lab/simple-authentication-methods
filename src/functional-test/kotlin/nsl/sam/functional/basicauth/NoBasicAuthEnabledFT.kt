@@ -21,7 +21,8 @@ import org.springframework.context.annotation.Configuration
 
 
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK,
+        classes = [TestConfiguration::class])
 @AutoConfigureMockMvc
 class NoBasicAuthEnabledFT {
 
@@ -36,15 +37,14 @@ class NoBasicAuthEnabledFT {
         ctx.getBean(DisableBasicAuthConfig::class.java)
     }
 
-    // TODO: Activate this test when dynamic web security configurers are finished.
-    @Ignore
     @Test
     fun basicAuthConfigBeanNotPresent() {
         this.thrown.expect(NoSuchBeanDefinitionException::class.java)
         this.ctx.getBean(BasicAuthConfig::class.java)
     }
 
-    @Configuration
-    @EnableSimpleAuthenticationMethods([])
-    class TestConfiguration: FakeControllerConfiguration()
 }
+
+@Configuration
+@EnableSimpleAuthenticationMethods([])
+class TestConfiguration: FakeControllerConfiguration()
