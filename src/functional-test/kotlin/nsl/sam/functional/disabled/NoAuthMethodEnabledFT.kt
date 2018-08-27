@@ -35,6 +35,7 @@ import kotlin.test.assertNull
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [TestConfiguration::class])
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 class NoAuthMethodEnabledFT {
 
@@ -164,6 +165,10 @@ class NoAuthMethodEnabledFT {
         // ASSERT
         assertEquals("anonymousUser", response.contentAsString)
     }
+
+//    @Configuration
+//    @EnableSimpleAuthenticationMethods([])
+//    class TestConfiguration: FakeControllerConfiguration()
 
 }
 

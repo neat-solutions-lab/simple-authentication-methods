@@ -3,16 +3,25 @@ image: neatsolutionslab/jdk:10.0.2open
 before_script:
 - source ~/.sdkman/bin/sdkman-init.sh
 
-build-on-java10.0.2-kotlin1.2.51:
-  stage: build
-  tags:
-  - docker
+build-job:
   script:
-  - mvn package -Dmaven.test.skip=true
+  - mvn package
 
-test-on-java10.0.2-kotlin1.2.51:
-  stage: test
-  tags:
-  - docker
-  script:
-  - mvn verify
+#image: neatsolutionslab/jdk:10.0.2open
+#
+#before_script:
+#- source ~/.sdkman/bin/sdkman-init.sh
+#
+#build-on-java10.0.2-kotlin1.2.51:
+#  stage: build
+#  tags:
+#  - docker
+#  script:
+#  - mvn package -Dmaven.test.skip=true
+#
+#test-on-java10.0.2-kotlin1.2.51:
+#  stage: test
+#  tags:
+#  - docker
+#  script:
+#  - mvn verify
