@@ -1,6 +1,7 @@
 package nsl.sam.functional.basicauth
 
 import nsl.sam.functional.configuration.FakeControllerConfiguration
+import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.DisableBasicAuthConfig
@@ -21,8 +22,7 @@ import org.springframework.context.annotation.Configuration
 
 
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-        classes = [TestConfiguration::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 class NoBasicAuthEnabledFT {
 
@@ -43,8 +43,11 @@ class NoBasicAuthEnabledFT {
         this.ctx.getBean(BasicAuthConfig::class.java)
     }
 
+    @Configuration
+    @EnableSimpleAuthenticationMethods([AuthenticationMethod.SIMPLE_NO_METHOD])
+    class TestConfiguration: FakeControllerConfiguration()
 }
 
-@Configuration
-@EnableSimpleAuthenticationMethods([])
-class TestConfiguration: FakeControllerConfiguration()
+//@Configuration
+//@EnableSimpleAuthenticationMethods([])
+//class TestConfiguration: FakeControllerConfiguration()

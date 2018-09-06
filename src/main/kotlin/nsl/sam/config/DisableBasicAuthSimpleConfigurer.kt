@@ -18,7 +18,7 @@ class DisableBasicAuthSimpleConfigurer: SimpleAuthConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         super.configure(http)
         log.info("Disabling HttpBasic Auth mechanism (due to @EnableSimpleAuthenticationMethods annotation parameters)")
-        http?.httpBasic()?.disable()
+        http.httpBasic().disable()
     }
 
     override fun configure(authBuilder: AuthenticationManagerBuilder) {

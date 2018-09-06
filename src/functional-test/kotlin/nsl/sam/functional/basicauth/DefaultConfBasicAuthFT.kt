@@ -39,7 +39,7 @@ import kotlin.test.assertNotNull
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(secure = false)
 @TestPropertySource(properties = [
     "sam.passwords-file=src/functional-test/config/passwords.conf",
     "sam.tokens-file=src/functional-test/config/tokens.conf"])
