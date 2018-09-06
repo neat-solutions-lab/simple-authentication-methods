@@ -4,7 +4,7 @@ import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.DisableBasicAuthConfig
 import nsl.sam.spring.config.SimpleWebSecurityConfigurer
 import nsl.sam.spring.config.TokenAuthConfig
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.*
 import org.junit.Test
 
 import org.junit.runner.RunWith
@@ -22,14 +22,18 @@ class EnabledEntrypointsSelectorTest {
     @Test
     fun `selectImports(), SIMPLE_BASIC_AUTH enabled`() {
 
-        // MOCKITO FIXTURES
-        given(
-                importingClassMetadata.getAnnotationAttributes(
-                        EnableSimpleAuthenticationMethods::class.qualifiedName!!, false
-                )
-        ).willReturn(
-                mapOf("methods" to arrayOf(AuthenticationMethod.SIMPLE_BASIC_AUTH))
+        // DATA ARRANGEMENTS
+        val enabledMethodsArray = arrayOf(AuthenticationMethod.SIMPLE_BASIC_AUTH)
+
+        val expectedResult = arrayOf(
+                SimpleWebSecurityConfigurer::class.qualifiedName,
+                BasicAuthConfig::class.qualifiedName
         )
+
+        // MOCKITO FIXTURES
+        given(importingClassMetadata.getAnnotationAttributes(
+                EnableSimpleAuthenticationMethods::class.qualifiedName!!, false)
+        ).willReturn(mapOf("methods" to enabledMethodsArray))
 
         // OBJECT OF TESTED CLASS
         val enabledEntrypointsSelector = EnabledEntrypointsSelector()
@@ -38,23 +42,24 @@ class EnabledEntrypointsSelectorTest {
         val configurationClasses = enabledEntrypointsSelector.selectImports(importingClassMetadata)
 
         // ASSERT
-        Assertions.assertThat(configurationClasses).containsExactlyInAnyOrder(
-                SimpleWebSecurityConfigurer::class.qualifiedName,
-                BasicAuthConfig::class.qualifiedName
-        )
+        assertThat(configurationClasses).containsExactlyInAnyOrder(*expectedResult)
     }
 
     @Test
     fun `selectImports(), SIMPLE_TOKEN enabled`() {
 
-        // MOCKITO FIXTURES
-        given(
-                importingClassMetadata.getAnnotationAttributes(
-                        EnableSimpleAuthenticationMethods::class.qualifiedName!!, false
-                )
-        ).willReturn(
-                mapOf("methods" to arrayOf(AuthenticationMethod.SIMPLE_TOKEN))
+        // DATA ARRANGEMENTS
+        val enabledMethodsArray = arrayOf(AuthenticationMethod.SIMPLE_TOKEN)
+
+        val expectedResult = arrayOf(SimpleWebSecurityConfigurer::class.qualifiedName,
+                TokenAuthConfig::class.qualifiedName,
+                DisableBasicAuthConfig::class.qualifiedName
         )
+
+        // MOCKITO FIXTURES
+        given(importingClassMetadata.getAnnotationAttributes(
+                EnableSimpleAuthenticationMethods::class.qualifiedName!!, false)
+        ).willReturn(mapOf("methods" to enabledMethodsArray))
 
         // OBJECT OF TESTED CLASS
         val enabledEntrypointsSelector = EnabledEntrypointsSelector()
@@ -63,25 +68,28 @@ class EnabledEntrypointsSelectorTest {
         val configurationClasses = enabledEntrypointsSelector.selectImports(importingClassMetadata)
 
         // ASSERT
-        Assertions.assertThat(configurationClasses).containsExactlyInAnyOrder(
-                SimpleWebSecurityConfigurer::class.qualifiedName,
-                TokenAuthConfig::class.qualifiedName,
-                DisableBasicAuthConfig::class.qualifiedName
-        )
+        assertThat(configurationClasses).containsExactlyInAnyOrder(*expectedResult)
     }
 
     @Test
     fun `selectImports(), SIMPLE_BASIC_AUTH and SIMPLE_TOKEN enabled`() {
 
-        // MOCKITO FIXTURES
-        given(
-                importingClassMetadata.getAnnotationAttributes(
-                        EnableSimpleAuthenticationMethods::class.qualifiedName!!, false
-                )
-        ).willReturn(
-                mapOf("methods" to arrayOf(
-                        AuthenticationMethod.SIMPLE_TOKEN, AuthenticationMethod.SIMPLE_BASIC_AUTH))
+        // DATA ARRANGEMENTS
+        val enabledMethodsArray = arrayOf(
+                AuthenticationMethod.SIMPLE_TOKEN,
+                AuthenticationMethod.SIMPLE_BASIC_AUTH
         )
+
+        val expectedResult = arrayOf(
+                SimpleWebSecurityConfigurer::class.qualifiedName,
+                TokenAuthConfig::class.qualifiedName,
+                BasicAuthConfig::class.qualifiedName
+        )
+
+        // MOCKITO FIXTURES
+        given(importingClassMetadata.getAnnotationAttributes(
+                EnableSimpleAuthenticationMethods::class.qualifiedName!!, false)
+        ).willReturn(mapOf("methods" to enabledMethodsArray))
 
         // OBJECT OF TESTED CLASS
         val enabledEntrypointsSelector = EnabledEntrypointsSelector()
@@ -90,25 +98,25 @@ class EnabledEntrypointsSelectorTest {
         val configurationClasses = enabledEntrypointsSelector.selectImports(importingClassMetadata)
 
         // ASSERT
-        Assertions.assertThat(configurationClasses).containsExactlyInAnyOrder(
-                SimpleWebSecurityConfigurer::class.qualifiedName,
-                TokenAuthConfig::class.qualifiedName,
-                BasicAuthConfig::class.qualifiedName
-        )
+        assertThat(configurationClasses).containsExactlyInAnyOrder(*expectedResult)
     }
 
     @Test
     fun `selectImports(), SIMPLE_NO_METHOD enabled`() {
 
-        // MOCKITO FIXTURES
-        given(
-                importingClassMetadata.getAnnotationAttributes(
-                        EnableSimpleAuthenticationMethods::class.qualifiedName!!, false
-                )
-        ).willReturn(
-                mapOf("methods" to arrayOf(
-                        AuthenticationMethod.SIMPLE_NO_METHOD))
+        // DATA ARRANGEMENTS
+        val enabledMethodsArray = arrayOf(AuthenticationMethod.SIMPLE_NO_METHOD)
+
+        val expectedResult = arrayOf(
+                SimpleWebSecurityConfigurer::class.qualifiedName,
+                DisableBasicAuthConfig::class.qualifiedName
         )
+
+
+        // MOCKITO FIXTURES
+        given(importingClassMetadata.getAnnotationAttributes(
+                EnableSimpleAuthenticationMethods::class.qualifiedName!!, false)
+        ).willReturn(mapOf("methods" to enabledMethodsArray))
 
         // OBJECT OF TESTED CLASS
         val enabledEntrypointsSelector = EnabledEntrypointsSelector()
@@ -117,26 +125,28 @@ class EnabledEntrypointsSelectorTest {
         val configurationClasses = enabledEntrypointsSelector.selectImports(importingClassMetadata)
 
         // ASSERT
-        Assertions.assertThat(configurationClasses).containsExactlyInAnyOrder(
-                SimpleWebSecurityConfigurer::class.qualifiedName,
-                DisableBasicAuthConfig::class.qualifiedName
-        )
+        assertThat(configurationClasses).containsExactlyInAnyOrder(*expectedResult)
     }
 
     @Test
     fun `selectImports(), SIMPLE_NO_METHOD and SIMPLE_TOKEN and SIMPLE_BASIC_AUTH enabled`() {
 
-        // MOCKITO FIXTURES
-        given(
-                importingClassMetadata.getAnnotationAttributes(
-                        EnableSimpleAuthenticationMethods::class.qualifiedName!!, false
-                )
-        ).willReturn(
-                mapOf("methods" to arrayOf(
-                        AuthenticationMethod.SIMPLE_NO_METHOD,
-                        AuthenticationMethod.SIMPLE_TOKEN,
-                        AuthenticationMethod.SIMPLE_BASIC_AUTH))
+        // DATA ARRANGEMENTS
+        val enabledMethodsArray = arrayOf(
+                AuthenticationMethod.SIMPLE_NO_METHOD,
+                AuthenticationMethod.SIMPLE_TOKEN,
+                AuthenticationMethod.SIMPLE_BASIC_AUTH
         )
+
+        val expectedResult = arrayOf(
+                SimpleWebSecurityConfigurer::class.qualifiedName,
+                DisableBasicAuthConfig::class.qualifiedName
+        )
+
+        // MOCKITO FIXTURES
+        given(importingClassMetadata.getAnnotationAttributes(
+                EnableSimpleAuthenticationMethods::class.qualifiedName!!, false)
+        ).willReturn(mapOf("methods" to enabledMethodsArray))
 
         // OBJECT OF TESTED CLASS
         val enabledEntrypointsSelector = EnabledEntrypointsSelector()
@@ -145,26 +155,28 @@ class EnabledEntrypointsSelectorTest {
         val configurationClasses = enabledEntrypointsSelector.selectImports(importingClassMetadata)
 
         // ASSERT
-        Assertions.assertThat(configurationClasses).containsExactlyInAnyOrder(
-                SimpleWebSecurityConfigurer::class.qualifiedName,
-                DisableBasicAuthConfig::class.qualifiedName
-        )
+        assertThat(configurationClasses).containsExactlyInAnyOrder(*expectedResult)
     }
 
     @Test
     fun `selectImports(), SIMPLE_BASIC_AUTH and SIMPLE_METHOD and SIMPLE_NO_METHOD enabled`() {
 
-        // MOCKITO FIXTURES
-        given(
-                importingClassMetadata.getAnnotationAttributes(
-                        EnableSimpleAuthenticationMethods::class.qualifiedName!!, false
-                )
-        ).willReturn(
-                mapOf("methods" to arrayOf(
-                        AuthenticationMethod.SIMPLE_BASIC_AUTH,
-                        AuthenticationMethod.SIMPLE_TOKEN,
-                        AuthenticationMethod.SIMPLE_NO_METHOD))
+        // DATA ARRANGEMENTS
+        val enabledMethodsArray = arrayOf(
+                AuthenticationMethod.SIMPLE_BASIC_AUTH,
+                AuthenticationMethod.SIMPLE_TOKEN,
+                AuthenticationMethod.SIMPLE_NO_METHOD
         )
+
+        val expectedResult = arrayOf(
+                SimpleWebSecurityConfigurer::class.qualifiedName,
+                DisableBasicAuthConfig::class.qualifiedName
+        )
+
+        // MOCKITO FIXTURES
+        given(importingClassMetadata.getAnnotationAttributes(
+                EnableSimpleAuthenticationMethods::class.qualifiedName!!, false)
+        ).willReturn(mapOf("methods" to enabledMethodsArray))
 
         // OBJECT OF TESTED CLASS
         val enabledEntrypointsSelector = EnabledEntrypointsSelector()
@@ -173,10 +185,6 @@ class EnabledEntrypointsSelectorTest {
         val configurationClasses = enabledEntrypointsSelector.selectImports(importingClassMetadata)
 
         // ASSERT
-        Assertions.assertThat(configurationClasses).containsExactlyInAnyOrder(
-                SimpleWebSecurityConfigurer::class.qualifiedName,
-                DisableBasicAuthConfig::class.qualifiedName
-        )
+        assertThat(configurationClasses).containsExactlyInAnyOrder(*expectedResult)
     }
-
 }
