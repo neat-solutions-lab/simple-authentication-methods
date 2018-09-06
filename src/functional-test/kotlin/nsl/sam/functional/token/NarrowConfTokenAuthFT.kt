@@ -14,9 +14,12 @@ import nsl.sam.FunctionalTestConstants.FAKE_CONTROLLER_RESPONSE_BODY
 import nsl.sam.FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT
 import nsl.sam.config.DisableBasicAuthSimpleConfigurer
 import nsl.sam.config.USERNAME_NOT_FOUND_EXCEPTION_MESSAGE
+import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
+import nsl.sam.spring.annotation.AuthenticationMethod
+import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
 import org.springframework.mock.web.MockHttpServletResponse
@@ -27,6 +30,7 @@ import org.junit.Rule
 import org.junit.rules.ExpectedException
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -39,7 +43,8 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NarrowConfTokenAuthFunctionalTestConfig::class])
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NarrowConfTokenAuthFunctionalTestConfig::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
     "sam.passwords-file=src/functional-test/config/passwords.conf",
@@ -196,4 +201,9 @@ class NarrowConfTokenAuthFT {
         // ASSERT
         assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
     }
+
+    @Configuration
+    @EnableSimpleAuthenticationMethods([AuthenticationMethod.SIMPLE_TOKEN])
+    class TestConfiguration: FakeControllerConfiguration()
+
 }

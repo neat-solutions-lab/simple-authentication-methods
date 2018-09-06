@@ -1,7 +1,10 @@
 package nsl.sam.integration.token
 
 import nsl.sam.IntegrationTestConstants
+import nsl.sam.integration.basicauth.IntegrationTestController
 import nsl.sam.logger.logger
+import nsl.sam.spring.annotation.AuthenticationMethod
+import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import org.assertj.core.api.Assertions
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -10,13 +13,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.client.getForEntity
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.http.*
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootApplication
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [TokenAuthITConfig::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [TestConfiguration::class])
 @TestPropertySource(properties = [
     "sam.passwords-file=src/integration-test/config/passwords.conf",
     "sam.tokens-file=src/integration-test/config/tokens.conf"])
@@ -83,3 +87,7 @@ class TokenAuthIT {
         Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
     }
 }
+
+@EnableSimpleAuthenticationMethods(methods = [AuthenticationMethod.SIMPLE_TOKEN])
+@ComponentScan(basePackageClasses = [IntegrationTestController::class])
+class TestConfiguration

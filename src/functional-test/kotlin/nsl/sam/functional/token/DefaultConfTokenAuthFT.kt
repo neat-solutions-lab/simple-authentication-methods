@@ -5,6 +5,7 @@ import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
+import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.DisableBasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
@@ -31,11 +32,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import org.hamcrest.Matchers.equalTo
+import org.springframework.context.annotation.Configuration
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 
 @RunWith(SpringRunner::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [DefaultConfTokenAuthFunctionalTestConfig::class])
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [DefaultConfTokenAuthFunctionalTestConfig::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
     "sam.passwords-file=src/functional-test/config/passwords.conf",
@@ -173,6 +176,8 @@ class DefaultConfTokenAuthFT {
         Assertions.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
     }
 
-    //class TestConfiguration: FakeControllerConfiguration()
+    @Configuration
+    @EnableSimpleAuthenticationMethods
+    class TestConfiguration: FakeControllerConfiguration()
 
 }

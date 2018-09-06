@@ -1,7 +1,10 @@
 package nsl.sam.integration.basicauth
 
 import nsl.sam.IntegrationTestConstants
+import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
+import nsl.sam.spring.annotation.AuthenticationMethod
+import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -10,6 +13,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.client.getForEntity
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -19,7 +24,8 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootApplication
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [BasicAuthITConfig::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        classes = [TestConfiguration::class])
 @TestPropertySource(properties = [
     "sam.passwords-file=src/integration-test/config/passwords.conf",
     "sam.tokens-file=src/integration-test/config/tokens.conf"])
@@ -90,9 +96,15 @@ class BasicAuthIT {
 
         // ACT
         val response: ResponseEntity<String> = testRestTemplate
-                .getForEntity<String>(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT, requestHttpEntity)
+                .getForEntity(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT, requestHttpEntity)
 
         // ASSERT
         assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
     }
+
 }
+
+@Configuration
+@EnableSimpleAuthenticationMethods(methods = [AuthenticationMethod.SIMPLE_BASIC_AUTH])
+@ComponentScan(basePackageClasses = [IntegrationTestController::class])
+class TestConfiguration
