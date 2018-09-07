@@ -5,19 +5,26 @@ import nsl.sam.spring.config.DisableBasicAuthConfig
 import nsl.sam.spring.config.SimpleWebSecurityConfigurer
 import nsl.sam.spring.config.TokenAuthConfig
 import org.assertj.core.api.Assertions.*
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
-import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
 import org.springframework.core.type.AnnotationMetadata
 import org.mockito.BDDMockito.*
+import org.mockito.MockitoAnnotations
+import org.springframework.test.context.junit.jupiter.SpringExtension
 
-@RunWith(MockitoJUnitRunner::class)
+@ExtendWith(SpringExtension::class)
 class EnabledEntrypointsSelectorTest {
 
     @Mock
     lateinit var importingClassMetadata: AnnotationMetadata
+
+    @BeforeEach
+    fun initMocks() {
+        MockitoAnnotations.initMocks(this)
+    }
 
     @Test
     fun `selectImports(), SIMPLE_BASIC_AUTH enabled`() {

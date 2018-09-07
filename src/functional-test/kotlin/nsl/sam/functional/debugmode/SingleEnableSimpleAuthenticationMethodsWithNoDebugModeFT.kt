@@ -3,11 +3,10 @@ package nsl.sam.functional.debugmode
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.spring.config.EnableWebSecurityInDebugMode
 import nsl.sam.spring.config.EnableWebSecurityInDefaultMode
-import org.assertj.core.api.Assertions
-import org.junit.Rule
-import org.junit.Test
-import org.junit.rules.ExpectedException
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Assertions
+import org.assertj.core.api.Assertions as Assertj
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -16,11 +15,11 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.util.ReflectionTestUtils
 import kotlin.test.assertEquals
 
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 class SingleEnableSimpleAuthenticationMethodsWithNoDebugModeFT {
@@ -28,13 +27,11 @@ class SingleEnableSimpleAuthenticationMethodsWithNoDebugModeFT {
     @Autowired
     lateinit var applicationContext: ConfigurableApplicationContext
 
-    @get:Rule
-    val thrown: ExpectedException = ExpectedException.none()
-
     @Test
     fun enableWebSecurityInDebugModeBeanNotPresentInContext() {
-        thrown.expect(NoSuchBeanDefinitionException::class.java)
-        applicationContext.getBean(EnableWebSecurityInDebugMode::class.java)
+        Assertions.assertThrows(NoSuchBeanDefinitionException::class.java){
+            applicationContext.getBean(EnableWebSecurityInDebugMode::class.java)
+        }
     }
 
     @Test
@@ -60,7 +57,7 @@ class SingleEnableSimpleAuthenticationMethodsWithNoDebugModeFT {
             (it != EnableWebSecurityInDefaultMode::class.qualifiedName) &&
                     (it != EnableWebSecurityInDebugMode::class.qualifiedName)
         }
-        Assertions.assertThat(filteredBeanNames).isEmpty()
+        Assertj.assertThat(filteredBeanNames).isEmpty()
     }
 
     @Configuration

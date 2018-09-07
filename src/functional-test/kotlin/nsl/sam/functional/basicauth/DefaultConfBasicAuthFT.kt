@@ -2,7 +2,6 @@ package nsl.sam.functional.basicauth
 
 import nsl.sam.FunctionalTestConstants
 import nsl.sam.functional.configuration.FakeControllerConfiguration
-import nsl.sam.functional.controller.FunctionalTestController
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
@@ -10,12 +9,14 @@ import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.DisableBasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions as Assertj
 import org.hamcrest.Matchers.equalTo
-import org.junit.Rule
-import org.junit.Test
-import org.junit.rules.ExpectedException
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+//import org.junit.Rule
+//import org.junit.Test
+import org.junit.jupiter.api.extension.ExtendWith
+//import org.junit.rules.ExpectedException
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -30,6 +31,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.test.context.TestPropertySource
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -37,7 +39,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-@RunWith(SpringRunner::class)
+//@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc(secure = false)
 @TestPropertySource(properties = [
@@ -49,8 +52,8 @@ class DefaultConfBasicAuthFT {
         val log by logger()
     }
 
-    @get:Rule
-    val thrown: ExpectedException = ExpectedException.none()
+//    @get:Rule
+//    val thrown: ExpectedException = ExpectedException.none()
 
     @Autowired
     private lateinit var mvc: MockMvc
@@ -83,14 +86,14 @@ class DefaultConfBasicAuthFT {
 
     @Test
     fun disableBasicAuthConfigBeanNotPresent() {
-        this.thrown.expect(NoSuchBeanDefinitionException::class.java)
-        this.ctx.getBean(DisableBasicAuthConfig::class.java)
+        Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
+            this.ctx.getBean(DisableBasicAuthConfig::class.java)
+        }
     }
 
     //
     // Main filters arrangement
     //
-
     @Test
     fun tokenAuthenticationFilterInFilterChainWhenSimpleTokenMethodNotDisabled() {
         val filter = this.filterChain.getFilters("/").find { it::class == TokenAuthenticationFilter::class }
@@ -152,8 +155,8 @@ class DefaultConfBasicAuthFT {
                 .andReturn().response
 
         // ASSERT
-        Assertions.assertThat(response.status).isEqualTo(HttpStatus.OK.value())
-        Assertions.assertThat(response.contentAsString).isEqualTo(FunctionalTestConstants.FAKE_CONTROLLER_RESPONSE_BODY)
+        Assertj.assertThat(response.status).isEqualTo(HttpStatus.OK.value())
+        Assertj.assertThat(response.contentAsString).isEqualTo(FunctionalTestConstants.FAKE_CONTROLLER_RESPONSE_BODY)
     }
 
     @Test
@@ -167,7 +170,7 @@ class DefaultConfBasicAuthFT {
                 .andReturn().response
 
         // ASSERT
-        Assertions.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
+        Assertj.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
     }
 
     @Test
@@ -182,7 +185,7 @@ class DefaultConfBasicAuthFT {
                 .andReturn().response
 
         // ASSERT
-        Assertions.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
+        Assertj.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
     }
 
     @Test
@@ -194,7 +197,7 @@ class DefaultConfBasicAuthFT {
                 .andReturn().response
 
         // ASSERT
-        Assertions.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
+        Assertj.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
     }
 
     @Configuration

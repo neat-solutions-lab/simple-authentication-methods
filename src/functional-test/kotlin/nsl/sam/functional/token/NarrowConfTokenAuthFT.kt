@@ -1,13 +1,10 @@
 package nsl.sam.functional.token
 
 import nsl.sam.FunctionalTestConstants
-import org.junit.Test
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.TestPropertySource
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import nsl.sam.FunctionalTestConstants.FAKE_CONTROLLER_RESPONSE_BODY
@@ -26,8 +23,9 @@ import org.springframework.mock.web.MockHttpServletResponse
 
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers
-import org.junit.Rule
-import org.junit.rules.ExpectedException
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Configuration
@@ -37,12 +35,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NarrowConfTokenAuthFunctionalTestConfig::class])
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
@@ -52,9 +51,6 @@ import kotlin.test.assertNull
 class NarrowConfTokenAuthFT {
 
     companion object { val log by logger() }
-
-    @get:Rule
-    val thrown: ExpectedException = ExpectedException.none()
 
     @Autowired
     lateinit var ctx: ApplicationContext
@@ -77,8 +73,9 @@ class NarrowConfTokenAuthFT {
 
     @Test
     fun basicAuthConfigBeanNotPresent() {
-        thrown.expect(NoSuchBeanDefinitionException::class.java)
-        this.ctx.getBean(BasicAuthConfig::class.java)
+        Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
+            this.ctx.getBean(BasicAuthConfig::class.java)
+        }
     }
 
     @Test
@@ -119,9 +116,10 @@ class NarrowConfTokenAuthFT {
     @Test
     fun fakeUserDetailsServiceActive() {
         val userDetailsService = securityConfigurer.userDetailsServiceBean()
-        thrown.expect(UsernameNotFoundException::class.java)
-        thrown.expectMessage(USERNAME_NOT_FOUND_EXCEPTION_MESSAGE)
-        userDetailsService.loadUserByUsername("test")
+        val exception = Assertions.assertThrows(UsernameNotFoundException::class.java) {
+            userDetailsService.loadUserByUsername("test")
+        }
+        assertEquals(USERNAME_NOT_FOUND_EXCEPTION_MESSAGE, exception.message)
     }
 
 

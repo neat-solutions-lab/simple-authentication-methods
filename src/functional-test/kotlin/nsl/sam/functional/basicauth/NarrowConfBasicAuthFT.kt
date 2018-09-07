@@ -1,8 +1,7 @@
 package nsl.sam.functional.basicauth
 
 import nsl.sam.FunctionalTestConstants
-import org.junit.Test
-import org.junit.runner.RunWith
+//import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -28,20 +27,23 @@ import nsl.sam.spring.config.TokenAuthConfig
 import org.springframework.mock.web.MockHttpServletResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers
-import org.junit.Rule
-import org.junit.rules.ExpectedException
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+//import org.junit.Rule
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
@@ -49,8 +51,8 @@ import kotlin.test.assertNull
     "sam.tokens-file=src/functional-test/config/tokens.conf"])
 class NarrowConfBasicAuthFT {
 
-    @get:Rule
-    val thrown: ExpectedException = ExpectedException.none()
+//    @get:Rule
+//    val thrown: ExpectedException = ExpectedException.none()
 
     @Autowired
     private lateinit var mvc: MockMvc
@@ -72,14 +74,16 @@ class NarrowConfBasicAuthFT {
 
     @Test
     fun tokenAuthConfigBeanNotPresent() {
-        this.thrown.expect(NoSuchBeanDefinitionException::class.java)
-        this.ctx.getBean(TokenAuthConfig::class.java)
+        Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
+            this.ctx.getBean(TokenAuthConfig::class.java)
+        }
     }
 
     @Test
     fun disableBasicAuthConfigBeanNotPresent() {
-        this.thrown.expect(NoSuchBeanDefinitionException::class.java)
-        this.ctx.getBean(DisableBasicAuthConfig::class.java)
+        Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
+            this.ctx.getBean(DisableBasicAuthConfig::class.java)
+        }
     }
 
     //

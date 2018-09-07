@@ -1,13 +1,13 @@
 package nsl.sam.functional.basicauth
 
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.springframework.test.context.junit4.SpringRunner
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.test.context.junit.jupiter.SpringExtension
 
 /**
  * The file with passwords is empty
  */
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 class EmptyPasswordsFileFT {
 
     @Test

@@ -12,10 +12,9 @@ import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.DisableBasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
 import nsl.sam.spring.config.SimpleWebSecurityConfigurer
-import org.junit.Rule
-import org.junit.Test
-import org.junit.rules.ExpectedException
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -28,13 +27,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 class NoAuthMethodEnabledFT {
@@ -42,9 +42,6 @@ class NoAuthMethodEnabledFT {
     companion object {
         val log by logger()
     }
-
-    @get:Rule
-    var thrown: ExpectedException = ExpectedException.none()
 
     @Autowired
     private lateinit var ctx: ApplicationContext
@@ -74,14 +71,16 @@ class NoAuthMethodEnabledFT {
 
     @Test
     fun basicAuthConfigBeanNotPresent() {
-        this.thrown.expect(NoSuchBeanDefinitionException::class.java)
-        this.ctx.getBean(BasicAuthConfig::class.java)
+        Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
+            this.ctx.getBean(BasicAuthConfig::class.java)
+        }
     }
 
     @Test
     fun tokenAuthConfigBeanNotPresent() {
-        this.thrown.expect(NoSuchBeanDefinitionException::class.java)
-        this.ctx.getBean(TokenAuthConfig::class.java)
+        Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
+            this.ctx.getBean(TokenAuthConfig::class.java)
+        }
     }
 
     //
@@ -106,16 +105,18 @@ class NoAuthMethodEnabledFT {
 
     @Test
     fun fakeUserDetailsServiceActive() {
-        val userDetailsService = webSecurityConfigurer.userDetailsServiceBean()
-        this.thrown.expect(UsernameNotFoundException::class.java)
-        this.thrown.expectMessage(USERNAME_NOT_FOUND_EXCEPTION_MESSAGE)
-        userDetailsService.loadUserByUsername("fake")
+        val exception =Assertions.assertThrows(UsernameNotFoundException::class.java) {
+            val userDetailsService = webSecurityConfigurer.userDetailsServiceBean()
+            userDetailsService.loadUserByUsername("fake")
+        }
+        assertEquals(USERNAME_NOT_FOUND_EXCEPTION_MESSAGE, exception.message)
     }
 
     @Test
     fun localFileTokensToUserMapperBeanNotPresentWhenSimpleTokenMethodDisabled() {
-        this.thrown.expect(NoSuchBeanDefinitionException::class.java)
-        this.ctx.getBean(TokenToUserMapper::class.java)
+        Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
+            this.ctx.getBean(TokenToUserMapper::class.java)
+        }
     }
 
     //
@@ -172,6 +173,3 @@ class NoAuthMethodEnabledFT {
 
 }
 
-//@Configuration
-//@EnableSimpleAuthenticationMethods([])
-//class TestConfiguration: FakeControllerConfiguration()
