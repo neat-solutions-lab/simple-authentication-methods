@@ -14,7 +14,6 @@ class GeneralConfigurationActivator: ImportSelector {
     override fun selectImports(importingClassMetadata: AnnotationMetadata): Array<String> {
 
         log.debug("selectImports() in ${this::class.simpleName} called.")
-        log.debug("enclosing class is ${importingClassMetadata.enclosingClassName}")
         log.debug("first call to this selectImports(): ${!alreadyCalled}")
 
         if(alreadyCalled) {

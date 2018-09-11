@@ -1,5 +1,6 @@
 package nsl.sam.spring.annotation
 
+import nsl.sam.spring.config.DynamicImportBeanDefinitionRegistrar
 import nsl.sam.spring.config.EnableWebSecurityInDebugMode
 import nsl.sam.spring.config.EnableWebSecurityInDefaultMode
 import nsl.sam.spring.config.GeneralConfigurationActivator
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Import
 @Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS)
 @Import(value =
     [
+        DynamicImportBeanDefinitionRegistrar::class,
         GeneralConfigurationActivator::class,
         EnabledEntrypointsSelector::class,
         EnableWebSecurityInDebugMode::class,

@@ -33,7 +33,7 @@ object AnnotationProcessor {
             beanName: String, annotationClass: KClass<A>, attrName:String, classLoader: ClassLoader?): Any? {
         val beanClass = ClassUtils.forName(beanName, classLoader)
         Assert.notNull(beanClass, "Class of bean of name $beanName cannot be null.")
-        val annotation = AnnotationUtils.findAnnotation(beanClass!!, annotationClass.java)
+        val annotation = AnnotationUtils.findAnnotation(beanClass, annotationClass.java)
         return AnnotationUtils.getValue(annotation, attrName)
     }
 }

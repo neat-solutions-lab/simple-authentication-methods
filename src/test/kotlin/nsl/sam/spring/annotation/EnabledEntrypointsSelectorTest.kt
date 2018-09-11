@@ -6,6 +6,7 @@ import nsl.sam.spring.config.SimpleWebSecurityConfigurer
 import nsl.sam.spring.config.TokenAuthConfig
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
@@ -15,6 +16,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.springframework.core.type.AnnotationMetadata
 
+@Tag("unit")
 class EnabledEntrypointsSelectorTest {
 
     companion object {
@@ -103,15 +105,16 @@ class EnabledEntrypointsSelectorTest {
 
     }
 
-}
+    class ArgumentsRepository {
 
-class ArgumentsRepository {
-    val arguments: MutableList<Arguments> = mutableListOf()
+        private val arguments: MutableList<Arguments> = mutableListOf()
 
-    fun add(vararg arguments: Any) {
-        this.arguments.add(Arguments.arguments(*arguments))
+        fun add(vararg arguments: Any) {
+            this.arguments.add(Arguments.arguments(*arguments))
+        }
+
+        fun getArgumentList(): List<Arguments> = this.arguments
     }
 
-    fun getArgumentList(): List<Arguments> = this.arguments
 }
 

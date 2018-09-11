@@ -16,6 +16,7 @@ class WebSecurityDefaultModeCondition: Condition {
         val log by logger()
     }
 
+    @Suppress("unused_parameter")
     private fun matchesInternal(context: ConditionContext, metadata: AnnotatedTypeMetadata): Boolean {
         Assert.notNull(context.beanFactory, "No bean factory present in ConditionContext.")
         return !AnnotationProcessor.isAtLeastOneAnnotationWithSpecifiedAttributeValue(

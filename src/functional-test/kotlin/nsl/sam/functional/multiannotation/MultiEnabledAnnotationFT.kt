@@ -2,6 +2,7 @@ package nsl.sam.functional.multiannotation
 
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,6 +32,7 @@ class MultiEnabledAnnotationFT {
     }
 
     @Test
+    @Disabled
     fun twoDynamicallyCreatedWebSecurityConfigurers() {
         // TODO: Finish when dynamic configurers start working properly.
     }

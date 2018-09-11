@@ -33,7 +33,7 @@ class TokenAuthenticationFilter(
         }
 
         try {
-            authorizationHeader?.let {
+            authorizationHeader.let {
                 log.debug("Processing Authentication header")
                 if(isBearerToken(authorizationHeader)) {
                     log.debug("This is Bearer token based authentication")

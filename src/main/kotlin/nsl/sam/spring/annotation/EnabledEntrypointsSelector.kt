@@ -7,6 +7,7 @@ import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.type.AnnotationMetadata
 import java.lang.IllegalArgumentException
 import kotlin.reflect.KClass
+import kotlin.reflect.full.cast
 
 class EnabledEntrypointsSelector: ImportSelector {
 
@@ -25,14 +26,16 @@ class EnabledEntrypointsSelector: ImportSelector {
                 ) ?: return arrayOf()
 
         val enabledMethods: Array<AuthenticationMethod> = annotationAttributes.run {
-            get("methods") as Array<AuthenticationMethod>
+            //get("methods") as Array<AuthenticationMethod>
+            Array<AuthenticationMethod>::class.cast(get("methods"))
         }
 
         enabledMethods
                 .firstOrNull { matchesSimpleNoMethod(it) }
                 ?.let { return arrayOf() }
 
-        return annotationAttributes["methods"] as Array<AuthenticationMethod>
+        return Array<AuthenticationMethod>::class.cast(annotationAttributes["methods"])
+        //return annotationAttributes["methods"] as Array<AuthenticationMethod>
     }
 
     private fun getMethodConfigurationClass(method: AuthenticationMethod): KClass<*> =  when(method) {
