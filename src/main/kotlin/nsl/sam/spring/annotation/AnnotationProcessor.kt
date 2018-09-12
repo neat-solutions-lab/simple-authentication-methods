@@ -1,11 +1,28 @@
 package nsl.sam.spring.annotation
 
+import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.annotation.AnnotationUtils
+import org.springframework.core.type.AnnotationMetadata
 import org.springframework.util.Assert
 import org.springframework.util.ClassUtils
 import kotlin.reflect.KClass
+import kotlin.reflect.full.cast
 
 object AnnotationProcessor {
+
+    fun <T:Any> getAnnotationAttributeValue(
+            importingClassMetadata:AnnotationMetadata,
+            annotationClass: KClass<*>,
+            attributeName:String, attributeClazz: KClass<T>): T {
+
+        val attributes = AnnotationAttributes.fromMap(
+                importingClassMetadata.getAnnotationAttributes(
+                        annotationClass.qualifiedName!!, true
+                )
+        )
+
+        return attributeClazz.cast(attributes?.get(attributeName))
+    }
 
     fun <A: Annotation> isAtLeastOneAnnotationWithSpecifiedAttributeValue(
             processorContext: AnnotationProcessorContext,

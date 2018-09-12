@@ -21,8 +21,10 @@ class DynamicBeansRegistar: ImportBeanDefinitionRegistrar {
         registry.registerBeanDefinition(
                 "myBeanOne", beanDefinitionOne
                 )
+
         val beanDefinitionTwo = BeanDefinitionBuilder.genericBeanDefinition(DynamicBean::class.java).beanDefinition
         beanDefinitionTwo.propertyValues.add("configurationString", "flying bee")
+        //beanDefinitionTwo.
         registry.registerBeanDefinition(
                 "myBeanTwo",
                 beanDefinitionTwo)

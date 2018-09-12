@@ -4,6 +4,6 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class DynamicBean {
-    var configurationString: String? = null
+    lateinit var configurationString: String
 }
 //data class DynamicBean(val configurationString: String)
