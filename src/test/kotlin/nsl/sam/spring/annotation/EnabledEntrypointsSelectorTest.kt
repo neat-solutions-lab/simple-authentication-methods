@@ -6,6 +6,7 @@ import nsl.sam.spring.config.SimpleWebSecurityConfigurer
 import nsl.sam.spring.config.TokenAuthConfig
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -17,6 +18,7 @@ import org.mockito.MockitoAnnotations
 import org.springframework.core.type.AnnotationMetadata
 
 @Tag("unit")
+@Disabled("With DynamicImportBeanDefinitionRegistar in place, not relevant any more.")
 class EnabledEntrypointsSelectorTest {
 
     companion object {

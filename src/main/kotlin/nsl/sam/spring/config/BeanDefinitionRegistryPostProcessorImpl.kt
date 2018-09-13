@@ -26,6 +26,5 @@ class BeanDefinitionRegistryPostProcessorImpl: BeanDefinitionRegistryPostProcess
             registry.removeBeanDefinition(it)
         }
 
-
     }
 }

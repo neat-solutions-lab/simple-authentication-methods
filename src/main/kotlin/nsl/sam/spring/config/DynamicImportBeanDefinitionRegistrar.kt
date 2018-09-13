@@ -1,18 +1,24 @@
 package nsl.sam.spring.config
 
+import nsl.sam.logger.logger
 import nsl.sam.spring.annotation.*
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.BeanFactoryAware
 import org.springframework.beans.factory.ListableBeanFactory
+import org.springframework.beans.factory.support.BeanDefinitionBuilder
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar
+import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.type.AnnotationMetadata
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory
+import java.lang.IllegalArgumentException
+import kotlin.reflect.KClass
 import kotlin.reflect.full.cast
 
 class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanFactoryAware {
 
     companion object {
+        val log by logger()
         val cachingMetadataReaderFactory = CachingMetadataReaderFactory()
     }
 
@@ -26,16 +32,62 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
 
+        val bd = BeanDefinitionBuilder.genericBeanDefinition(SimpleWebSecurityConfigurer::class.java).beanDefinition
+        registry.registerBeanDefinition(SimpleWebSecurityConfigurer::class.qualifiedName!!, bd)
+
+        val enabledMethods = getEnabledMethods(importingClassMetadata)
+        enabledMethods.forEach {
+            val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(
+                    getMethodConfigurationClass(it)
+            ).beanDefinition
+            registry.registerBeanDefinition(getMethodConfigurationClass(it).name, beanDefinition)
+        } // forEach()
+
+
+        if(!registry.containsBeanDefinition(getMethodConfigurationClass(AuthenticationMethod.SIMPLE_BASIC_AUTH).name)) {
+            val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(DisableBasicAuthConfig::class.java).beanDefinition
+            registry.registerBeanDefinition(DisableBasicAuthConfig::class.java.name, beanDefinition)
+        }
+
         val enableAnnotationAttributes: EnableAnnotationAttributes = getAnnotationAttributes(importingClassMetadata)
 
         println(">>>>>>>>>> annotationAttributes: $enableAnnotationAttributes")
 
     }
 
-
-    private fun isAtLeastOneAnnotationRequestingDebugMode() {
-
+    private fun getMethodConfigurationClass(method: AuthenticationMethod): Class<*> =  when(method) {
+        AuthenticationMethod.SIMPLE_TOKEN -> TokenAuthConfig::class.java
+        AuthenticationMethod.SIMPLE_BASIC_AUTH -> BasicAuthConfig::class.java
+        else -> throw IllegalArgumentException("Illegal AuthenticationMethod used: $method")
     }
+
+    private fun matchesSimpleNoMethod(method: AuthenticationMethod): Boolean {
+        return method == AuthenticationMethod.SIMPLE_NO_METHOD
+    }
+
+    private fun getEnabledMethods(importingClassMetadata: AnnotationMetadata):  Array<AuthenticationMethod> {
+
+        val annotationAttributes: AnnotationAttributes =
+                AnnotationAttributes.fromMap(
+                        importingClassMetadata.getAnnotationAttributes(
+                                EnableSimpleAuthenticationMethods::class.qualifiedName!!, false)
+                ) ?: return arrayOf()
+
+        val enabledMethods: Array<AuthenticationMethod> = annotationAttributes.run {
+            //get("methods") as Array<AuthenticationMethod>
+            Array<AuthenticationMethod>::class.cast(get("methods"))
+        }
+
+        enabledMethods
+                .firstOrNull { matchesSimpleNoMethod(it) }
+                ?.let { return arrayOf() }
+
+        return Array<AuthenticationMethod>::class.cast(annotationAttributes["methods"])
+        //return annotationAttributes["methods"] as Array<AuthenticationMethod>
+    }
+
+
+
 
     private fun getAnnotationAttributes(importingClassMetadata: AnnotationMetadata): EnableAnnotationAttributes {
 

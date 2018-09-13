@@ -19,22 +19,22 @@ class EnabledEntrypointsSelector: ImportSelector {
 
         val configurationClassesBuilder = ConfigurationClassesBuilder()
 
-        configurationClassesBuilder.add(SimpleWebSecurityConfigurer::class)
-        log.info("${SimpleWebSecurityConfigurer::class.qualifiedName} added to configuration classes")
+//        configurationClassesBuilder.add(SimpleWebSecurityConfigurer::class)
+//        log.info("${SimpleWebSecurityConfigurer::class.qualifiedName} added to configuration classes")
 
-        val enabledAuthMethods = getEnabledMethods(importingClassMetadata)
-        log.debug("Found enabled methods: $enabledAuthMethods")
+//        val enabledAuthMethods = getEnabledMethods(importingClassMetadata)
+//        log.debug("Found enabled methods: $enabledAuthMethods")
+//
+//        enabledAuthMethods.forEach {
+//            addMethodToBuilder(it, configurationClassesBuilder)
+//            log.info("${getMethodConfigurationClass(it)} added to configuration classes.")
+//        }
 
-        enabledAuthMethods.forEach {
-            addMethodToBuilder(it, configurationClassesBuilder)
-            log.info("${getMethodConfigurationClass(it)} added to configuration classes.")
-        }
-
-        configurationClassesBuilder.addIfNoConflict(
-                DisableBasicAuthConfig::class,
-                BasicAuthConfig::class,
-                {log.info("${DisableBasicAuthConfig::class.qualifiedName} added to configuration classes")}
-        )
+//        configurationClassesBuilder.addIfNoConflict(
+//                DisableBasicAuthConfig::class,
+//                BasicAuthConfig::class,
+//                {log.info("${DisableBasicAuthConfig::class.qualifiedName} added to configuration classes")}
+//        )
 
         return configurationClassesBuilder.build()
     }

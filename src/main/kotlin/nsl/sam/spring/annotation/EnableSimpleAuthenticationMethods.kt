@@ -22,9 +22,9 @@ const val ENABLE_ANNOTATION_AUTHORIZATIONS_ATTRIBUTE_NAME = "authorizations"
 @Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS)
 @Import(value =
     [
-        GeneralConfiguration::class,
         DynamicImportBeanDefinitionRegistrar::class,
-        EnabledEntrypointsSelector::class,
+        //EnabledEntrypointsSelector::class,
+        GeneralConfiguration::class,
         EnableWebSecurityInDebugMode::class,
         EnableWebSecurityInDefaultMode::class
     ])
