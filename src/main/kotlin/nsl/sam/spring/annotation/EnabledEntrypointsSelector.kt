@@ -13,6 +13,32 @@ class EnabledEntrypointsSelector: ImportSelector {
 
     companion object { val log by logger() }
 
+    override fun selectImports(importingClassMetadata: AnnotationMetadata): Array<String> {
+
+        log.debug("selectImports() in ${this::class.simpleName} called.")
+
+        val configurationClassesBuilder = ConfigurationClassesBuilder()
+
+        configurationClassesBuilder.add(SimpleWebSecurityConfigurer::class)
+        log.info("${SimpleWebSecurityConfigurer::class.qualifiedName} added to configuration classes")
+
+        val enabledAuthMethods = getEnabledMethods(importingClassMetadata)
+        log.debug("Found enabled methods: $enabledAuthMethods")
+
+        enabledAuthMethods.forEach {
+            addMethodToBuilder(it, configurationClassesBuilder)
+            log.info("${getMethodConfigurationClass(it)} added to configuration classes.")
+        }
+
+        configurationClassesBuilder.addIfNoConflict(
+                DisableBasicAuthConfig::class,
+                BasicAuthConfig::class,
+                {log.info("${DisableBasicAuthConfig::class.qualifiedName} added to configuration classes")}
+        )
+
+        return configurationClassesBuilder.build()
+    }
+
     private fun matchesSimpleNoMethod(method: AuthenticationMethod): Boolean {
         return method == AuthenticationMethod.SIMPLE_NO_METHOD
     }
@@ -39,40 +65,13 @@ class EnabledEntrypointsSelector: ImportSelector {
     }
 
     private fun getMethodConfigurationClass(method: AuthenticationMethod): KClass<*> =  when(method) {
-            AuthenticationMethod.SIMPLE_TOKEN -> TokenAuthConfig::class
-            AuthenticationMethod.SIMPLE_BASIC_AUTH -> BasicAuthConfig::class
-            else -> throw IllegalArgumentException("Illegal AuthenticationMethod used: $method")
+        AuthenticationMethod.SIMPLE_TOKEN -> TokenAuthConfig::class
+        AuthenticationMethod.SIMPLE_BASIC_AUTH -> BasicAuthConfig::class
+        else -> throw IllegalArgumentException("Illegal AuthenticationMethod used: $method")
     }
 
     private fun addMethodToBuilder(method: AuthenticationMethod, builder: ConfigurationClassesBuilder) {
         builder.add(getMethodConfigurationClass(method))
     }
 
-    override fun selectImports(importingClassMetadata: AnnotationMetadata): Array<String> {
-
-        log.debug("selectImports() in ${this::class.simpleName} called.")
-
-        //DynamicBeansRegistar.enableAnnotations.add(importingClassMetadata)
-
-        val configurationClassesBuilder = ConfigurationClassesBuilder()
-
-        configurationClassesBuilder.add(SimpleWebSecurityConfigurer::class)
-        log.info("${SimpleWebSecurityConfigurer::class.qualifiedName} added to configuration classes")
-
-        val enabledAuthMethods = getEnabledMethods(importingClassMetadata)
-        log.debug("Found enabled methods: $enabledAuthMethods")
-
-        enabledAuthMethods.forEach {
-            addMethodToBuilder(it, configurationClassesBuilder)
-            log.info("${getMethodConfigurationClass(it)} added to configuration classes.")
-        }
-
-        configurationClassesBuilder.addIfNoConflict(
-                DisableBasicAuthConfig::class,
-                BasicAuthConfig::class,
-                {log.info("${DisableBasicAuthConfig::class.qualifiedName} added to configuration classes")}
-        )
-
-        return configurationClassesBuilder.build()
-    }
 }

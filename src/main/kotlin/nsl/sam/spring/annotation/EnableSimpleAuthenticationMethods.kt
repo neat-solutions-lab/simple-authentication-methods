@@ -24,7 +24,6 @@ const val ENABLE_ANNOTATION_AUTHORIZATIONS_ATTRIBUTE_NAME = "authorizations"
     [
         GeneralConfiguration::class,
         DynamicImportBeanDefinitionRegistrar::class,
-        //GeneralConfigurationActivator::class,
         EnabledEntrypointsSelector::class,
         EnableWebSecurityInDebugMode::class,
         EnableWebSecurityInDefaultMode::class

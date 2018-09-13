@@ -52,9 +52,6 @@ class DefaultConfBasicAuthFT {
         val log by logger()
     }
 
-//    @get:Rule
-//    val thrown: ExpectedException = ExpectedException.none()
-
     @Autowired
     private lateinit var mvc: MockMvc
 
