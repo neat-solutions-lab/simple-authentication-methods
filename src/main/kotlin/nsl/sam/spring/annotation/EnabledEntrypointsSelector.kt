@@ -52,7 +52,7 @@ class EnabledEntrypointsSelector: ImportSelector {
 
         log.debug("selectImports() in ${this::class.simpleName} called.")
 
-        DynamicBeansRegistar.enableAnnotations.add(importingClassMetadata)
+        //DynamicBeansRegistar.enableAnnotations.add(importingClassMetadata)
 
         val configurationClassesBuilder = ConfigurationClassesBuilder()
 

@@ -7,9 +7,14 @@ import org.junit.jupiter.api.Test
 class JavaFromKotlinTest {
 
     @Test
-    fun test() {
+    fun classTest() {
         println("Kotlin code calls java code")
         ClassUtility.printClass(this.javaClass)
+    }
+
+    @Test
+    fun classesArrayTest() {
+        ClassUtility.printClasses(arrayOf(this::class.java, this.javaClass))
     }
 
 }

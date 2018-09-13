@@ -1,1 +1,1 @@
-org.springframework.context.ApplicationListener=nsl.sam.spring.config.GeneralConfigurationActivatorReseter
+#org.springframework.context.ApplicationListener=nsl.sam.spring.config.GeneralConfigurationActivatorReseter

@@ -6,4 +6,10 @@ public class ClassUtility {
         System.out.println("clazz argument: " + clazz);
     }
 
+    public static void printClasses(Class<?>[] classes) {
+        for(Class clazz: classes) {
+            System.out.println("class: " + clazz);
+        }
+    }
+
 }

@@ -1,25 +1,45 @@
 package nsl.sam.spring.config
 
 import nsl.sam.spring.annotation.*
+import org.springframework.beans.factory.BeanFactory
+import org.springframework.beans.factory.BeanFactoryAware
+import org.springframework.beans.factory.ListableBeanFactory
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar
 import org.springframework.core.type.AnnotationMetadata
+import org.springframework.core.type.classreading.CachingMetadataReaderFactory
+import kotlin.reflect.full.cast
 
-class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar {
+class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanFactoryAware {
+
+    companion object {
+        val cachingMetadataReaderFactory = CachingMetadataReaderFactory()
+    }
+
+
+    lateinit var listableBeanFactory: ListableBeanFactory
+
+    override fun setBeanFactory(beanFactory: BeanFactory) {
+        this.listableBeanFactory = ListableBeanFactory::class.cast(beanFactory)
+    }
 
 
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
 
-        val annotationAttributes: AnnotationAttributes = getAnnotationAttributes(importingClassMetadata)
+        val enableAnnotationAttributes: EnableAnnotationAttributes = getAnnotationAttributes(importingClassMetadata)
 
-        println(">>>>>>>>>> annotationAttributes: $annotationAttributes")
+        println(">>>>>>>>>> annotationAttributes: $enableAnnotationAttributes")
 
     }
 
 
-    private fun getAnnotationAttributes(importingClassMetadata: AnnotationMetadata): AnnotationAttributes {
+    private fun isAtLeastOneAnnotationRequestingDebugMode() {
 
-        return AnnotationAttributes.create {
+    }
+
+    private fun getAnnotationAttributes(importingClassMetadata: AnnotationMetadata): EnableAnnotationAttributes {
+
+        return EnableAnnotationAttributes.create {
             methods {
                 AnnotationProcessor.getAnnotationAttributeValue(
                         importingClassMetadata,
@@ -76,61 +96,6 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar {
                         String::class
                 )
             }
-        }
-
-    }
-
-
-    /**
-     * Represents attributes of [@EnableSimpleAuthentication] methods annotation
-     */
-    data class AnnotationAttributes private constructor (
-            val methods: Array<AuthenticationMethod>,
-            val match: String,
-            val debug: Boolean,
-            val order: Int,
-            val anonymousFallback: Boolean,
-            val authentications: String,
-            val deactivateNotConfigured: Boolean
-    ) {
-
-        companion object {
-            fun create(init: Builder.() -> Unit) = Builder(init).build()
-        }
-
-        class Builder private constructor(){
-
-            constructor(init: Builder.()->Unit):this() {
-                init()
-            }
-
-            var methods: Array<AuthenticationMethod> = emptyArray()
-
-            var match = ""
-            var debug = false
-            var order = 0
-            var anonymousFallback = false
-            var authentications = ""
-            var deactivateNotConfigured = false
-
-            fun methods(methods: () -> Array<AuthenticationMethod>) = apply { this.methods = methods()}
-
-            fun match(match: () -> String) = apply { this.match = match() }
-
-            fun debug(debug: () -> Boolean) = apply { this.debug = debug() }
-
-            fun order(order: () -> Int) = apply { this.order = order() }
-
-            fun anonymousFallback(anonymousFallback: () -> Boolean) = apply { this.anonymousFallback = anonymousFallback() }
-
-            fun authentications(authentications: () -> String) = apply { this.authentications = authentications() }
-
-            fun deactivateNotConfigured(deactivateNotConfigured: () -> Boolean) = apply { this.deactivateNotConfigured = deactivateNotConfigured() }
-
-            fun build() = AnnotationAttributes(
-                    this.methods, this.match, this.debug, this.order, this.anonymousFallback,
-                    this.authentications, this.deactivateNotConfigured
-            )
         }
 
     }

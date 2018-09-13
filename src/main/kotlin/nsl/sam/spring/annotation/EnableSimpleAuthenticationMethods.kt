@@ -1,9 +1,6 @@
 package nsl.sam.spring.annotation
 
-import nsl.sam.spring.config.DynamicImportBeanDefinitionRegistrar
-import nsl.sam.spring.config.EnableWebSecurityInDebugMode
-import nsl.sam.spring.config.EnableWebSecurityInDefaultMode
-import nsl.sam.spring.config.GeneralConfigurationActivator
+import nsl.sam.spring.config.*
 import org.springframework.context.annotation.Import
 
 const val ENABLE_ANNOTATION_METHODS_ATTRIBUTE_NAME = "methods"
@@ -25,8 +22,9 @@ const val ENABLE_ANNOTATION_AUTHORIZATIONS_ATTRIBUTE_NAME = "authorizations"
 @Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS)
 @Import(value =
     [
+        GeneralConfiguration::class,
         DynamicImportBeanDefinitionRegistrar::class,
-        GeneralConfigurationActivator::class,
+        //GeneralConfigurationActivator::class,
         EnabledEntrypointsSelector::class,
         EnableWebSecurityInDebugMode::class,
         EnableWebSecurityInDefaultMode::class
