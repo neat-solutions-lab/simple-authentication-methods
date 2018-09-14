@@ -11,7 +11,7 @@ import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.spring.config.BasicAuthConfig
 import nsl.sam.spring.config.DisableBasicAuthConfig
 import nsl.sam.spring.config.TokenAuthConfig
-import nsl.sam.spring.config.SimpleWebSecurityConfigurer
+import nsl.sam.spring.config.DynamicWebSecurityConfigurer
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -28,7 +28,6 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import kotlin.test.assertEquals
@@ -66,7 +65,7 @@ class NoAuthMethodEnabledFT {
 
     @Test
     fun webSecurityConfigurerBeanPresent() {
-        this.ctx.getBean(SimpleWebSecurityConfigurer::class.java)
+        this.ctx.getBean(DynamicWebSecurityConfigurer::class.java)
     }
 
     @Test

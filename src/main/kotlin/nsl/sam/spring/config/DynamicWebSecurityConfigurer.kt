@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Scope
+import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -18,10 +19,15 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
-@Order(90)
-class SimpleWebSecurityConfigurer : WebSecurityConfigurerAdapter {
+//@Order(90)
+class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter, Ordered {
 
     companion object { val log by logger() }
+
+    /**
+     * NOTE: This property is "injected" with the help of DynamicImportBeanDefinitionRegistar
+     */
+    lateinit var enableAnnotationAttributes: EnableAnnotationAttributes
 
     @Autowired
     @Qualifier("unauthenticatedAccessResponseSender")
@@ -36,7 +42,17 @@ class SimpleWebSecurityConfigurer : WebSecurityConfigurerAdapter {
         this.simpleAuthConfigurers = simpleAuthConfigurers ?: emptyList()
     }
 
+    override fun getOrder(): Int {
+        log.debug("DynamicWebSecurityConfigurer order: ${this.enableAnnotationAttributes.order}")
+        return this.enableAnnotationAttributes.order
+    }
+
     override fun configure(http: HttpSecurity) {
+
+        if(this.enableAnnotationAttributes.match != "") {
+            http.antMatcher(this.enableAnnotationAttributes.match)
+        }
+
         log.info("${this::class.simpleName} configuration entry point called.")
         if(isAuthMechanismAvailable()) {
             log.info("Enabling authentication mechanisms")
@@ -95,7 +111,7 @@ class SimpleWebSecurityConfigurer : WebSecurityConfigurerAdapter {
     }
 
 
-    @Bean
+    //@Bean
     fun simpleAuthenticationEntryPoint(): AuthenticationEntryPoint {
         return SimpleFailedAuthenticationEntryPoint(errorResponseSender)
     }

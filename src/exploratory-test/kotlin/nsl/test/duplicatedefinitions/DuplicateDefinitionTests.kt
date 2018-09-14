@@ -1,5 +1,6 @@
 package nsl.test.duplicatedefinitions
 
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 
+@Tag("exploratory")
 @SpringJUnitConfig(classes = [TestConfiguration::class])
 class DuplicateDefinitionTests {
 

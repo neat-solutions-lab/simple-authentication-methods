@@ -23,7 +23,6 @@ const val ENABLE_ANNOTATION_AUTHORIZATIONS_ATTRIBUTE_NAME = "authorizations"
 @Import(value =
     [
         DynamicImportBeanDefinitionRegistrar::class,
-        //EnabledEntrypointsSelector::class,
         GeneralConfiguration::class,
         EnableWebSecurityInDebugMode::class,
         EnableWebSecurityInDefaultMode::class
@@ -33,7 +32,7 @@ annotation class EnableSimpleAuthenticationMethods(
         val methods: Array<AuthenticationMethod> =
                 [(AuthenticationMethod.SIMPLE_BASIC_AUTH), (AuthenticationMethod.SIMPLE_TOKEN)],
 
-        /*
+        /**
          * e.g. if there is no passwords or tokens file then do not activate related
          * authentication method at all
          */
@@ -41,7 +40,13 @@ annotation class EnableSimpleAuthenticationMethods(
 
         val fallbackToAnonymousAccessIfNoMethodAvailable: Boolean = false,
 
-        val match: String = "/",
+        /**
+         * path used to define matching request with the help of
+         * [org.springframework.security.config.annotation.web.builders.HttpSecurity.antMatcher]
+         * examples:
+         * match="/\*\*"
+         */
+        val match: String = "",
 
         val order: Int = 100,
 

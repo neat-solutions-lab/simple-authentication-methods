@@ -12,7 +12,6 @@ import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.type.AnnotationMetadata
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory
 import java.lang.IllegalArgumentException
-import kotlin.reflect.KClass
 import kotlin.reflect.full.cast
 
 class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanFactoryAware {
@@ -32,8 +31,11 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
 
-        val bd = BeanDefinitionBuilder.genericBeanDefinition(SimpleWebSecurityConfigurer::class.java).beanDefinition
-        registry.registerBeanDefinition(SimpleWebSecurityConfigurer::class.qualifiedName!!, bd)
+        val annotationAttributes = getAnnotationAttributes(importingClassMetadata)
+
+        val bd = BeanDefinitionBuilder.genericBeanDefinition(DynamicWebSecurityConfigurer::class.java).beanDefinition
+        bd.propertyValues.add("enableAnnotationAttributes", annotationAttributes)
+        registry.registerBeanDefinition(DynamicWebSecurityConfigurer::class.qualifiedName!!, bd)
 
         val enabledMethods = getEnabledMethods(importingClassMetadata)
         enabledMethods.forEach {

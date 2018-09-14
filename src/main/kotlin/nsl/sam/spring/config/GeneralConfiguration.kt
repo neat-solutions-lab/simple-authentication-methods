@@ -17,20 +17,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc
 @EnableWebMvc
 class GeneralConfiguration {
 
-    //@Autowired(required = false)
-    //@Autowired
-    //lateinit var authMethodRegistars: List<AuthMethodRegistar>
-
-    //@Autowired(required = false)
-    //var simpleAuthConfigurers: List<SimpleAuthConfigurer>? = null
-
-    //@Bean
-    //fun simpleWebSecurityConfigurer(): WebSecurityConfigurerAdapter {
-    //    return SimpleWebSecurityConfigurer(
-    //            this.authMethodRegistars, this.simpleAuthConfigurers
-    //    )
-    //}
-
     @Bean
     fun beanDefinitionRegistryPostProcessor(): BeanDefinitionRegistryPostProcessor {
         return BeanDefinitionRegistryPostProcessorImpl()
