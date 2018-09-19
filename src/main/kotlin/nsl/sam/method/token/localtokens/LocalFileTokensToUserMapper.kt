@@ -4,7 +4,6 @@ import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.method.token.filter.UserAndRoles
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.BadCredentialsException
-import javax.naming.AuthenticationException
 
 /**
  * With help of "local tokens store" maps tokens to associated users, and more precisely to
@@ -15,10 +14,10 @@ import javax.naming.AuthenticationException
 class LocalFileTokensToUserMapper : TokenToUserMapper {
 
     @Autowired
-    lateinit var localTokensStore: LocalTokensStore
+    lateinit var localTokensSource: LocalTokensSource
 
     override fun mapToUser(token: String): UserAndRoles {
-        val localToken : LocalToken = localTokensStore.get(token)
+        val localToken : LocalToken = localTokensSource.get(token)
                 //?: throw AuthenticationException("No token ${token} in local file")
                 ?: throw BadCredentialsException("No token ${token} in local file")
         return localToken.userAndRole

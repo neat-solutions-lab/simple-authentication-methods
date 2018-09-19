@@ -37,6 +37,8 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
         bd.propertyValues.add("enableAnnotationAttributes", annotationAttributes)
         registry.registerBeanDefinition(DynamicWebSecurityConfigurer::class.qualifiedName!!, bd)
 
+
+
         val enabledMethods = getEnabledMethods(importingClassMetadata)
         enabledMethods.forEach {
             val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(

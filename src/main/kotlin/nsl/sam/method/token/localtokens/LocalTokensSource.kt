@@ -4,7 +4,7 @@ import nsl.sam.logger.logger
 import org.springframework.beans.factory.annotation.Value
 import javax.annotation.PostConstruct
 
-class LocalTokensStore {
+class LocalTokensSource {
 
     companion object { val log by logger() }
 

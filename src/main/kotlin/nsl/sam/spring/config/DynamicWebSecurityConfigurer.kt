@@ -7,17 +7,12 @@ import nsl.sam.sender.ResponseSender
 import nsl.sam.spring.entrypoint.SimpleFailedAuthenticationEntryPoint
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Scope
 import org.springframework.core.Ordered
-import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.AuthenticationEntryPoint
-import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 //@Order(90)
 class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter, Ordered {
@@ -55,7 +50,7 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter, Ordered {
         }
 
         log.info("${this::class.simpleName} configuration entry point called.")
-        if(isAuthMechanismAvailable()) {
+        if(isAtLeastOneAuthMechanismAvailable()) {
             log.info("Enabling authentication mechanisms")
             activateAuthenticationMechanisms(http)
         } else {
@@ -78,7 +73,7 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter, Ordered {
         }
     }
 
-    private fun isAuthMechanismAvailable() : Boolean {
+    private fun isAtLeastOneAuthMechanismAvailable() : Boolean {
         authMethodRegistars.asSequence().find {
             log.info("Checking if authentication method ${it.methodName()} is active.")
             val isActive = it.isActive()

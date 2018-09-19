@@ -24,7 +24,7 @@ class BasicAuthMethodRegistar(
     @Value("\${server.address:localhost}")
     lateinit var serverAddress: String
 
-    private var isActiveVariableCalculated = false
+    private var isActiveVariableAlreadyCalculated = false
     private var isActiveValue = false
 
 
@@ -45,9 +45,9 @@ class BasicAuthMethodRegistar(
     }
 
     override fun isActive(): Boolean {
-        if (!isActiveVariableCalculated) {
+        if (!isActiveVariableAlreadyCalculated) {
             isActiveValue = isActiveInternal()
-            isActiveVariableCalculated = true
+            isActiveVariableAlreadyCalculated = true
 
         }
         return isActiveValue
