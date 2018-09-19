@@ -2,7 +2,6 @@ package nsl.test.authorization
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.SpringBootConfiguration
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.access.vote.RoleVoter
@@ -14,7 +13,6 @@ import org.springframework.web.context.WebApplicationContext
 
 @SpringJUnitConfig
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@SpringBootConfiguration
 @EnableWebSecurity
 class AuthorizationTest {
 

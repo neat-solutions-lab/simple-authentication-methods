@@ -18,7 +18,7 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 
     companion object {
         val log by logger()
-        val cachingMetadataReaderFactory = CachingMetadataReaderFactory()
+        //val cachingMetadataReaderFactory = CachingMetadataReaderFactory()
     }
 
 
