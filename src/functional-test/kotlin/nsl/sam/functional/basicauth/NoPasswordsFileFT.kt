@@ -2,7 +2,6 @@ package nsl.sam.functional.basicauth
 
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.spring.config.BasicAuthConfig
 import org.junit.jupiter.api.Test
 //import org.junit.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -11,11 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Configuration
-import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.test.context.junit4.SpringRunner
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 
 /**
  * Property defining location of passwords file is present, but the file itself is absent.
@@ -24,7 +19,7 @@ import kotlin.test.assertNull
  *      <li>http basic auth disabled (how to check it?)</li>
  *      <li>DisableBasicAuthConfigurer bean present in ApplicationContext</li>
  *      <li>LocalUserDetailsService bean not present in ApplicationContext</li>
- *      <li>BasicAuthConfig bean not present in ApplicationContext</li>
+ *      <li>BasicAuthConfiguration bean not present in ApplicationContext</li>
  *  </ul>
  */
 //TODO: Finish this test after dynamic web configurators are finished.
@@ -39,7 +34,7 @@ class NoPasswordsFileFT {
 
 //    @Test
 //    fun basicAuthConfigNotPresent() {
-//        val basicAuthConfig = ctx.getBean(BasicAuthConfig::class.java)
+//        val basicAuthConfig = ctx.getBean(BasicAuthConfiguration::class.java)
 //        assertNull(basicAuthConfig)
 //    }
 

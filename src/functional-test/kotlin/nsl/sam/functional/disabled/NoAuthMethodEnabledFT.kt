@@ -8,9 +8,9 @@ import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.spring.config.BasicAuthConfig
+import nsl.sam.spring.config.BasicAuthConfiguration
 import nsl.sam.spring.config.DisableBasicAuthConfig
-import nsl.sam.spring.config.TokenAuthConfig
+import nsl.sam.spring.config.TokenAuthConfiguration
 import nsl.sam.spring.config.DynamicWebSecurityConfigurer
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -71,14 +71,14 @@ class NoAuthMethodEnabledFT {
     @Test
     fun basicAuthConfigBeanNotPresent() {
         Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
-            this.ctx.getBean(BasicAuthConfig::class.java)
+            this.ctx.getBean(BasicAuthConfiguration::class.java)
         }
     }
 
     @Test
     fun tokenAuthConfigBeanNotPresent() {
         Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
-            this.ctx.getBean(TokenAuthConfig::class.java)
+            this.ctx.getBean(TokenAuthConfiguration::class.java)
         }
     }
 

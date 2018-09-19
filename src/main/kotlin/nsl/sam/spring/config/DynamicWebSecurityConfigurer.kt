@@ -25,7 +25,8 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter, Ordered {
     companion object { val log by logger() }
 
     /**
-     * NOTE: This property is "injected" with the help of DynamicImportBeanDefinitionRegistar
+     * NOTE: This property is "injected" with the help of DynamicImportBeanDefinitionRegistar,
+     * it holds values of attributes used with [nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods]
      */
     lateinit var enableAnnotationAttributes: EnableAnnotationAttributes
 
@@ -71,6 +72,7 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter, Ordered {
 
     @Autowired
     fun globalConfig(authBuilder: AuthenticationManagerBuilder) {
+    //override fun configure(authBuilder: AuthenticationManagerBuilder) {
         for(simpleAuthConfigurer in this.simpleAuthConfigurers) {
             simpleAuthConfigurer.configure(authBuilder)
         }
@@ -103,9 +105,10 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter, Ordered {
     }
 
     private fun activateAnonymousAccess(http: HttpSecurity) {
+
         /*
-         * it is only for the sake of clarity, the default settings seems to be the same as being set
-         * by the below code
+         * it is only for the sake of clarity, the default settings seems to be the same
+         * as the ones being set by the below code
          */
         http.authorizeRequests().anyRequest().permitAll()
     }

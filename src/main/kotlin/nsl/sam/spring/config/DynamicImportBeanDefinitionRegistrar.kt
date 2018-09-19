@@ -58,8 +58,8 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
     }
 
     private fun getMethodConfigurationClass(method: AuthenticationMethod): Class<*> =  when(method) {
-        AuthenticationMethod.SIMPLE_TOKEN -> TokenAuthConfig::class.java
-        AuthenticationMethod.SIMPLE_BASIC_AUTH -> BasicAuthConfig::class.java
+        AuthenticationMethod.SIMPLE_TOKEN -> TokenAuthConfiguration::class.java
+        AuthenticationMethod.SIMPLE_BASIC_AUTH -> BasicAuthConfiguration::class.java
         else -> throw IllegalArgumentException("Illegal AuthenticationMethod used: $method")
     }
 

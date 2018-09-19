@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class TokenAuthConfig {
+class TokenAuthConfiguration {
 
     @Bean
     fun localTokensStore() : LocalTokensStore {

@@ -17,8 +17,8 @@ import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.spring.config.BasicAuthConfig
-import nsl.sam.spring.config.TokenAuthConfig
+import nsl.sam.spring.config.BasicAuthConfiguration
+import nsl.sam.spring.config.TokenAuthConfiguration
 import org.springframework.mock.web.MockHttpServletResponse
 
 import org.assertj.core.api.Assertions.assertThat
@@ -74,13 +74,13 @@ class NarrowConfTokenAuthFT {
     @Test
     fun basicAuthConfigBeanNotPresent() {
         Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
-            this.ctx.getBean(BasicAuthConfig::class.java)
+            this.ctx.getBean(BasicAuthConfiguration::class.java)
         }
     }
 
     @Test
     fun tokenAuthConfigBeanPresent() {
-        this.ctx.getBean(TokenAuthConfig::class.java)
+        this.ctx.getBean(TokenAuthConfiguration::class.java)
     }
 
     @Test

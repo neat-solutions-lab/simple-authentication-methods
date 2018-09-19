@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic
 import org.springframework.test.context.TestPropertySource
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import nsl.sam.FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_NAME
@@ -21,9 +20,9 @@ import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.spring.config.BasicAuthConfig
+import nsl.sam.spring.config.BasicAuthConfiguration
 import nsl.sam.spring.config.DisableBasicAuthConfig
-import nsl.sam.spring.config.TokenAuthConfig
+import nsl.sam.spring.config.TokenAuthConfiguration
 import org.springframework.mock.web.MockHttpServletResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers
@@ -69,13 +68,13 @@ class NarrowConfBasicAuthFT {
 
     @Test
     fun basicAuthConfigBeanPresent() {
-        this.ctx.getBean(BasicAuthConfig::class.java)
+        this.ctx.getBean(BasicAuthConfiguration::class.java)
     }
 
     @Test
     fun tokenAuthConfigBeanNotPresent() {
         Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
-            this.ctx.getBean(TokenAuthConfig::class.java)
+            this.ctx.getBean(TokenAuthConfiguration::class.java)
         }
     }
 

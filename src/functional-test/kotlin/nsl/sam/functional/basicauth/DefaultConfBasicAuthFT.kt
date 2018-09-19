@@ -6,9 +6,9 @@ import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.spring.config.BasicAuthConfig
+import nsl.sam.spring.config.BasicAuthConfiguration
 import nsl.sam.spring.config.DisableBasicAuthConfig
-import nsl.sam.spring.config.TokenAuthConfig
+import nsl.sam.spring.config.TokenAuthConfiguration
 import org.assertj.core.api.Assertions as Assertj
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Assertions
@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
@@ -32,7 +31,6 @@ import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
@@ -73,12 +71,12 @@ class DefaultConfBasicAuthFT {
 
     @Test
     fun basicAuthConfigBeanPresent() {
-        this.ctx.getBean(BasicAuthConfig::class.java)
+        this.ctx.getBean(BasicAuthConfiguration::class.java)
     }
 
     @Test
     fun tokenAuthConfigBeanPresent() {
-        this.ctx.getBean(TokenAuthConfig::class.java)
+        this.ctx.getBean(TokenAuthConfiguration::class.java)
     }
 
     @Test

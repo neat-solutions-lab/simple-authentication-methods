@@ -3,7 +3,7 @@ package nsl.sam.functional.basicauth
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.spring.config.BasicAuthConfig
+import nsl.sam.spring.config.BasicAuthConfiguration
 import nsl.sam.spring.config.DisableBasicAuthConfig
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -36,7 +36,7 @@ class NoBasicAuthEnabledFT {
     @Test
     fun basicAuthConfigBeanNotPresent() {
         Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
-            this.ctx.getBean(BasicAuthConfig::class.java)
+            this.ctx.getBean(BasicAuthConfiguration::class.java)
         }
     }
 

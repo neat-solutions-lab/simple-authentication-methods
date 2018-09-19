@@ -1,0 +1,46 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+### URL /one, CORRECT USER/PASSWORD, STATUS: 200
+GET http://user-one:password@localhost:8080/one
+Accept: application/json
+
+
+### URL /one, WRONG USER, STATUS: 401
+GET http://user:password@localhost:8080/one
+Accept: application/json
+
+### URL /two, CORRECT USER/PASSWORD, STATUS 200
+GET http://user-two:password@localhost:8080/two
+Accept: */*
+Cache-Control: no-cache
+
+### URL /one, MISMATCHED USER, STATUS: 401
+GET http://user-two:password@localhost:8080/one
+Accept: application/json
+
+### URL /two, MISMATCH USER, STATUS 401
+GET http://user-one:password@localhost:8080/two
+Accept: application/json
+
+### check /one end-point
+GET http://admin:password@localhost:8080/one
+Accept: application/json
+
+###
+GET http://localhost:8080/two
+Accept: application/json
+
+###
+GET http://localhost:8080/three
+Accept: */*
+Cache-Control: no-cache
+
+###
+GET http://localhost:8080/close
+
+###
