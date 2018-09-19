@@ -40,22 +40,27 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 
 
         val enabledMethods = getEnabledMethods(importingClassMetadata)
-        enabledMethods.forEach {
-            val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(
-                    getMethodConfigurationClass(it)
-            ).beanDefinition
-            registry.registerBeanDefinition(getMethodConfigurationClass(it).name, beanDefinition)
-        } // forEach()
+        // TODO: after refactoring remove the filter before forEach
+        //enabledMethods.filter{ it != AuthenticationMethod.SIMPLE_BASIC_AUTH }.forEach {
+        //    val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(
+        //            getMethodConfigurationClass(it)
+        //    ).beanDefinition
+        //    registry.registerBeanDefinition(getMethodConfigurationClass(it).name, beanDefinition)
+        //} // forEach()
 
 
-        if(!registry.containsBeanDefinition(getMethodConfigurationClass(AuthenticationMethod.SIMPLE_BASIC_AUTH).name)) {
+        // TODO: refactoring: check enabledMethods array, and not beans registry
+//        if(!registry.containsBeanDefinition(getMethodConfigurationClass(AuthenticationMethod.SIMPLE_BASIC_AUTH).name)) {
+//            val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(DisableBasicAuthConfig::class.java).beanDefinition
+//            registry.registerBeanDefinition(DisableBasicAuthConfig::class.java.name, beanDefinition)
+//        }
+        if(!enabledMethods.contains(AuthenticationMethod.SIMPLE_BASIC_AUTH)) {
             val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(DisableBasicAuthConfig::class.java).beanDefinition
             registry.registerBeanDefinition(DisableBasicAuthConfig::class.java.name, beanDefinition)
         }
 
-        val enableAnnotationAttributes: EnableAnnotationAttributes = getAnnotationAttributes(importingClassMetadata)
 
-        println(">>>>>>>>>> annotationAttributes: $enableAnnotationAttributes")
+        println(">>>>>>>>>> annotationAttributes: $annotationAttributes")
 
     }
 
@@ -78,16 +83,18 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
                 ) ?: return arrayOf()
 
         val enabledMethods: Array<AuthenticationMethod> = annotationAttributes.run {
-            //get("methods") as Array<AuthenticationMethod>
             Array<AuthenticationMethod>::class.cast(get("methods"))
         }
 
+        /*
+         * if there is [AuthenticationMethod.SIMPLE_NO_METHOD] in attributes then return empty
+         * array
+         */
         enabledMethods
                 .firstOrNull { matchesSimpleNoMethod(it) }
                 ?.let { return arrayOf() }
 
         return Array<AuthenticationMethod>::class.cast(annotationAttributes["methods"])
-        //return annotationAttributes["methods"] as Array<AuthenticationMethod>
     }
 
 

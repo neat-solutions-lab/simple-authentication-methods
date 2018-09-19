@@ -11,25 +11,21 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.AuthenticationEntryPoint
 
-@Order(10)
+//@Order(10)
 class BasicAuthMethodRegistar(
         private val localUsersDetailsService: UserDetailsService,
-        private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint) : AuthMethodRegistar {
+        private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint,
+        private val passwordsFile: String,
+        private val serverAddress: String) : AuthMethodRegistar {
 
     companion object { val log by logger() }
 
-    @Value("\${sam.passwords-file:}")
-    lateinit var passwordsFile: String
-
-    @Value("\${server.address:localhost}")
-    lateinit var serverAddress: String
 
     private var isActiveVariableAlreadyCalculated = false
     private var isActiveValue = false
 
 
-    @Autowired
-    fun configureGlobal(authBuilder: AuthenticationManagerBuilder) {
+    override fun configure(authBuilder: AuthenticationManagerBuilder) {
         if(!isActive()) return
         authBuilder.userDetailsService(localUsersDetailsService)
     }

@@ -2,7 +2,6 @@ package nsl.test.beandefinition
 
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.support.AbstractBeanDefinition
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.ImportResource
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 
@@ -77,7 +75,7 @@ class BigBean {
 }
 
 @Configuration
-@ImportResource("classpath:/nsl/test/beandefinition/beans.xml")
+@ImportResource("classpath:/beans.xml")
 class TestContextConfiguration {
 
     @Bean("nameOfSmallOneBean")

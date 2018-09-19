@@ -1,5 +1,6 @@
 package nsl.sam.registar
 
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 
 /**
@@ -17,6 +18,8 @@ interface AuthMethodRegistar {
      * Called by [nsl.sms.api.auth.config.WebSecurityConfiguration] to register particular authentication method.
      */
     fun register(http: HttpSecurity):HttpSecurity
+
+    fun configure(auth: AuthenticationManagerBuilder)
 
     /**
      * Useful for logging/debugging purposes.

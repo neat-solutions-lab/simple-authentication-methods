@@ -5,6 +5,7 @@ import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
+import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.spring.config.BasicAuthConfiguration
 import nsl.sam.spring.config.DisableBasicAuthConfig
@@ -12,6 +13,7 @@ import nsl.sam.spring.config.TokenAuthConfiguration
 import org.assertj.core.api.Assertions as Assertj
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 //import org.junit.Rule
 //import org.junit.Test
@@ -70,11 +72,13 @@ class DefaultConfBasicAuthFT {
     //
 
     @Test
+    @Disabled("Not relevant any more")
     fun basicAuthConfigBeanPresent() {
         this.ctx.getBean(BasicAuthConfiguration::class.java)
     }
 
     @Test
+    @Disabled("Not relevant any more.")
     fun tokenAuthConfigBeanPresent() {
         this.ctx.getBean(TokenAuthConfiguration::class.java)
     }

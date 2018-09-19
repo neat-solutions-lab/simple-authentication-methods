@@ -10,26 +10,22 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 
 @Order(20)
-class TokenAuthMethodRegistar : AuthMethodRegistar {
+class TokenAuthMethodRegistar(
+        val tokensFilePath: String,
+        val serverAddress: String,
+        val tokenAuthenticator : TokenToUserMapper,
+        val unauthenticatedResponseSender: ResponseSender) : AuthMethodRegistar {
+
+    override fun configure(auth: AuthenticationManagerBuilder) {
+        // empty, the TokenAuthenticationFiler doesn't use AunthenticationManager
+    }
 
     companion object { val log by logger() }
-
-    @Value("\${sam.tokens-file:}")
-    lateinit var tokensFilePath: String
-
-    @Value("\${server.address:localhost}")
-    lateinit var serverAddress: String
-
-    @Autowired
-    lateinit var tokenAuthenticator : TokenToUserMapper
-
-    @Autowired
-    @Qualifier("unauthenticatedAccessResponseSender")
-    lateinit var unauthenticatedResponseSender: ResponseSender
 
     private var isActiveVariableCalculated = false
     private var isActiveValue = false

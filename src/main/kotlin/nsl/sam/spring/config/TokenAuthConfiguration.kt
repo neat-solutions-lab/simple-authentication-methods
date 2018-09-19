@@ -11,20 +11,20 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class TokenAuthConfiguration {
 
-    @Bean
-    fun localTokensStore() : LocalTokensSource {
-        return LocalTokensSource()
-    }
-
-    @Bean
-    fun tokenToUserMapper(): TokenToUserMapper {
-        return LocalFileTokensToUserMapper()
-    }
-
-    @Bean
-    fun tokenRegistar():AuthMethodRegistar {
-        return TokenAuthMethodRegistar()
-    }
+//    @Bean
+//    fun localTokensStore() : LocalTokensSource {
+//        return LocalTokensSource()
+//    }
+//
+//    @Bean
+//    fun tokenToUserMapper(): TokenToUserMapper {
+//        return LocalFileTokensToUserMapper()
+//    }
+//
+//    @Bean
+//    fun tokenRegistar():AuthMethodRegistar {
+//        return TokenAuthMethodRegistar()
+//    }
 
 
 }

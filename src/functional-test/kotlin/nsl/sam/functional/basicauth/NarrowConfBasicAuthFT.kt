@@ -27,6 +27,7 @@ import org.springframework.mock.web.MockHttpServletResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 //import org.junit.Rule
 import org.junit.jupiter.api.extension.ExtendWith
@@ -50,9 +51,6 @@ import kotlin.test.assertNull
     "sam.tokens-file=src/functional-test/config/tokens.conf"])
 class NarrowConfBasicAuthFT {
 
-//    @get:Rule
-//    val thrown: ExpectedException = ExpectedException.none()
-
     @Autowired
     private lateinit var mvc: MockMvc
 
@@ -67,6 +65,7 @@ class NarrowConfBasicAuthFT {
     //
 
     @Test
+    @Disabled("Not relevant any more")
     fun basicAuthConfigBeanPresent() {
         this.ctx.getBean(BasicAuthConfiguration::class.java)
     }

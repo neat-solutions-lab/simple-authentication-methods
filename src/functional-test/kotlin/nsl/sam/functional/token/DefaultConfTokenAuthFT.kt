@@ -27,6 +27,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.context.annotation.Configuration
@@ -63,11 +64,13 @@ class DefaultConfTokenAuthFT {
     //
 
     @Test
+    @Disabled("Not relevant any more")
     fun basicAuthConfigBeanPresent() {
         this.ctx.getBean(BasicAuthConfiguration::class.java)
     }
 
     @Test
+    @Disabled("Not relevant any more")
     fun tokenAuthConfigBeanPresent() {
         this.ctx.getBean(TokenAuthConfiguration::class.java)
     }

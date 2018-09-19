@@ -17,34 +17,34 @@ import org.springframework.security.web.AuthenticationEntryPoint
 @Configuration
 class BasicAuthConfiguration {
 
-    @Autowired
-    @Qualifier("unauthenticatedAccessResponseSender")
-    lateinit var unauthenticatedResponseSender: ResponseSender
-
-    @Bean
-    fun usersSource(): UsersSource {
-        return LocalFileUsersSource()
-    }
-
-    @Bean
-    fun localUsersDetailsService(): UserDetailsService {
-        return LocalUserDetailsService()
-    }
-
-    @Bean
-    fun simpleAuthenticationEntryPointForHttpBasic(): AuthenticationEntryPoint {
-        return SimpleFailedAuthenticationEntryPoint(unauthenticatedResponseSender)
-    }
-
-    @Bean
-    fun basicAuthRegistar(
-            @Qualifier("localUsersDetailsService")
-            localUsersDetailsService: UserDetailsService,
-
-            @Qualifier("simpleAuthenticationEntryPointForHttpBasic")
-            simpleAuthenticationEntryPoint: AuthenticationEntryPoint)
-            : AuthMethodRegistar {
-
-        return BasicAuthMethodRegistar(localUsersDetailsService, simpleAuthenticationEntryPoint)
-    }
+//    @Autowired
+//    @Qualifier("unauthenticatedAccessResponseSender")
+//    lateinit var unauthenticatedResponseSender: ResponseSender
+//
+//    @Bean
+//    fun usersSource(): UsersSource {
+//        return LocalFileUsersSource()
+//    }
+//
+//    @Bean
+//    fun localUsersDetailsService(): UserDetailsService {
+//        return LocalUserDetailsService()
+//    }
+//
+//    @Bean
+//    fun simpleAuthenticationEntryPointForHttpBasic(): AuthenticationEntryPoint {
+//        return SimpleFailedAuthenticationEntryPoint(unauthenticatedResponseSender)
+//    }
+//
+//    @Bean
+//    fun basicAuthRegistar(
+//            @Qualifier("localUsersDetailsService")
+//            localUsersDetailsService: UserDetailsService,
+//
+//            @Qualifier("simpleAuthenticationEntryPointForHttpBasic")
+//            simpleAuthenticationEntryPoint: AuthenticationEntryPoint)
+//            : AuthMethodRegistar {
+//
+//        return BasicAuthMethodRegistar(localUsersDetailsService, simpleAuthenticationEntryPoint)
+//    }
 }
