@@ -1,6 +1,4 @@
-package nsl.sam.spring.config
-
-import nsl.sam.spring.annotation.AuthenticationMethod
+package nsl.sam.spring.annotation
 
 /**
  * Represents attributes of [@EnableSimpleAuthentication] methods annotation

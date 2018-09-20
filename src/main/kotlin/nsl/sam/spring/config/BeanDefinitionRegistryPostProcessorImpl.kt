@@ -25,6 +25,5 @@ class BeanDefinitionRegistryPostProcessorImpl: BeanDefinitionRegistryPostProcess
             log.info("Removing $it bean definition.")
             registry.removeBeanDefinition(it)
         }
-
     }
 }

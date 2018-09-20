@@ -1,6 +1,5 @@
 package nsl.sam.spring.config
 
-import nsl.sam.config.SimpleAuthConfigurer
 import nsl.sam.registar.AuthMethodRegistar
 import nsl.sam.logger.logger
 import nsl.sam.method.basicauth.BasicAuthMethodRegistar
@@ -8,6 +7,7 @@ import nsl.sam.method.token.TokenAuthMethodRegistar
 import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.sender.ResponseSender
 import nsl.sam.spring.annotation.AuthenticationMethod
+import nsl.sam.spring.annotation.EnableAnnotationAttributes
 import nsl.sam.spring.entrypoint.SimpleFailedAuthenticationEntryPoint
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -21,7 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.AuthenticationEntryPoint
 import javax.annotation.PostConstruct
 
-class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter, Ordered {
+class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
 
     companion object { val log by logger() }
 
@@ -62,11 +62,6 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter, Ordered {
     lateinit var errorResponseSender: ResponseSender
 
     private val authMethodRegistars: MutableList<AuthMethodRegistar> = mutableListOf()
-    var simpleAuthConfigurers: List<SimpleAuthConfigurer>
-
-    constructor(@Autowired(required = false) simpleAuthConfigurers: List<SimpleAuthConfigurer>?) : super() {
-        this.simpleAuthConfigurers = simpleAuthConfigurers ?: emptyList()
-    }
 
     @PostConstruct
     fun initialize() {
@@ -107,9 +102,6 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter, Ordered {
 
         applyCommonSecuritySettings(http)
 
-        for(simpleAuthConfigurer in this.simpleAuthConfigurers) {
-            simpleAuthConfigurer.configure(http)
-        }
     }
 
 
@@ -117,9 +109,6 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter, Ordered {
     override fun configure(authBuilder: AuthenticationManagerBuilder) {
         for(registar in this.authMethodRegistars) {
             registar.configure(authBuilder)
-        }
-        for(simpleAuthConfigurer in this.simpleAuthConfigurers) {
-            simpleAuthConfigurer.configure(authBuilder)
         }
     }
 

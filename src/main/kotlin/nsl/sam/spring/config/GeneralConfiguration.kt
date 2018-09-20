@@ -1,14 +1,11 @@
 package nsl.sam.spring.config
 
-import nsl.sam.config.SimpleAuthConfigurer
 import nsl.sam.method.basicauth.userdetails.LocalFileUsersSource
 import nsl.sam.method.basicauth.userdetails.LocalUserDetailsService
 import nsl.sam.method.basicauth.userdetails.UsersSource
-import nsl.sam.method.token.TokenAuthMethodRegistar
 import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.method.token.localtokens.LocalFileTokensToUserMapper
 import nsl.sam.method.token.localtokens.LocalTokensSource
-import nsl.sam.registar.AuthMethodRegistar
 import nsl.sam.sender.ResponseSender
 import nsl.sam.sender.UnauthenticatedAccessResponseSender
 import nsl.sam.spring.entrypoint.SimpleFailedAuthenticationEntryPoint

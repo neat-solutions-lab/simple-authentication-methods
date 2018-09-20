@@ -20,9 +20,6 @@ import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.spring.config.BasicAuthConfiguration
-import nsl.sam.spring.config.DisableBasicAuthConfig
-import nsl.sam.spring.config.TokenAuthConfiguration
 import org.springframework.mock.web.MockHttpServletResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers
@@ -64,25 +61,6 @@ class NarrowConfBasicAuthFT {
     // Main beans arrangement
     //
 
-    @Test
-    @Disabled("Not relevant any more")
-    fun basicAuthConfigBeanPresent() {
-        this.ctx.getBean(BasicAuthConfiguration::class.java)
-    }
-
-    @Test
-    fun tokenAuthConfigBeanNotPresent() {
-        Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
-            this.ctx.getBean(TokenAuthConfiguration::class.java)
-        }
-    }
-
-    @Test
-    fun disableBasicAuthConfigBeanNotPresent() {
-        Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
-            this.ctx.getBean(DisableBasicAuthConfig::class.java)
-        }
-    }
 
     //
     // Main filters arrangement

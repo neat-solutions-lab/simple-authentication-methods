@@ -10,8 +10,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar
 import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.type.AnnotationMetadata
-import org.springframework.core.type.classreading.CachingMetadataReaderFactory
-import java.lang.IllegalArgumentException
 import kotlin.reflect.full.cast
 
 class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanFactoryAware {
@@ -54,21 +52,21 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 //            val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(DisableBasicAuthConfig::class.java).beanDefinition
 //            registry.registerBeanDefinition(DisableBasicAuthConfig::class.java.name, beanDefinition)
 //        }
-        if(!enabledMethods.contains(AuthenticationMethod.SIMPLE_BASIC_AUTH)) {
-            val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(DisableBasicAuthConfig::class.java).beanDefinition
-            registry.registerBeanDefinition(DisableBasicAuthConfig::class.java.name, beanDefinition)
-        }
+//        if(!enabledMethods.contains(AuthenticationMethod.SIMPLE_BASIC_AUTH)) {
+//            val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(DisableBasicAuthConfig::class.java).beanDefinition
+//            registry.registerBeanDefinition(DisableBasicAuthConfig::class.java.name, beanDefinition)
+//        }
 
 
         println(">>>>>>>>>> annotationAttributes: $annotationAttributes")
 
     }
 
-    private fun getMethodConfigurationClass(method: AuthenticationMethod): Class<*> =  when(method) {
-        AuthenticationMethod.SIMPLE_TOKEN -> TokenAuthConfiguration::class.java
-        AuthenticationMethod.SIMPLE_BASIC_AUTH -> BasicAuthConfiguration::class.java
-        else -> throw IllegalArgumentException("Illegal AuthenticationMethod used: $method")
-    }
+//    private fun getMethodConfigurationClass(method: AuthenticationMethod): Class<*> =  when(method) {
+//        AuthenticationMethod.SIMPLE_TOKEN -> TokenAuthConfiguration::class.java
+//        AuthenticationMethod.SIMPLE_BASIC_AUTH -> BasicAuthConfiguration::class.java
+//        else -> throw IllegalArgumentException("Illegal AuthenticationMethod used: $method")
+//    }
 
     private fun matchesSimpleNoMethod(method: AuthenticationMethod): Boolean {
         return method == AuthenticationMethod.SIMPLE_NO_METHOD
