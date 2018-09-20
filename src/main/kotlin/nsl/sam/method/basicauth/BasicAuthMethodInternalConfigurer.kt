@@ -2,21 +2,17 @@ package nsl.sam.method.basicauth
 
 import nsl.sam.logger.logger
 import nsl.sam.method.basicauth.userdetails.LocalFileUsersImporter
-import nsl.sam.registar.AuthMethodRegistar
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.annotation.Order
+import nsl.sam.registar.AuthMethodInternalConfigurer
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.AuthenticationEntryPoint
 
-//@Order(10)
-class BasicAuthMethodRegistar(
+class BasicAuthMethodInternalConfigurer(
         private val localUsersDetailsService: UserDetailsService,
         private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint,
         private val passwordsFile: String,
-        private val serverAddress: String) : AuthMethodRegistar {
+        private val serverAddress: String) : AuthMethodInternalConfigurer {
 
     companion object { val log by logger() }
 
@@ -49,11 +45,9 @@ class BasicAuthMethodRegistar(
         return isActiveValue
     }
 
-
     override fun register(http: HttpSecurity): HttpSecurity {
         log.info("Enabling HttpBasic Auth method.")
         return http.httpBasic().authenticationEntryPoint(simpleAuthenticationEntryPoint).and()
-
     }
 
     override fun methodName(): String {

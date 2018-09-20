@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
  * All implementations of this interface are to be found by [nsl.sms.api.auth.config.WebSecurityConfiguration]
  * which uses this interface's register() method to register new authentication method.
  */
-interface AuthMethodRegistar {
+interface AuthMethodInternalConfigurer {
     /**
      * Checks if given authentication method is active. It can be inactive when for example it could not find
      * configuration files or something like this.

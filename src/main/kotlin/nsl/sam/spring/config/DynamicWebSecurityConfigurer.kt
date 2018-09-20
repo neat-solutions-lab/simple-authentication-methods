@@ -1,9 +1,9 @@
 package nsl.sam.spring.config
 
-import nsl.sam.registar.AuthMethodRegistar
+import nsl.sam.registar.AuthMethodInternalConfigurer
 import nsl.sam.logger.logger
-import nsl.sam.method.basicauth.BasicAuthMethodRegistar
-import nsl.sam.method.token.TokenAuthMethodRegistar
+import nsl.sam.method.basicauth.BasicAuthMethodInternalConfigurer
+import nsl.sam.method.token.TokenAuthMethodInternalConfigurer
 import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.sender.ResponseSender
 import nsl.sam.spring.annotation.AuthenticationMethod
@@ -61,20 +61,20 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
     @Qualifier("unauthenticatedAccessResponseSender")
     lateinit var errorResponseSender: ResponseSender
 
-    private val authMethodRegistars: MutableList<AuthMethodRegistar> = mutableListOf()
+    private val authMethodInternalConfigurers: MutableList<AuthMethodInternalConfigurer> = mutableListOf()
 
     @PostConstruct
     fun initialize() {
         if(enableAnnotationAttributes.methods.contains(AuthenticationMethod.SIMPLE_BASIC_AUTH)) {
-            this.authMethodRegistars.add(
-                    BasicAuthMethodRegistar(
+            this.authMethodInternalConfigurers.add(
+                    BasicAuthMethodInternalConfigurer(
                             localUsersDetailsService, simpleAuthenticationEntryPoint, passwordsFile, serverAddress)
             )
         } // if()
 
         if(enableAnnotationAttributes.methods.contains(AuthenticationMethod.SIMPLE_TOKEN)) {
-            this.authMethodRegistars.add(
-                    TokenAuthMethodRegistar(tokensFilePath, serverAddress, tokenAuthenticator, unauthenticatedResponseSender)
+            this.authMethodInternalConfigurers.add(
+                    TokenAuthMethodInternalConfigurer(tokensFilePath, serverAddress, tokenAuthenticator, unauthenticatedResponseSender)
             )
         }
 
@@ -91,13 +91,13 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
             http.antMatcher(this.enableAnnotationAttributes.match)
         }
 
-        log.info("${this::class.simpleName} configuration entry point called.")
+        log.info("${this::class.simpleName} configuration entry point called [configure(HttpSecurity)].")
         if(isAtLeastOneAuthMechanismAvailable()) {
             log.info("Enabling authentication mechanisms")
             activateAuthenticationMechanisms(http)
         } else {
             log.info("Enabling anonymous access")
-            activateAnonymousAccess(http)
+            permitAll(http)
         }
 
         applyCommonSecuritySettings(http)
@@ -105,15 +105,14 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
     }
 
 
-
     override fun configure(authBuilder: AuthenticationManagerBuilder) {
-        for(registar in this.authMethodRegistars) {
+        for(registar in this.authMethodInternalConfigurers) {
             registar.configure(authBuilder)
         }
     }
 
     private fun isAtLeastOneAuthMechanismAvailable() : Boolean {
-        authMethodRegistars.asSequence().find {
+        authMethodInternalConfigurers.asSequence().find {
             log.info("Checking if authentication method ${it.methodName()} is active.")
             val isActive = it.isActive()
             log.info("Check result for authentication method ${it.methodName()}: $isActive")
@@ -127,7 +126,7 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
     private fun activateAuthenticationMechanisms(http: HttpSecurity) {
         http.authorizeRequests().anyRequest().fullyAuthenticated()
 
-        authMethodRegistars.filter {
+        authMethodInternalConfigurers.filter {
             log.info("Checking if authentication method ${it.methodName()} is active.")
             val isActive = it.isActive()
             log.info("Check result for authentication method ${it.methodName()}: $isActive")
@@ -138,18 +137,13 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
         }
     }
 
-    private fun activateAnonymousAccess(http: HttpSecurity) {
+    private fun permitAll(http: HttpSecurity) {
 
         /*
          * it is only for the sake of clarity, the default settings seems to be the same
          * as the ones being set by the below code
          */
         http.authorizeRequests().anyRequest().permitAll()
-    }
-
-
-    fun simpleAuthenticationEntryPoint(): AuthenticationEntryPoint {
-        return SimpleFailedAuthenticationEntryPoint(errorResponseSender)
     }
 
     private fun applyCommonSecuritySettings(http: HttpSecurity) {
@@ -160,7 +154,7 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .exceptionHandling().authenticationEntryPoint(simpleAuthenticationEntryPoint())
+                .exceptionHandling().authenticationEntryPoint(simpleAuthenticationEntryPoint)
     }
 
 }

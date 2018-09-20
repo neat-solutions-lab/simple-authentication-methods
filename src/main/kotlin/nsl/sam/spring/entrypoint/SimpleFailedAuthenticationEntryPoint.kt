@@ -15,6 +15,5 @@ class SimpleFailedAuthenticationEntryPoint(val errorResponseSender: ResponseSend
 
         errorResponseSender.send(response, UnauthenticatedResponseDto.Builder(request).build())
 
-        //sender.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.reasonPhrase)
     }
 }

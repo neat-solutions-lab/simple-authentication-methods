@@ -4,22 +4,19 @@ import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.method.token.localtokens.TokenFileImporter
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.logger.logger
-import nsl.sam.registar.AuthMethodRegistar
+import nsl.sam.registar.AuthMethodInternalConfigurer
 import nsl.sam.sender.ResponseSender
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 
 @Order(20)
-class TokenAuthMethodRegistar(
+class TokenAuthMethodInternalConfigurer(
         val tokensFilePath: String,
         val serverAddress: String,
         val tokenAuthenticator : TokenToUserMapper,
-        val unauthenticatedResponseSender: ResponseSender) : AuthMethodRegistar {
+        val unauthenticatedResponseSender: ResponseSender) : AuthMethodInternalConfigurer {
 
     override fun configure(auth: AuthenticationManagerBuilder) {
         // empty, the TokenAuthenticationFiler doesn't use AunthenticationManager
