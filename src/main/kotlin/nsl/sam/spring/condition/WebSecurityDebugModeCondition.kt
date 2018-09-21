@@ -1,9 +1,9 @@
 package nsl.sam.spring.condition
 
 import nsl.sam.logger.logger
-import nsl.sam.spring.annotation.AnnotationAttributeDefinition
-import nsl.sam.spring.annotation.AnnotationProcessor
-import nsl.sam.spring.annotation.AnnotationProcessorContext
+import nsl.sam.annotation.AnnotationAttributeDefinition
+import nsl.sam.annotation.AnnotationProcessor
+import nsl.sam.annotation.AnnotationProcessorContext
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import org.springframework.context.annotation.Condition
 import org.springframework.context.annotation.ConditionContext

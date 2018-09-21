@@ -1,4 +1,4 @@
-package nsl.sam.spring.annotation
+package nsl.sam.annotation
 
 import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.annotation.AnnotationUtils

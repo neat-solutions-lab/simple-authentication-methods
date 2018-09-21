@@ -1,5 +1,6 @@
 package nsl.sam.spring.config
 
+import nsl.sam.annotation.AnnotationProcessor
 import nsl.sam.logger.logger
 import nsl.sam.spring.annotation.*
 import org.springframework.beans.factory.BeanFactory

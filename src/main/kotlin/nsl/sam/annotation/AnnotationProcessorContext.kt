@@ -1,4 +1,4 @@
-package nsl.sam.spring.annotation
+package nsl.sam.annotation
 
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
