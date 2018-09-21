@@ -2,7 +2,8 @@ package nsl.sam.method.basicauth
 
 import nsl.sam.logger.logger
 import nsl.sam.method.basicauth.userdetails.LocalFileUsersImporter
-import nsl.sam.registar.AuthMethodInternalConfigurer
+import nsl.sam.configurer.AuthMethodInternalConfigurer
+import org.springframework.context.ApplicationContext
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -16,6 +17,12 @@ class BasicAuthMethodInternalConfigurer(
 
     companion object { val log by logger() }
 
+    init {
+        /*
+         * if no specific UserDetailsService declared, then get the default one
+         * (declared by nsl.sam.default-user-details-service property)
+         */
+    }
 
     private var isActiveVariableAlreadyCalculated = false
     private var isActiveValue = false
@@ -45,7 +52,7 @@ class BasicAuthMethodInternalConfigurer(
         return isActiveValue
     }
 
-    override fun register(http: HttpSecurity): HttpSecurity {
+    override fun configure(http: HttpSecurity): HttpSecurity {
         log.info("Enabling HttpBasic Auth method.")
         return http.httpBasic().authenticationEntryPoint(simpleAuthenticationEntryPoint).and()
     }

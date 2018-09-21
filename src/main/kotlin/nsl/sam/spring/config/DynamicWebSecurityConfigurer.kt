@@ -1,6 +1,7 @@
 package nsl.sam.spring.config
 
-import nsl.sam.registar.AuthMethodInternalConfigurer
+import nsl.sam.configurer.AuthMethodInternalConfigurer
+import nsl.sam.configurer.ConfigurersFactories
 import nsl.sam.logger.logger
 import nsl.sam.method.basicauth.BasicAuthMethodInternalConfigurer
 import nsl.sam.method.token.TokenAuthMethodInternalConfigurer
@@ -8,10 +9,10 @@ import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.sender.ResponseSender
 import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableAnnotationAttributes
-import nsl.sam.spring.entrypoint.SimpleFailedAuthenticationEntryPoint
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.ApplicationContext
 import org.springframework.core.Ordered
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -19,6 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.AuthenticationEntryPoint
+import org.springframework.util.Assert
 import javax.annotation.PostConstruct
 
 class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
@@ -26,30 +28,10 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
     companion object { val log by logger() }
 
     @Autowired
-    lateinit var localUsersDetailsService: UserDetailsService
+    lateinit var configurersFactories: ConfigurersFactories
 
     @Autowired
     lateinit var simpleAuthenticationEntryPoint: AuthenticationEntryPoint
-
-    @Value("\${sam.passwords-file:}")
-    lateinit var passwordsFile: String
-
-
-    @Value("\${server.address:localhost}")
-    lateinit var serverAddress: String
-
-
-    @Value("\${sam.tokens-file:}")
-    lateinit var tokensFilePath: String
-
-
-    @Autowired
-    lateinit var tokenAuthenticator : TokenToUserMapper
-
-    @Autowired
-    @Qualifier("unauthenticatedAccessResponseSender")
-    lateinit var unauthenticatedResponseSender: ResponseSender
-
 
     /**
      * NOTE: This property is "injected" with the help of DynamicImportBeanDefinitionRegistar,
@@ -57,27 +39,19 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
      */
     lateinit var enableAnnotationAttributes: EnableAnnotationAttributes
 
-    @Autowired
-    @Qualifier("unauthenticatedAccessResponseSender")
-    lateinit var errorResponseSender: ResponseSender
-
     private val authMethodInternalConfigurers: MutableList<AuthMethodInternalConfigurer> = mutableListOf()
 
     @PostConstruct
     fun initialize() {
-        if(enableAnnotationAttributes.methods.contains(AuthenticationMethod.SIMPLE_BASIC_AUTH)) {
-            this.authMethodInternalConfigurers.add(
-                    BasicAuthMethodInternalConfigurer(
-                            localUsersDetailsService, simpleAuthenticationEntryPoint, passwordsFile, serverAddress)
-            )
-        } // if()
 
-        if(enableAnnotationAttributes.methods.contains(AuthenticationMethod.SIMPLE_TOKEN)) {
-            this.authMethodInternalConfigurers.add(
-                    TokenAuthMethodInternalConfigurer(tokensFilePath, serverAddress, tokenAuthenticator, unauthenticatedResponseSender)
-            )
-        }
-
+        enableAnnotationAttributes.methods
+                .filter{ it != AuthenticationMethod.SIMPLE_NO_METHOD }
+                .forEach {
+                    val factory = configurersFactories.getFactoryForMethod(it)
+                    Assert.notNull(factory,"There is no AuthMethodInternalConfigurerFactory registered " +
+                        "for ${it.name} authentication method")
+                    this.authMethodInternalConfigurers.add(factory!!.create(enableAnnotationAttributes))
+                }
     }
 
     override fun getOrder(): Int {
@@ -103,7 +77,6 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
         applyCommonSecuritySettings(http)
 
     }
-
 
     override fun configure(authBuilder: AuthenticationManagerBuilder) {
         for(registar in this.authMethodInternalConfigurers) {
@@ -133,7 +106,7 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
             isActive
         }.forEach {
             log.info("Registering authentication mechanism: ${it.methodName()}")
-            it.register(http)
+            it.configure(http)
         }
     }
 

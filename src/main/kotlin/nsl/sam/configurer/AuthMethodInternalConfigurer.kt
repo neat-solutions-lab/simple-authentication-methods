@@ -1,11 +1,11 @@
-package nsl.sam.registar
+package nsl.sam.configurer
 
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 
 /**
  * All implementations of this interface are to be found by [nsl.sms.api.auth.config.WebSecurityConfiguration]
- * which uses this interface's register() method to register new authentication method.
+ * which uses this interface's configure() method to configure new authentication method.
  */
 interface AuthMethodInternalConfigurer {
     /**
@@ -15,9 +15,9 @@ interface AuthMethodInternalConfigurer {
     fun isActive(): Boolean
 
     /**
-     * Called by [nsl.sms.api.auth.config.WebSecurityConfiguration] to register particular authentication method.
+     * Called by [nsl.sms.api.auth.config.WebSecurityConfiguration] to configure particular authentication method.
      */
-    fun register(http: HttpSecurity):HttpSecurity
+    fun configure(http: HttpSecurity):HttpSecurity
 
     fun configure(auth: AuthenticationManagerBuilder)
 

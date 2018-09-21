@@ -4,7 +4,7 @@ import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.method.token.localtokens.TokenFileImporter
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.logger.logger
-import nsl.sam.registar.AuthMethodInternalConfigurer
+import nsl.sam.configurer.AuthMethodInternalConfigurer
 import nsl.sam.sender.ResponseSender
 import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -52,7 +52,7 @@ class TokenAuthMethodInternalConfigurer(
         return isActiveValue
     }
 
-    override fun register(http: HttpSecurity): HttpSecurity {
+    override fun configure(http: HttpSecurity): HttpSecurity {
         log.info("Registering ${TokenAuthenticationFilter::class.qualifiedName} filter.")
         return http.addFilterBefore(
                 TokenAuthenticationFilter(tokenAuthenticator, unauthenticatedResponseSender),

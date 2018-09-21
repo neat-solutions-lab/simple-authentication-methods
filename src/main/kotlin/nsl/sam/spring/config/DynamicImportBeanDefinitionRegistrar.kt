@@ -35,38 +35,8 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
         bd.propertyValues.add("enableAnnotationAttributes", annotationAttributes)
         registry.registerBeanDefinition(DynamicWebSecurityConfigurer::class.qualifiedName!!, bd)
 
-
-
-        val enabledMethods = getEnabledMethods(importingClassMetadata)
-        // TODO: after refactoring remove the filter before forEach
-        //enabledMethods.filter{ it != AuthenticationMethod.SIMPLE_BASIC_AUTH }.forEach {
-        //    val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(
-        //            getMethodConfigurationClass(it)
-        //    ).beanDefinition
-        //    registry.registerBeanDefinition(getMethodConfigurationClass(it).name, beanDefinition)
-        //} // forEach()
-
-
-        // TODO: refactoring: check enabledMethods array, and not beans registry
-//        if(!registry.containsBeanDefinition(getMethodConfigurationClass(AuthenticationMethod.SIMPLE_BASIC_AUTH).name)) {
-//            val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(DisableBasicAuthConfig::class.java).beanDefinition
-//            registry.registerBeanDefinition(DisableBasicAuthConfig::class.java.name, beanDefinition)
-//        }
-//        if(!enabledMethods.contains(AuthenticationMethod.SIMPLE_BASIC_AUTH)) {
-//            val beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(DisableBasicAuthConfig::class.java).beanDefinition
-//            registry.registerBeanDefinition(DisableBasicAuthConfig::class.java.name, beanDefinition)
-//        }
-
-
         println(">>>>>>>>>> annotationAttributes: $annotationAttributes")
-
     }
-
-//    private fun getMethodConfigurationClass(method: AuthenticationMethod): Class<*> =  when(method) {
-//        AuthenticationMethod.SIMPLE_TOKEN -> TokenAuthConfiguration::class.java
-//        AuthenticationMethod.SIMPLE_BASIC_AUTH -> BasicAuthConfiguration::class.java
-//        else -> throw IllegalArgumentException("Illegal AuthenticationMethod used: $method")
-//    }
 
     private fun matchesSimpleNoMethod(method: AuthenticationMethod): Boolean {
         return method == AuthenticationMethod.SIMPLE_NO_METHOD
@@ -101,6 +71,9 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
     private fun getAnnotationAttributes(importingClassMetadata: AnnotationMetadata): EnableAnnotationAttributes {
 
         return EnableAnnotationAttributes.create {
+            className {
+                importingClassMetadata.className
+            }
             methods {
                 AnnotationProcessor.getAnnotationAttributeValue(
                         importingClassMetadata,

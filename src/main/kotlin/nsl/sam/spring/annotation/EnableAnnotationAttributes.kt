@@ -4,6 +4,7 @@ package nsl.sam.spring.annotation
  * Represents attributes of [@EnableSimpleAuthentication] methods annotation
  */
 data class EnableAnnotationAttributes private constructor (
+        val className: String,
         val methods: Array<AuthenticationMethod>,
         val match: String,
         val debug: Boolean,
@@ -23,14 +24,16 @@ data class EnableAnnotationAttributes private constructor (
             init()
         }
 
+        var className = ""
         var methods: Array<AuthenticationMethod> = emptyArray()
-
         var match = ""
         var debug = false
         var order = 0
         var anonymousFallback = false
         var authentications = ""
         var deactivateNotConfigured = false
+
+        fun className(className: () -> String) = apply {this.className = className()}
 
         fun methods(methods: () -> Array<AuthenticationMethod>) = apply { this.methods = methods()}
 
@@ -47,7 +50,7 @@ data class EnableAnnotationAttributes private constructor (
         fun deactivateNotConfigured(deactivateNotConfigured: () -> Boolean) = apply { this.deactivateNotConfigured = deactivateNotConfigured() }
 
         fun build() = EnableAnnotationAttributes(
-                this.methods, this.match, this.debug, this.order, this.anonymousFallback,
+                this.className, this.methods, this.match, this.debug, this.order, this.anonymousFallback,
                 this.authentications, this.deactivateNotConfigured
         )
     }
