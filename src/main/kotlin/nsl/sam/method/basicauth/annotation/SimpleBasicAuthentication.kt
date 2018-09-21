@@ -1,3 +1,10 @@
 package nsl.sam.method.basicauth.annotation
 
-annotation class SimpleBasicAuthentication
+import org.springframework.beans.factory.annotation.Value
+
+@Target(AnnotationTarget.CLASS)
+annotation class SimpleBasicAuthentication (
+
+    val passwordsFilePropertyName: String = "sam.passwords-file"
+
+)

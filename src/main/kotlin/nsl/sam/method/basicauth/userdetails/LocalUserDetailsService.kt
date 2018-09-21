@@ -6,12 +6,9 @@ import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 
-class LocalUserDetailsService : UserDetailsService {
+class LocalUserDetailsService(@Autowired val usersSource: UsersSource) : UserDetailsService {
 
     companion object { val log by logger() }
-
-    @Autowired
-    lateinit var usersSource: UsersSource
 
     override fun loadUserByUsername(username: String): UserDetails {
         log.debug("Loading ${username} user")

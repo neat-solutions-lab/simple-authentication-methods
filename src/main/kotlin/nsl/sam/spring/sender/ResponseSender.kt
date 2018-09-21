@@ -1,4 +1,4 @@
-package nsl.sam.sender
+package nsl.sam.spring.sender
 
 import javax.servlet.http.HttpServletResponse
 

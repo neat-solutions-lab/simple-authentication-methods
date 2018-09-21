@@ -1,4 +1,4 @@
-package nsl.sam.sender
+package nsl.sam.spring.sender
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.http.HttpStatus

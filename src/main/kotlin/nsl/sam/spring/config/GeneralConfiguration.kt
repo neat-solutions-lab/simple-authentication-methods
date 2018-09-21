@@ -11,9 +11,10 @@ import nsl.sam.method.token.TokenAuthMethodInternalConfigurerFactory
 import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.method.token.localtokens.LocalFileTokensToUserMapper
 import nsl.sam.method.token.localtokens.LocalTokensSource
-import nsl.sam.sender.ResponseSender
-import nsl.sam.sender.UnauthenticatedAccessResponseSender
+import nsl.sam.spring.sender.ResponseSender
+import nsl.sam.spring.sender.UnauthenticatedAccessResponseSender
 import nsl.sam.spring.entrypoint.SimpleFailedAuthenticationEntryPoint
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -25,6 +26,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc
 @EnableWebMvc
 class GeneralConfiguration {
 
+    @Value("\${sam.passwords-file:}")
+    //lateinit var passwordsFile: String
+
+
     @Bean
     fun beanDefinitionRegistryPostProcessor(): BeanDefinitionRegistryPostProcessor {
         return BeanDefinitionRegistryPostProcessorImpl()
@@ -35,15 +40,15 @@ class GeneralConfiguration {
         return UnauthenticatedAccessResponseSender()
     }
 
-    @Bean
-    fun usersSource(): UsersSource {
-        return LocalFileUsersSource()
-    }
-
-    @Bean
-    fun localUsersDetailsService(): UserDetailsService {
-        return LocalUserDetailsService()
-    }
+//    @Bean
+//    fun usersSource(@Value("\${sam.passwords-file:}") passwordsFile: String): UsersSource {
+//        return LocalFileUsersSource(passwordsFile)
+//    }
+//
+//    @Bean
+//    fun localUsersDetailsService(usersSource: UsersSource): UserDetailsService {
+//        return LocalUserDetailsService(usersSource)
+//    }
 
     @Bean
     fun simpleAuthenticationEntryPointForHttpBasic(): AuthenticationEntryPoint {

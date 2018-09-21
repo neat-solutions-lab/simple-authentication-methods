@@ -2,16 +2,20 @@ package nsl.sam.method.basicauth
 
 import nsl.sam.configurer.AuthMethodInternalConfigurer
 import nsl.sam.configurer.AuthMethodInternalConfigurerFactory
+import nsl.sam.method.basicauth.userdetails.LocalFileUsersSource
+import nsl.sam.method.basicauth.userdetails.LocalUserDetailsService
+import nsl.sam.method.basicauth.userdetails.UsersSource
 import nsl.sam.spring.annotation.AuthenticationMethod
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Bean
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.AuthenticationEntryPoint
 
 class BasicAuthMethodInternalConfigurerFactory(override val name: String) : AuthMethodInternalConfigurerFactory {
 
-    @Autowired
-    lateinit var localUsersDetailsService: UserDetailsService
+    //@Autowired
+    //lateinit var localUsersDetailsService: UserDetailsService
 
     @Autowired
     lateinit var simpleAuthenticationEntryPoint: AuthenticationEntryPoint
@@ -30,11 +34,34 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
 
     override fun create(attributes: Any): AuthMethodInternalConfigurer {
 
+
+        /*
+         * To determine:
+         * - instance of UsersDetailsService (from Env)
+         * - instance UsersSource
+         * - configure UsersSource and pass it to UsersDetailsService
+         */
+
+        /*
+         *
+         */
+
+        //val usersSource = LocalFileUsersSource("src/functional-test/config/passwords.conf")
+        val usersSource = LocalFileUsersSource(passwordsFile)
+        val usersDetailsService = LocalUserDetailsService(usersSource)
+
         return BasicAuthMethodInternalConfigurer(
-                localUsersDetailsService,
+                usersDetailsService,
                 simpleAuthenticationEntryPoint,
                 passwordsFile,
                 serverAddress)
-    }
 
+
+
+//        return BasicAuthMethodInternalConfigurer(
+//                localUsersDetailsService,
+//                simpleAuthenticationEntryPoint,
+//                passwordsFile,
+//                serverAddress)
+    }
 }

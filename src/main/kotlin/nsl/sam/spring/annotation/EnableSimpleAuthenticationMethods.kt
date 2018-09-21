@@ -19,7 +19,8 @@ const val ENABLE_ANNOTATION_AUTHORIZATIONS_ATTRIBUTE_NAME = "authorizations"
  *
  * @param methods array of authentication methods to be enabled
  */
-@Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS)
+//@Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS)
+@Target(AnnotationTarget.CLASS)
 @Import(value =
     [
         DynamicImportBeanDefinitionRegistrar::class,

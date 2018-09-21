@@ -35,7 +35,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-//@RunWith(SpringRunner::class)
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc(secure = false)

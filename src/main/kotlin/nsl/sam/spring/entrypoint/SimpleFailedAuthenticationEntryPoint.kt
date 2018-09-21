@@ -1,7 +1,7 @@
 package nsl.sam.spring.entrypoint
 
 import nsl.sam.dto.UnauthenticatedResponseDto
-import nsl.sam.sender.ResponseSender
+import nsl.sam.spring.sender.ResponseSender
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
 import javax.servlet.http.HttpServletRequest
