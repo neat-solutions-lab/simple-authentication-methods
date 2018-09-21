@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value
 @Target(AnnotationTarget.CLASS)
 annotation class SimpleBasicAuthentication (
 
-    val passwordsFilePropertyName: String = "sam.passwords-file"
+    val passwordsFilePropertyName: String = "sam.passwords-file",
 
+    val passwordsFilePath: String = ""
 )

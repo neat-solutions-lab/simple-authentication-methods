@@ -46,7 +46,6 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
          *
          */
 
-        //val usersSource = LocalFileUsersSource("src/functional-test/config/passwords.conf")
         val usersSource = LocalFileUsersSource(passwordsFile)
         val usersDetailsService = LocalUserDetailsService(usersSource)
 
