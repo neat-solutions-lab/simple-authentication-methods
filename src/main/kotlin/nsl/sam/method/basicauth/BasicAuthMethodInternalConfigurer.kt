@@ -3,6 +3,7 @@ package nsl.sam.method.basicauth
 import nsl.sam.logger.logger
 import nsl.sam.method.basicauth.userdetails.LocalFileUsersImporter
 import nsl.sam.configurer.AuthMethodInternalConfigurer
+import nsl.sam.method.basicauth.userdetails.SourceAwareUserDetailsService
 import org.springframework.context.ApplicationContext
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -10,23 +11,15 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.AuthenticationEntryPoint
 
 class BasicAuthMethodInternalConfigurer(
-        private val localUsersDetailsService: UserDetailsService,
+        private val localUsersDetailsService: SourceAwareUserDetailsService,
         private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint,
-        private val passwordsFile: String,
         private val serverAddress: String) : AuthMethodInternalConfigurer {
 
     companion object { val log by logger() }
 
-    init {
-        /*
-         * if no specific UserDetailsService declared, then get the default one
-         * (declared by nsl.sam.default-user-details-service property)
-         */
-    }
-
     private var isActiveVariableAlreadyCalculated = false
-    private var isActiveValue = false
 
+    private var isActiveValue = false
 
     override fun configure(authBuilder: AuthenticationManagerBuilder) {
         if(!isActive()) return
@@ -34,13 +27,16 @@ class BasicAuthMethodInternalConfigurer(
     }
 
     private fun isActiveInternal(): Boolean {
-        if (passwordsFile.isBlank()) return false
+        if (!isAvailable()) return false
 
-        if(serverAddress in arrayOf("localhost", "127.0.0.1") && usersNumber() == 0L) {
+        if(serverAddress in arrayOf("localhost", "127.0.0.1") && localUsersDetailsService.usersNumber() == 0) {
             return false
         }
-
         return true
+    }
+
+    override fun isAvailable(): Boolean {
+        return this.localUsersDetailsService.isUsersSourceAvailable()
     }
 
     override fun isActive(): Boolean {
@@ -59,18 +55,6 @@ class BasicAuthMethodInternalConfigurer(
 
     override fun methodName(): String {
         return "Local Basic Auth Method"
-    }
-
-    private fun usersNumber() : Long {
-
-        val localUsersImporter = LocalFileUsersImporter(passwordsFile)
-        var usersCounter = 0L
-        while (localUsersImporter.hasNext()) {
-            usersCounter++
-            localUsersImporter.next()
-        }
-
-        return usersCounter
     }
 
 }

@@ -9,6 +9,7 @@ data class SimpleBasicAuthenticationAttributes(
 
     companion object {
         fun create(init: Builder.()->Unit) = Builder(init).build()
+        fun default() = SimpleBasicAuthenticationAttributes()
     }
 
     class Builder private constructor() {

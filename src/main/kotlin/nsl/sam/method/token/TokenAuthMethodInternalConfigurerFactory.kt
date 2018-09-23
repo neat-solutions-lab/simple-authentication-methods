@@ -5,6 +5,7 @@ import nsl.sam.configurer.AuthMethodInternalConfigurerFactory
 import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.spring.sender.ResponseSender
 import nsl.sam.spring.annotation.AuthenticationMethod
+import nsl.sam.spring.annotation.EnableAnnotationAttributes
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
@@ -28,7 +29,7 @@ class TokenAuthMethodInternalConfigurerFactory(override val name: String) : Auth
         return AuthenticationMethod.SIMPLE_TOKEN
     }
 
-    override fun create(attributes: Any): AuthMethodInternalConfigurer {
+    override fun create(attributes: EnableAnnotationAttributes): AuthMethodInternalConfigurer {
         return  TokenAuthMethodInternalConfigurer(tokensFilePath, serverAddress, tokenAuthenticator, unauthenticatedResponseSender)
     }
 }

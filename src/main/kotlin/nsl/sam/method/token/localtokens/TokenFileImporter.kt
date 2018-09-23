@@ -37,7 +37,8 @@ class TokenFileImporter(val path: String) : Closeable, Iterator<LocalToken> {
         val tokenValue = lineParts[0]
         val userName = lineParts[1]
 
-        val roles = if (lineParts.size > 2) lineParts.subList(2, lineParts.lastIndex+1) else listOf("USER")
+        //val roles = if (lineParts.size > 2) lineParts.subList(2, lineParts.lastIndex+1) else listOf("USER")
+        val roles = if (lineParts.size > 2) lineParts.subList(2, lineParts.lastIndex+1) else emptyList()
 
         return LocalToken(tokenValue, UserAndRoles(userName, roles.map { "ROLE_${it}" }.toTypedArray()))
     }

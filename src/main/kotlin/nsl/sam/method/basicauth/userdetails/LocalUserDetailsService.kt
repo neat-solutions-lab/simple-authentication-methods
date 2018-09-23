@@ -6,7 +6,15 @@ import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 
-class LocalUserDetailsService(@Autowired val usersSource: UsersSource) : UserDetailsService {
+class LocalUserDetailsService(@Autowired val usersSource: UsersSource) : SourceAwareUserDetailsService {
+
+    override fun usersNumber(): Int {
+        return usersSource.usersNumber()
+    }
+
+    override fun isUsersSourceAvailable(): Boolean {
+        return usersSource.isAvailable()
+    }
 
     companion object { val log by logger() }
 

@@ -8,10 +8,24 @@ import org.springframework.beans.factory.BeanFactoryAware
 import org.springframework.beans.factory.ListableBeanFactory
 import org.springframework.beans.factory.support.BeanDefinitionBuilder
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
+import org.springframework.cglib.proxy.Enhancer
+import org.springframework.cglib.proxy.MethodInterceptor
+import org.springframework.cglib.proxy.MethodProxy
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar
 import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.type.AnnotationMetadata
+import java.lang.reflect.InvocationHandler
+import java.lang.reflect.Method
 import kotlin.reflect.full.cast
+
+class ForwardingInterceptor: MethodInterceptor {
+    override fun intercept(obj: Any, method: Method, args: Array<out Any>, proxy: MethodProxy): Any {
+        return proxy.invokeSuper(obj, args)
+    }
+
+}
+
+
 
 class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanFactoryAware {
 
@@ -30,11 +44,40 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
 
+        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
+        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
+        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
+        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
+        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
+        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
+        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
+        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
+        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
+        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
+        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
+        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
+
         val annotationAttributes = getAnnotationAttributes(importingClassMetadata)
+
 
         val bd = BeanDefinitionBuilder.genericBeanDefinition(DynamicWebSecurityConfigurer::class.java).beanDefinition
         bd.propertyValues.add("enableAnnotationAttributes", annotationAttributes)
-        registry.registerBeanDefinition(DynamicWebSecurityConfigurer::class.qualifiedName!!, bd)
+        registry.registerBeanDefinition(
+                DynamicWebSecurityConfigurer::class.qualifiedName!!+annotationAttributes.order.toString(), bd
+        )
+
+
+//        val enhancer = Enhancer()
+//        enhancer.setSuperclass(DynamicWebSecurityConfigurer::class.java)
+//        enhancer.setCallbackType(ForwardingInterceptor::class.java)
+//        val enhancedClass = enhancer.createClass()
+//
+//
+//        val bd = BeanDefinitionBuilder.genericBeanDefinition(enhancedClass).beanDefinition
+//        bd.propertyValues.add("enableAnnotationAttributes", annotationAttributes)
+//        registry.registerBeanDefinition(
+//                enhancedClass.canonicalName, bd
+//        )
 
         println(">>>>>>>>>> annotationAttributes: $annotationAttributes")
     }
@@ -72,8 +115,8 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
     private fun getAnnotationAttributes(importingClassMetadata: AnnotationMetadata): EnableAnnotationAttributes {
 
         return EnableAnnotationAttributes.create {
-            className {
-                importingClassMetadata.className
+            annotationMetadata {
+                importingClassMetadata
             }
             methods {
                 AnnotationProcessor.getAnnotationAttributeValue(

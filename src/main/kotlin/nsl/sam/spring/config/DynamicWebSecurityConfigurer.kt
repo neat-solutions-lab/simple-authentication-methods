@@ -15,15 +15,17 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.util.Assert
 import javax.annotation.PostConstruct
 
-class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
+open class DynamicWebSecurityConfigurer(
+        private val configurersFactories: ConfigurersFactories,
+        private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint): WebSecurityConfigurerAdapter(), Ordered {
 
     companion object { val log by logger() }
 
-    @Autowired
-    lateinit var configurersFactories: ConfigurersFactories
+    //@Autowired
+    //lateinit var configurersFactories: ConfigurersFactories
 
-    @Autowired
-    lateinit var simpleAuthenticationEntryPoint: AuthenticationEntryPoint
+    //@Autowired
+    //lateinit var simpleAuthenticationEntryPoint: AuthenticationEntryPoint
 
     /**
      * NOTE: This property is "injected" with the help of DynamicImportBeanDefinitionRegistar,
@@ -52,6 +54,28 @@ class DynamicWebSecurityConfigurer: WebSecurityConfigurerAdapter(), Ordered {
     }
 
     override fun configure(http: HttpSecurity) {
+
+
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+        println("---> match: ${this.enableAnnotationAttributes.match}")
+
 
         if(this.enableAnnotationAttributes.match != "") {
             http.antMatcher(this.enableAnnotationAttributes.match)

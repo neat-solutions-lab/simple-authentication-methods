@@ -1,10 +1,13 @@
 package nsl.sam.spring.annotation
 
+import org.springframework.core.type.AnnotationMetadata
+import org.springframework.util.Assert
+
 /**
  * Represents attributes of [@EnableSimpleAuthentication] methods annotation
  */
 data class EnableAnnotationAttributes private constructor (
-        val className: String,
+        val annotationMetadata: AnnotationMetadata,
         val methods: Array<AuthenticationMethod>,
         val match: String,
         val debug: Boolean,
@@ -24,7 +27,7 @@ data class EnableAnnotationAttributes private constructor (
             init()
         }
 
-        var className = ""
+        var annotationMetadata: AnnotationMetadata? = null
         var methods: Array<AuthenticationMethod> = emptyArray()
         var match = ""
         var debug = false
@@ -33,7 +36,7 @@ data class EnableAnnotationAttributes private constructor (
         var authentications = ""
         var deactivateNotConfigured = false
 
-        fun className(className: () -> String) = apply {this.className = className()}
+        fun annotationMetadata(annotationMetadata: () -> AnnotationMetadata) = apply {this.annotationMetadata = annotationMetadata()}
 
         fun methods(methods: () -> Array<AuthenticationMethod>) = apply { this.methods = methods()}
 
@@ -49,10 +52,15 @@ data class EnableAnnotationAttributes private constructor (
 
         fun deactivateNotConfigured(deactivateNotConfigured: () -> Boolean) = apply { this.deactivateNotConfigured = deactivateNotConfigured() }
 
-        fun build() = EnableAnnotationAttributes(
-                this.className, this.methods, this.match, this.debug, this.order, this.anonymousFallback,
-                this.authentications, this.deactivateNotConfigured
-        )
+        fun build():EnableAnnotationAttributes {
+
+            Assert.notNull(this.annotationMetadata, "annotationMetadata cannot be null")
+
+            return EnableAnnotationAttributes(
+                    this.annotationMetadata!!, this.methods, this.match, this.debug, this.order, this.anonymousFallback,
+                    this.authentications, this.deactivateNotConfigured
+            )
+        }
     }
 
 }

@@ -27,7 +27,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc
 class GeneralConfiguration {
 
     @Value("\${sam.passwords-file:}")
-    //lateinit var passwordsFile: String
+    //lateinit var passwordsFilePath: String
 
 
     @Bean
@@ -41,8 +41,8 @@ class GeneralConfiguration {
     }
 
 //    @Bean
-//    fun usersSource(@Value("\${sam.passwords-file:}") passwordsFile: String): UsersSource {
-//        return LocalFileUsersSource(passwordsFile)
+//    fun usersSource(@Value("\${sam.passwords-file:}") passwordsFilePath: String): UsersSource {
+//        return LocalFileUsersSource(passwordsFilePath)
 //    }
 //
 //    @Bean
