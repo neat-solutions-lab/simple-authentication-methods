@@ -17,20 +17,6 @@ class RegistryPostprocessor: BeanDefinitionRegistryPostProcessor, BeanFactoryAwa
 
     override fun setBeanFactory(beanFactory: BeanFactory) {
         this.beanFactoryInstance = beanFactory
-        println("1111111111111111111111111111111")
-        println("1111111111111111111111111111111")
-        println("1111111111111111111111111111111")
-        println("1111111111111111111111111111111")
-        println("1111111111111111111111111111111")
-        println("1111111111111111111111111111111")
-        println("1111111111111111111111111111111")
-        println("1111111111111111111111111111111")
-        println("1111111111111111111111111111111")
-        println("1111111111111111111111111111111")
-        println("1111111111111111111111111111111")
-        println("1111111111111111111111111111111")
-        println("1111111111111111111111111111111")
-        println("1111111111111111111111111111111")
     }
 
     @Autowired
@@ -38,29 +24,9 @@ class RegistryPostprocessor: BeanDefinitionRegistryPostProcessor, BeanFactoryAwa
 
     override fun postProcessBeanFactory(beanFactory: ConfigurableListableBeanFactory) {
 
-        println("AAAAAAAAAAAAAAAAAAAAAAAA")
-        println("AAAAAAAAAAAAAAAAAAAAAAAA")
-        println("AAAAAAAAAAAAAAAAAAAAAAAA")
-        println("AAAAAAAAAAAAAAAAAAAAAAAA")
-        println("AAAAAAAAAAAAAAAAAAAAAAAA")
-        println("AAAAAAAAAAAAAAAAAAAAAAAA")
-        println("AAAAAAAAAAAAAAAAAAAAAAAA")
-        println("AAAAAAAAAAAAAAAAAAAAAAAA")
-
     }
 
     override fun postProcessBeanDefinitionRegistry(registry: BeanDefinitionRegistry) {
-
-        println("BBBBBBBBBBBBBBBBBBBBBBBBBBB")
-        println("BBBBBBBBBBBBBBBBBBBBBBBBBBB")
-        println("BBBBBBBBBBBBBBBBBBBBBBBBBBB")
-        println("BBBBBBBBBBBBBBBBBBBBBBBBBBB")
-        println("BBBBBBBBBBBBBBBBBBBBBBBBBBB")
-        println("BBBBBBBBBBBBBBBBBBBBBBBBBBB")
-        println("BBBBBBBBBBBBBBBBBBBBBBBBBBB")
-        println("BBBBBBBBBBBBBBBBBBBBBBBBBBB")
-        println("BBBBBBBBBBBBBBBBBBBBBBBBBBB")
-        println("BBBBBBBBBBBBBBBBBBBBBBBBBBB")
 
         val beanDefinitionOne = BeanDefinitionBuilder.genericBeanDefinition(SomeDynamicBean::class.java).beanDefinition
         beanDefinitionOne.propertyValues.add("someProperty", "one")
@@ -78,27 +44,7 @@ class RegistryPostprocessor: BeanDefinitionRegistryPostProcessor, BeanFactoryAwa
 
         val beanDefinitionThree = BeanDefinitionBuilder.genericBeanDefinition(AnotherDynamicBean::class.java) {
 
-//            appCtx.beanDefinitionNames.forEach {
-//                println(it)
-//            }
-
             ListableBeanFactory::class.cast(beanFactoryInstance).beanDefinitionNames.forEach { println(it) }
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
-            println("CCCCCCCCCCCCCCCCCCCCCCCc")
             AnotherDynamicBean("bla")
         }
         registry.registerBeanDefinition("three", beanDefinitionThree.beanDefinition)

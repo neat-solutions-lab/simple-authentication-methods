@@ -1,11 +1,13 @@
 package nsl.sam.spring.config
 
 import nsl.sam.annotation.AnnotationProcessor
+import nsl.sam.configurer.ConfigurersFactories
 import nsl.sam.logger.logger
 import nsl.sam.spring.annotation.*
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.BeanFactoryAware
 import org.springframework.beans.factory.ListableBeanFactory
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory
 import org.springframework.beans.factory.support.BeanDefinitionBuilder
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.cglib.proxy.Enhancer
@@ -14,11 +16,13 @@ import org.springframework.cglib.proxy.MethodProxy
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar
 import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.type.AnnotationMetadata
+import org.springframework.security.web.AuthenticationEntryPoint
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
 import kotlin.reflect.full.cast
 
 class ForwardingInterceptor: MethodInterceptor {
+
     override fun intercept(obj: Any, method: Method, args: Array<out Any>, proxy: MethodProxy): Any {
         return proxy.invokeSuper(obj, args)
     }
@@ -44,26 +48,19 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
 
-        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
-        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
-        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
-        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
-        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
-        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
-        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
-        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
-        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
-        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
-        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
-        println("!!!!!!!!!!!!!!! import called for ${importingClassMetadata.className}")
 
         val annotationAttributes = getAnnotationAttributes(importingClassMetadata)
 
 
-        val bd = BeanDefinitionBuilder.genericBeanDefinition(DynamicWebSecurityConfigurer::class.java).beanDefinition
+        //val bd = BeanDefinitionBuilder.genericBeanDefinition(DynamicWebSecurityConfigurer::class.java).beanDefinition
+        val bd = BeanDefinitionBuilder.genericBeanDefinition(DynamicWebSecurityConfigurer::class.java){
+            val configurersFactories = listableBeanFactory.getBean(ConfigurersFactories::class.java)
+            var simpleAuthenticationEntryPoint = listableBeanFactory.getBean(AuthenticationEntryPoint::class.java)
+            DynamicWebSecurityConfigurer(configurersFactories, simpleAuthenticationEntryPoint)
+        }.beanDefinition
         bd.propertyValues.add("enableAnnotationAttributes", annotationAttributes)
         registry.registerBeanDefinition(
-                DynamicWebSecurityConfigurer::class.qualifiedName!!+annotationAttributes.order.toString(), bd
+                DynamicWebSecurityConfigurer::class.java.canonicalName, bd
         )
 
 
@@ -72,8 +69,14 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 //        enhancer.setCallbackType(ForwardingInterceptor::class.java)
 //        val enhancedClass = enhancer.createClass()
 //
+//        BeanDefinitionBuilder.genericBeanDefinition()
 //
-//        val bd = BeanDefinitionBuilder.genericBeanDefinition(enhancedClass).beanDefinition
+//        val bd = BeanDefinitionBuilder.genericBeanDefinition(enhancedClass){
+//            val configurersFactories = listableBeanFactory.getBean(ConfigurersFactories::class.java)
+//            val simpleAuthenticationEntryPoint = listableBeanFactory.getBean(AuthenticationEntryPoint::class.java)
+//            val constructor = enhancedClass.getConstructor(ConfigurersFactories::class.java, AuthenticationEntryPoint::class.java)
+//            constructor.newInstance(configurersFactories, simpleAuthenticationEntryPoint)
+//        }.beanDefinition
 //        bd.propertyValues.add("enableAnnotationAttributes", annotationAttributes)
 //        registry.registerBeanDefinition(
 //                enhancedClass.canonicalName, bd

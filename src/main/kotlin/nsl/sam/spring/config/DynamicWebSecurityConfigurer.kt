@@ -15,6 +15,7 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.util.Assert
 import javax.annotation.PostConstruct
 
+
 open class DynamicWebSecurityConfigurer(
         private val configurersFactories: ConfigurersFactories,
         private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint): WebSecurityConfigurerAdapter(), Ordered {
