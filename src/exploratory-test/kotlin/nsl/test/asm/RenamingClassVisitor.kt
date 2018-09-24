@@ -2,14 +2,14 @@ package nsl.test.asm
 
 import org.springframework.asm.*
 
-class RenamingClassVisitor(flags: Int, visitor: ClassVisitor): ClassVisitor(flags, visitor) {
+class RenamingClassVisitor(private val newName: String, flags: Int, visitor: ClassVisitor): ClassVisitor(flags, visitor) {
 
     override fun visit(version: Int, access: Int, name: String?, signature: String?, superName: String?, interfaces: Array<out String>?) {
         println(">>> visit()")
         println("version: $version, access: $access, name: $name, signature: $signature, superName: $superName, interfaces: $interfaces")
         println("interfaces size: ${interfaces?.size}")
         interfaces?.forEach { println("interface: $it") }
-        super.visit(version, access, name+"001", signature, superName, interfaces)
+        super.visit(version, access, newName.replace('.', '/'), signature, superName, interfaces)
 
     }
 

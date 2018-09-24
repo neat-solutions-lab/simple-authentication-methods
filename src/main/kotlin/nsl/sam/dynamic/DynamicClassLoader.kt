@@ -1,4 +1,4 @@
-package nsl.test.asm
+package nsl.sam.dynamic
 
 class DynamicClassLoader: ClassLoader() {
     fun defineClass(name:String, bytesArray: ByteArray): Class<*> {

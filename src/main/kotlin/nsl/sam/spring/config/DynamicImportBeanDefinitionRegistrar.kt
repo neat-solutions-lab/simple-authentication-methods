@@ -2,6 +2,7 @@ package nsl.sam.spring.config
 
 import nsl.sam.annotation.AnnotationProcessor
 import nsl.sam.configurer.ConfigurersFactories
+import nsl.sam.dynamic.RenamedClassProvider
 import nsl.sam.logger.logger
 import nsl.sam.spring.annotation.*
 import org.springframework.beans.factory.BeanFactory
@@ -16,9 +17,11 @@ import org.springframework.cglib.proxy.MethodProxy
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar
 import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.type.AnnotationMetadata
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.web.AuthenticationEntryPoint
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
+import java.util.*
 import kotlin.reflect.full.cast
 
 class ForwardingInterceptor: MethodInterceptor {
@@ -48,42 +51,67 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
 
-
         val annotationAttributes = getAnnotationAttributes(importingClassMetadata)
 
-
         //val bd = BeanDefinitionBuilder.genericBeanDefinition(DynamicWebSecurityConfigurer::class.java).beanDefinition
-        val bd = BeanDefinitionBuilder.genericBeanDefinition(DynamicWebSecurityConfigurer::class.java){
+        val dynamicClass = RenamedClassProvider.getRenamedClass(
+                DynamicWebSecurityConfigurer::class.java,
+                DynamicWebSecurityConfigurer::class.java.canonicalName + Random().nextInt(10000)
+        )
+        val bd = BeanDefinitionBuilder.genericBeanDefinition(dynamicClass as Class<WebSecurityConfigurerAdapter>){
             val configurersFactories = listableBeanFactory.getBean(ConfigurersFactories::class.java)
             var simpleAuthenticationEntryPoint = listableBeanFactory.getBean(AuthenticationEntryPoint::class.java)
-            DynamicWebSecurityConfigurer(configurersFactories, simpleAuthenticationEntryPoint)
+            val constructor = dynamicClass.getConstructor(ConfigurersFactories::class.java, AuthenticationEntryPoint::class.java)
+            constructor.newInstance(configurersFactories, simpleAuthenticationEntryPoint)
         }.beanDefinition
         bd.propertyValues.add("enableAnnotationAttributes", annotationAttributes)
         registry.registerBeanDefinition(
-                DynamicWebSecurityConfigurer::class.java.canonicalName, bd
+                dynamicClass.canonicalName, bd
         )
-
-
-//        val enhancer = Enhancer()
-//        enhancer.setSuperclass(DynamicWebSecurityConfigurer::class.java)
-//        enhancer.setCallbackType(ForwardingInterceptor::class.java)
-//        val enhancedClass = enhancer.createClass()
-//
-//        BeanDefinitionBuilder.genericBeanDefinition()
-//
-//        val bd = BeanDefinitionBuilder.genericBeanDefinition(enhancedClass){
-//            val configurersFactories = listableBeanFactory.getBean(ConfigurersFactories::class.java)
-//            val simpleAuthenticationEntryPoint = listableBeanFactory.getBean(AuthenticationEntryPoint::class.java)
-//            val constructor = enhancedClass.getConstructor(ConfigurersFactories::class.java, AuthenticationEntryPoint::class.java)
-//            constructor.newInstance(configurersFactories, simpleAuthenticationEntryPoint)
-//        }.beanDefinition
-//        bd.propertyValues.add("enableAnnotationAttributes", annotationAttributes)
-//        registry.registerBeanDefinition(
-//                enhancedClass.canonicalName, bd
-//        )
 
         println(">>>>>>>>>> annotationAttributes: $annotationAttributes")
     }
+
+
+
+//    override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
+//
+//
+//        val annotationAttributes = getAnnotationAttributes(importingClassMetadata)
+//
+//
+//        //val bd = BeanDefinitionBuilder.genericBeanDefinition(DynamicWebSecurityConfigurer::class.java).beanDefinition
+//        val bd = BeanDefinitionBuilder.genericBeanDefinition(DynamicWebSecurityConfigurer::class.java){
+//            val configurersFactories = listableBeanFactory.getBean(ConfigurersFactories::class.java)
+//            var simpleAuthenticationEntryPoint = listableBeanFactory.getBean(AuthenticationEntryPoint::class.java)
+//            DynamicWebSecurityConfigurer(configurersFactories, simpleAuthenticationEntryPoint)
+//        }.beanDefinition
+//        bd.propertyValues.add("enableAnnotationAttributes", annotationAttributes)
+//        registry.registerBeanDefinition(
+//                DynamicWebSecurityConfigurer::class.java.canonicalName, bd
+//        )
+//
+//
+////        val enhancer = Enhancer()
+////        enhancer.setSuperclass(DynamicWebSecurityConfigurer::class.java)
+////        enhancer.setCallbackType(ForwardingInterceptor::class.java)
+////        val enhancedClass = enhancer.createClass()
+////
+////        BeanDefinitionBuilder.genericBeanDefinition()
+////
+////        val bd = BeanDefinitionBuilder.genericBeanDefinition(enhancedClass){
+////            val configurersFactories = listableBeanFactory.getBean(ConfigurersFactories::class.java)
+////            val simpleAuthenticationEntryPoint = listableBeanFactory.getBean(AuthenticationEntryPoint::class.java)
+////            val constructor = enhancedClass.getConstructor(ConfigurersFactories::class.java, AuthenticationEntryPoint::class.java)
+////            constructor.newInstance(configurersFactories, simpleAuthenticationEntryPoint)
+////        }.beanDefinition
+////        bd.propertyValues.add("enableAnnotationAttributes", annotationAttributes)
+////        registry.registerBeanDefinition(
+////                enhancedClass.canonicalName, bd
+////        )
+//
+//        println(">>>>>>>>>> annotationAttributes: $annotationAttributes")
+//    }
 
     private fun matchesSimpleNoMethod(method: AuthenticationMethod): Boolean {
         return method == AuthenticationMethod.SIMPLE_NO_METHOD
