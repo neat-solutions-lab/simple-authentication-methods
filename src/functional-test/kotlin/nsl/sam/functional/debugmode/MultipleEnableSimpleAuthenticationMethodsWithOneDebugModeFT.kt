@@ -64,15 +64,15 @@ class MultipleEnableSimpleAuthenticationMethodsWithOneDebugModeFT {
 
 
     @Configuration
-    @EnableSimpleAuthenticationMethods
+    @EnableSimpleAuthenticationMethods(order = 10)
     class EnableDefaultModeConfiguration
 
     @Configuration
-    @EnableSimpleAuthenticationMethods(debug = false)
+    @EnableSimpleAuthenticationMethods(debug = false, order = 20)
     class EnableNoDebugModeConfiguration
 
     @Configuration
-    @EnableSimpleAuthenticationMethods(debug = true)
+    @EnableSimpleAuthenticationMethods(debug = true, order = 30)
     class EnableDebugModeConfiguration
 
 }

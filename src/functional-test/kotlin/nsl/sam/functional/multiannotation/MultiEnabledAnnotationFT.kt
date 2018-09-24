@@ -38,10 +38,10 @@ class MultiEnabledAnnotationFT {
     }
 
     @Configuration
-    @EnableSimpleAuthenticationMethods(debug = false)
+    @EnableSimpleAuthenticationMethods(debug = false, order = 10)
     class FirstEnablingConfiguration
 
     @Configuration
-    @EnableSimpleAuthenticationMethods(debug = true)
+    @EnableSimpleAuthenticationMethods(debug = true, order = 20)
     class SecondEnablingConfiguration
 }

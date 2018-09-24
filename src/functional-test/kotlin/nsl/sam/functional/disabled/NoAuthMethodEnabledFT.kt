@@ -58,7 +58,7 @@ class NoAuthMethodEnabledFT {
 
     @Test
     fun webSecurityConfigurerBeanPresent() {
-        this.ctx.getBean(DynamicWebSecurityConfigurer::class.java)
+        this.ctx.getBean(WebSecurityConfigurerAdapter::class.java)
     }
 
     //
