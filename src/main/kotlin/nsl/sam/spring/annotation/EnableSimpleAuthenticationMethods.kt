@@ -49,7 +49,7 @@ annotation class EnableSimpleAuthenticationMethods(
          */
         val match: String = "",
 
-        val order: Int = 100,
+        val order: Int = -1,
 
         val authorizations: String = "",
 

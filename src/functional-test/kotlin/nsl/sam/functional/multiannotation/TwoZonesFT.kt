@@ -8,6 +8,7 @@ import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.spring.config.DynamicWebSecurityConfigurer
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,13 +34,20 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 @TestPropertySource(properties = [
     "sam.zone-one-passwords=src/functional-test/config/passwords-zone-one.conf",
     "sam.zone-two-passwords=src/functional-test/config/passwords-zone-two.conf"])
-class TwoZonesTest {
+class TwoZonesFT {
 
     @Autowired
     lateinit var appCtx: ApplicationContext
 
     @Autowired
     private lateinit var mvc: MockMvc
+
+    @Test
+    @Disabled("Only for 'manual' execution (from IDE)")
+    fun printDynamicConfigurators() {
+        val dynamicConfigurers = appCtx.getBeansOfType(WebSecurityConfigurerAdapter::class.java)
+        dynamicConfigurers.forEach { println("dynamic configurer: $it") }
+    }
 
     @Test
     fun callZoneOneAsAuthorizedUser() {
@@ -92,7 +100,6 @@ class TwoZonesTest {
     @Test
     fun twoDynamicConfigurersWhenTwoEnableAnnotations() {
         val dynamicConfigurers = appCtx.getBeansOfType(WebSecurityConfigurerAdapter::class.java)
-        dynamicConfigurers.forEach { println("dynamic configurer: $it") }
         val beanNames = dynamicConfigurers.keys
 
         assertThat(dynamicConfigurers.size).isEqualTo(2)
