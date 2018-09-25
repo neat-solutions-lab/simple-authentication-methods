@@ -22,12 +22,6 @@ open class DynamicWebSecurityConfigurer(
 
     companion object { val log by logger() }
 
-    //@Autowired
-    //lateinit var configurersFactories: ConfigurersFactories
-
-    //@Autowired
-    //lateinit var simpleAuthenticationEntryPoint: AuthenticationEntryPoint
-
     /**
      * NOTE: This property is "injected" with the help of DynamicImportBeanDefinitionRegistar,
      * it holds values of attributes used with [nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods]
@@ -55,28 +49,6 @@ open class DynamicWebSecurityConfigurer(
     }
 
     override fun configure(http: HttpSecurity) {
-
-
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-        println("---> match: ${this.enableAnnotationAttributes.match}")
-
 
         if(this.enableAnnotationAttributes.match != "") {
             http.antMatcher(this.enableAnnotationAttributes.match)
@@ -114,6 +86,7 @@ open class DynamicWebSecurityConfigurer(
     }
 
     private fun activateAuthenticationMechanisms(http: HttpSecurity) {
+
         http.authorizeRequests().anyRequest().fullyAuthenticated()
 
         authMethodInternalConfigurers.filter {

@@ -8,11 +8,7 @@ import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import org.assertj.core.api.Assertions as Assertj
 import org.hamcrest.Matchers.equalTo
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
-//import org.junit.Rule
-//import org.junit.Test
 import org.junit.jupiter.api.extension.ExtendWith
 //import org.junit.rules.ExpectedException
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
