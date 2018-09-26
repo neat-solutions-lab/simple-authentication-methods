@@ -6,7 +6,7 @@ import nsl.sam.dynamic.RenamedClassProvider
 import nsl.sam.logger.logger
 import nsl.sam.sequencer.ClassNameSuffixSequencer
 import nsl.sam.spring.annotation.*
-import nsl.sam.spring.config.ordering.ConfigurationsOrderingHelper
+import nsl.sam.spring.config.ordering.ConfigurationsOrderingRepository
 import nsl.sam.spring.config.ordering.ReservedNumbersFinder
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.BeanFactoryAware
@@ -22,6 +22,7 @@ import kotlin.reflect.full.cast
 class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanFactoryAware {
 
     companion object {
+        const val CONFIGURATIONS_ORDERING_HELPER_NAME = "ENABLE-ORDERING-HELPER"
         val log by logger()
     }
 
@@ -33,19 +34,12 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
 
-        val configurationsOrderingHelper = ConfigurationsOrderingHelper("enable-order")
-        val orderingHelper = configurationsOrderingHelper.getObj()
+        val orderingHelper = ConfigurationsOrderingRepository.get(CONFIGURATIONS_ORDERING_HELPER_NAME)
         if(!orderingHelper.isAlreadyInitializedWithRestrictedList) {
             val reservedNumbersFinder = ReservedNumbersFinder(listableBeanFactory)
             val reservedNumbers = reservedNumbersFinder.findReservedNumbers()
             orderingHelper.initializeWithRestrictedList(reservedNumbers)
         }
-
-//        if(!ConfigurationsOrderingManager.isAlreadyInitializedWithRestrictedList) {
-//            val reservedNumbersFinder = ReservedNumbersFinder(listableBeanFactory)
-//            val reservedNumbers = reservedNumbersFinder.findReservedNumbers()
-//            ConfigurationsOrderingManager.initializeWithRestrictedList(reservedNumbers)
-//        }
 
         val annotationAttributes = getAnnotationAttributes(importingClassMetadata)
         log.debug("annotation attributes for ${importingClassMetadata.className}: $annotationAttributes")
@@ -105,10 +99,7 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
                         Int::class
                 )
                 if(value == -1) {
-                    val configurationsOrderingHelper = ConfigurationsOrderingHelper("enable-order")
-                    val orderingHelper = configurationsOrderingHelper.getObj()
-                    orderingHelper.getNextNumber()
-                    //ConfigurationsOrderingManager.getNextNumber()
+                    ConfigurationsOrderingRepository.get(CONFIGURATIONS_ORDERING_HELPER_NAME).getNextNumber()
                 } else {
                     value
                 }

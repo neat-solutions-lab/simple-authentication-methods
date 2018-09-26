@@ -1,8 +1,6 @@
 package nsl.sam.spring.config.ordering
 
-import java.util.*
-
-open class OrderingManager(initialValue: Int = 0, private val delta: Int = 1) {
+class OrderingHelper(initialValue: Int = 0, private val delta: Int = 1) {
 
     private val consumedNumbers: MutableList<Int> = mutableListOf()
     private var currentAutoNumber = initialValue

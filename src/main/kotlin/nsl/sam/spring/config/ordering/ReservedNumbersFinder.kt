@@ -49,6 +49,4 @@ class ReservedNumbersFinder(val listableBeanFactory: ListableBeanFactory) {
         val orderValue = annotationAttributes?.get("order") as Int?
         return orderValue ?: -1
     }
-
-
 }

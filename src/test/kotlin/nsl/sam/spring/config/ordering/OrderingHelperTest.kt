@@ -5,11 +5,11 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 
-internal class OrderingManagerTest {
+internal class OrderingHelperTest {
 
     @Test
     fun occupyNumber() {
-        val orderingManager = OrderingManager()
+        val orderingManager = OrderingHelper()
         (1..100).forEach { orderingManager.occupyNumber(it) }
         val value = orderingManager.getNextNumber()
         assertThat(value).isEqualTo(101)
@@ -17,7 +17,7 @@ internal class OrderingManagerTest {
 
     @Test
     fun getNextNumber() {
-        val orderingManager = OrderingManager()
+        val orderingManager = OrderingHelper()
         for(i in 1..100) {
             orderingManager.getNextNumber()
         }
@@ -27,7 +27,7 @@ internal class OrderingManagerTest {
 
     @Test
     fun cannotOccupyAlreadyReturnedValue() {
-        val orderingManager = OrderingManager()
+        val orderingManager = OrderingHelper()
         orderingManager.getNextNumber()
         assertThrows(IllegalStateException::class.java) {
             orderingManager.occupyNumber(1)

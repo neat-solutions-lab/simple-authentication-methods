@@ -14,4 +14,8 @@ object GlobalStaticStore {
         return objectsStore[key]
     }
 
+    fun remove(key: String) {
+        objectsStore.remove(key)
+    }
+
 }
