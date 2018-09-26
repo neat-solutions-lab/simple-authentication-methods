@@ -1,6 +1,6 @@
 package nsl.sam.util
 
-abstract class GlobalObjectWrapper<T:Any> private constructor() {
+abstract class AbstractSharingBox<T:Any> private constructor() {
 
     private lateinit var wrappedObj: T
     private lateinit var key: String

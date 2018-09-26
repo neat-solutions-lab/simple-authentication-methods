@@ -6,7 +6,7 @@ import nsl.sam.dynamic.RenamedClassProvider
 import nsl.sam.logger.logger
 import nsl.sam.sequencer.ClassNameSuffixSequencer
 import nsl.sam.spring.annotation.*
-import nsl.sam.spring.config.ordering.ConfigurationsOrderingManager
+import nsl.sam.spring.config.ordering.ConfigurationsOrderingHelper
 import nsl.sam.spring.config.ordering.ReservedNumbersFinder
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.BeanFactoryAware
@@ -33,11 +33,19 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
 
-        if(!ConfigurationsOrderingManager.isAlreadyInitializedWithRestrictedList) {
+        val configurationsOrderingHelper = ConfigurationsOrderingHelper("enable-order")
+        val orderingHelper = configurationsOrderingHelper.getObj()
+        if(!orderingHelper.isAlreadyInitializedWithRestrictedList) {
             val reservedNumbersFinder = ReservedNumbersFinder(listableBeanFactory)
             val reservedNumbers = reservedNumbersFinder.findReservedNumbers()
-            ConfigurationsOrderingManager.initializeWithRestrictedList(reservedNumbers)
+            orderingHelper.initializeWithRestrictedList(reservedNumbers)
         }
+
+//        if(!ConfigurationsOrderingManager.isAlreadyInitializedWithRestrictedList) {
+//            val reservedNumbersFinder = ReservedNumbersFinder(listableBeanFactory)
+//            val reservedNumbers = reservedNumbersFinder.findReservedNumbers()
+//            ConfigurationsOrderingManager.initializeWithRestrictedList(reservedNumbers)
+//        }
 
         val annotationAttributes = getAnnotationAttributes(importingClassMetadata)
         log.debug("annotation attributes for ${importingClassMetadata.className}: $annotationAttributes")
@@ -97,7 +105,10 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
                         Int::class
                 )
                 if(value == -1) {
-                    ConfigurationsOrderingManager.getNextNumber()
+                    val configurationsOrderingHelper = ConfigurationsOrderingHelper("enable-order")
+                    val orderingHelper = configurationsOrderingHelper.getObj()
+                    orderingHelper.getNextNumber()
+                    //ConfigurationsOrderingManager.getNextNumber()
                 } else {
                     value
                 }
