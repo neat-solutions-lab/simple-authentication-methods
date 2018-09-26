@@ -5,20 +5,20 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 
-internal class ConfigurationOrderingManagerTest {
+internal class ConfigurationsOrderingManagerTest {
 
     @Test
     fun occupyNumber() {
-        val value = ConfigurationOrderingManager.getNextNumber()
+        val value = ConfigurationsOrderingManager.getNextNumber()
         assertThrows(IllegalStateException::class.java) {
-            ConfigurationOrderingManager.occupyNumber(value)
+            ConfigurationsOrderingManager.occupyNumber(value)
         }
     }
 
     @Test
     fun getNextNumber() {
-        val firstValue = ConfigurationOrderingManager.getNextNumber()
-        val secondValue = ConfigurationOrderingManager.getNextNumber()
+        val firstValue = ConfigurationsOrderingManager.getNextNumber()
+        val secondValue = ConfigurationsOrderingManager.getNextNumber()
         assertThat(secondValue).isGreaterThan(firstValue)
     }
 }

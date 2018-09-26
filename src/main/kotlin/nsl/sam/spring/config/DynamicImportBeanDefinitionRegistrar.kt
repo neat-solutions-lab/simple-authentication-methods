@@ -6,8 +6,7 @@ import nsl.sam.dynamic.RenamedClassProvider
 import nsl.sam.logger.logger
 import nsl.sam.sequencer.ClassNameSuffixSequencer
 import nsl.sam.spring.annotation.*
-import nsl.sam.spring.config.ordering.AnnotationOrderNumbersAnalyser
-import nsl.sam.spring.config.ordering.ConfigurationOrderingManager
+import nsl.sam.spring.config.ordering.ConfigurationsOrderingManager
 import nsl.sam.spring.config.ordering.ReservedNumbersFinder
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.BeanFactoryAware
@@ -34,14 +33,11 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
 
-        if(!ConfigurationOrderingManager.isAlreadyInitializedWithRestrictedList) {
+        if(!ConfigurationsOrderingManager.isAlreadyInitializedWithRestrictedList) {
             val reservedNumbersFinder = ReservedNumbersFinder(listableBeanFactory)
             val reservedNumbers = reservedNumbersFinder.findReservedNumbers()
-            ConfigurationOrderingManager.initializeWithRestrictedList(reservedNumbers)
+            ConfigurationsOrderingManager.initializeWithRestrictedList(reservedNumbers)
         }
-
-        val annotationOrderNumbersAnalyser = AnnotationOrderNumbersAnalyser()
-        annotationOrderNumbersAnalyser.analyse(listableBeanFactory)
 
         val annotationAttributes = getAnnotationAttributes(importingClassMetadata)
         log.debug("annotation attributes for ${importingClassMetadata.className}: $annotationAttributes")
@@ -101,7 +97,7 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
                         Int::class
                 )
                 if(value == -1) {
-                    ConfigurationOrderingManager.getNextNumber()
+                    ConfigurationsOrderingManager.getNextNumber()
                 } else {
                     value
                 }
