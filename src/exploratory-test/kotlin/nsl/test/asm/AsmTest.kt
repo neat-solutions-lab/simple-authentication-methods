@@ -1,6 +1,6 @@
 package nsl.test.asm
 
-import nsl.sam.dynamic.DynamicClassLoader
+import nsl.sam.instrumentation.InstrumentedClassLoader
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.springframework.asm.ClassReader
@@ -24,7 +24,7 @@ class AsmTest {
 
         cr.accept(renamingClassVisitor, 0)
 
-        val testClass = DynamicClassLoader().defineClass(
+        val testClass = InstrumentedClassLoader().defineClass(
                 "nsl.sam.spring.config.DynamicWebSecurityConfigurer001", cw.toByteArray()
         )
         println("testClass: ${testClass}")
@@ -45,7 +45,7 @@ class AsmTest {
         val classReader = ClassReader("nsl.sam.spring.config.DynamicWebSecurityConfigurerTemplate")
         classReader.accept(classVisitor, 0)
 
-        val testClass = DynamicClassLoader().defineClass(
+        val testClass = InstrumentedClassLoader().defineClass(
                 "nsl.sam.spring.config.DynamicWebSecurityConfigurer001", classWriter.toByteArray()
         )
 

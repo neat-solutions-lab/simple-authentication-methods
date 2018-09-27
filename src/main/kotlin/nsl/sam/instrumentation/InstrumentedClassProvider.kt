@@ -1,8 +1,8 @@
-package nsl.sam.dynamic
+package nsl.sam.instrumentation
 
-object RenamedClassProvider {
+object InstrumentedClassProvider {
 
-    private val dynamicClassLoader = DynamicClassLoader()
+    private val dynamicClassLoader = InstrumentedClassLoader()
 
     fun getRenamedClass(originalClass: Class<*>, newName: String): Class<*> {
         val renamedClassBytesSource = RenamedClassBytesSource(newName, originalClass)

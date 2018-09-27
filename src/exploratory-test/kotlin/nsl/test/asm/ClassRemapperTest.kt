@@ -1,7 +1,6 @@
 package nsl.test.asm
 
-import nsl.sam.dynamic.DynamicClassLoader
-import org.junit.jupiter.api.DynamicContainer
+import nsl.sam.instrumentation.InstrumentedClassLoader
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.objectweb.asm.ClassWriter
@@ -24,7 +23,7 @@ class ClassRemapperTest {
         val classReader = ClassReader(DummyObject::class.java.canonicalName)
         classReader.accept(classRemapper, 0)
 
-        val resultClass = DynamicClassLoader().defineClass("changed.ObjName", classWriter.toByteArray())
+        val resultClass = InstrumentedClassLoader().defineClass("changed.ObjName", classWriter.toByteArray())
         println("resultClass: $resultClass")
 
 

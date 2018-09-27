@@ -1,14 +1,14 @@
-package nsl.sam.dynamic
+package nsl.sam.instrumentation
 
 import nsl.sam.spring.config.DynamicWebSecurityConfigurerTemplate
 import org.junit.jupiter.api.Test
 
-internal class RenamedClassProviderTest {
+internal class InstrumentedClassProviderTest {
 
     @Test
     fun getRenamedClass() {
 
-        val changedClass = RenamedClassProvider.getRenamedClass(DynamicWebSecurityConfigurerTemplate::class.java, "changed.name")
+        val changedClass = InstrumentedClassProvider.getRenamedClass(DynamicWebSecurityConfigurerTemplate::class.java, "changed.name")
 
         println("changedClass: $changedClass")
 
@@ -24,7 +24,7 @@ internal class RenamedClassProviderTest {
         val dummyObj = DummyObject("one", "two")
         println("dummyObj: $dummyObj")
 
-        val renamedDummyObjClass = RenamedClassProvider.getRenamedClass(DummyObject::class.java, "some.changed.Obj")
+        val renamedDummyObjClass = InstrumentedClassProvider.getRenamedClass(DummyObject::class.java, "some.changed.Obj")
         println("renamedDummyObjClass: ${renamedDummyObjClass}")
 
         //val cons = renamedDummyObjClass.getConstructor(String::class.java, String::class.java)

@@ -1,10 +1,9 @@
-package nsl.sam.dynamic
+package nsl.sam.instrumentation
 
 import org.objectweb.asm.commons.ClassRemapper
 import org.objectweb.asm.commons.SimpleRemapper
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
-import org.objectweb.asm.Opcodes.ASM6
 
 class RenamedClassBytesSource(val newName: String, val originalClass: Class<*>) {
 

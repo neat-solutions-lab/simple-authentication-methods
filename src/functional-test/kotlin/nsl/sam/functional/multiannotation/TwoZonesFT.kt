@@ -46,7 +46,7 @@ class TwoZonesFT {
     @Disabled("Only for 'manual' execution (from IDE)")
     fun printDynamicConfigurators() {
         val dynamicConfigurers = appCtx.getBeansOfType(WebSecurityConfigurerAdapter::class.java)
-        dynamicConfigurers.forEach { println("dynamic configurer: $it") }
+        dynamicConfigurers.forEach { println("instrumentation configurer: $it") }
     }
 
     @Test

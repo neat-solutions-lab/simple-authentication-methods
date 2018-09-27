@@ -24,7 +24,7 @@ class NoEnableSimpleAuthenticationMethodsAnnotationAtAllFT {
     lateinit var applicationContext: ApplicationContext
 
 
-    //TODO: After introduction of dynamic configurators this test shuld pass
+    //TODO: After introduction of instrumentation configurators this test shuld pass
     @Disabled
     @Test
     fun noBeanWithEnableWebSecurityAnnotationInApplicationContext() {

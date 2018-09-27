@@ -22,7 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
  *      <li>BasicAuthConfiguration bean not present in ApplicationContext</li>
  *  </ul>
  */
-//TODO: Finish this test after dynamic web configurators are finished.
+//TODO: Finish this test after instrumentation web configurators are finished.
 //@RunWith(SpringRunner::class)
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)

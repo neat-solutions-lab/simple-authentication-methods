@@ -34,7 +34,7 @@ class MultiEnabledAnnotationFT {
     @Test
     @Disabled
     fun twoDynamicallyCreatedWebSecurityConfigurers() {
-        // TODO: Finish when dynamic configurers start working properly.
+        // TODO: Finish when instrumentation configurers start working properly.
     }
 
     @Configuration

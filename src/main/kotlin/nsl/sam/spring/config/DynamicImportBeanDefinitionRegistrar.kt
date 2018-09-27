@@ -2,7 +2,7 @@ package nsl.sam.spring.config
 
 import nsl.sam.annotation.AnnotationProcessor
 import nsl.sam.configurer.ConfigurersFactories
-import nsl.sam.dynamic.RenamedClassProvider
+import nsl.sam.instrumentation.InstrumentedClassProvider
 import nsl.sam.logger.logger
 import nsl.sam.spring.annotation.*
 import nsl.sam.spring.config.ordering.OrderingHelper
@@ -36,26 +36,49 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
     @Synchronized
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
 
+        /*
+         * due to auto-ordering mechanism, I need to know all reserved order number,
+         * so that they will not be used by auto-ordering
+         */
         if(!orderingHelper.isAlreadyInitializedWithRestrictedList) {
+            log.debug("Looking for and remembering all order numbers used explicitly with @EnableSimpleAuthenticationMethods annotation.")
             orderingHelper.initializeWithRestrictedList(findReservedOrderNumbers())
         }
 
         val annotationAttributes = getAnnotationAttributes(importingClassMetadata)
         log.debug("annotation attributes for ${importingClassMetadata.className}: $annotationAttributes")
 
-        val dynamicConfigurerClass = RenamedClassProvider.getRenamedClass(
+        /*
+         * generating brand new class which extends WebSecurityConfigurerAdapter
+         */
+        val dynamicConfigurerClass = InstrumentedClassProvider.getRenamedClass(
                 DynamicWebSecurityConfigurerTemplate::class.java,
                 DynamicWebSecurityConfigurerTemplate::class.java.canonicalName +
                         SimpleVolatileSequencer.getSingleton().getNextValue()
         )
+
+        /*
+         * bean definition with supplier to provide instance of the above generated class which
+         * extends WebSecurityConfigurerAdapter
+         */
         val bd = BeanDefinitionBuilder.genericBeanDefinition(dynamicConfigurerClass as Class<WebSecurityConfigurerAdapter>){
+            /*
+             * supplier logic
+             */
             val configurersFactories = listableBeanFactory.getBean(ConfigurersFactories::class.java)
             var simpleAuthenticationEntryPoint = listableBeanFactory.getBean(AuthenticationEntryPoint::class.java)
             val constructor = dynamicConfigurerClass.getConstructor(ConfigurersFactories::class.java, AuthenticationEntryPoint::class.java)
             constructor.newInstance(configurersFactories, simpleAuthenticationEntryPoint)
         }.beanDefinition
 
+        /*
+         * ensure the anntation properties will be injected to the bean defined by the above definition
+         */
         bd.propertyValues.add("enableAnnotationAttributes", annotationAttributes)
+
+        /*
+         * register the bean definition with the bean definition registry
+         */
         registry.registerBeanDefinition(
                 dynamicConfigurerClass.canonicalName, bd
         )
@@ -103,7 +126,6 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
                         Int::class
                 )
                 if(value == -1) {
-                    //ConfigurationsOrderingRepository.get(CONFIGURATIONS_ORDERING_HELPER_NAME).getNextNumber()
                     OrderingHelper.getSingleton().getNextNumber()
                 } else {
                     value

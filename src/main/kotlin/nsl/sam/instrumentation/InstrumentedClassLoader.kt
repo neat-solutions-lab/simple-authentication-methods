@@ -1,6 +1,6 @@
-package nsl.sam.dynamic
+package nsl.sam.instrumentation
 
-class DynamicClassLoader: ClassLoader() {
+class InstrumentedClassLoader: ClassLoader() {
     fun defineClass(name:String, bytesArray: ByteArray): Class<*> {
         return defineClass(name, bytesArray, 0, bytesArray.size)
     }
