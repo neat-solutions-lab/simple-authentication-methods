@@ -7,7 +7,6 @@ import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.spring.config.DynamicWebSecurityConfigurer
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -20,7 +19,6 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Configuration
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter

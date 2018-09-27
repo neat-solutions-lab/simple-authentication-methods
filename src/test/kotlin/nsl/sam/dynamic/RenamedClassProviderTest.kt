@@ -1,23 +1,20 @@
 package nsl.sam.dynamic
 
-import nsl.sam.spring.config.DynamicWebSecurityConfigurer
+import nsl.sam.spring.config.DynamicWebSecurityConfigurerTemplate
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
-import org.junit.platform.engine.support.filter.ClasspathScanningSupport
 
 internal class RenamedClassProviderTest {
 
     @Test
     fun getRenamedClass() {
 
-        val changedClass = RenamedClassProvider.getRenamedClass(DynamicWebSecurityConfigurer::class.java, "changed.name")
+        val changedClass = RenamedClassProvider.getRenamedClass(DynamicWebSecurityConfigurerTemplate::class.java, "changed.name")
 
         println("changedClass: $changedClass")
 
         println("compontent type: ${changedClass.componentType}")
 
-        //val classObj = Class<DynamicWebSecurityConfigurer>
+        //val classObj = Class<DynamicWebSecurityConfigurerTemplate>
     }
 
 

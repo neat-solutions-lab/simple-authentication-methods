@@ -6,6 +6,18 @@ class OrderingHelper(initialValue: Int = 0, private val delta: Int = 1) {
     private var currentAutoNumber = initialValue
     var isAlreadyInitializedWithRestrictedList = false
 
+    companion object {
+        @Volatile
+        private var instance: OrderingHelper? = null
+
+        @Synchronized
+        fun getSingleton(initialValue: Int = 0, delta: Int = 1): OrderingHelper {
+            if (null == instance)
+                instance = OrderingHelper(initialValue, delta)
+            return instance!!
+        }
+    }
+
     fun initializeWithRestrictedList(restrictedValues: List<Int>) {
 
         if(isAlreadyInitializedWithRestrictedList)

@@ -4,10 +4,10 @@ import nsl.sam.annotation.AnnotationProcessor
 import nsl.sam.configurer.ConfigurersFactories
 import nsl.sam.dynamic.RenamedClassProvider
 import nsl.sam.logger.logger
-import nsl.sam.sequencer.ClassNameSuffixSequencer
 import nsl.sam.spring.annotation.*
-import nsl.sam.spring.config.ordering.ConfigurationsOrderingRepository
+import nsl.sam.spring.config.ordering.OrderingHelper
 import nsl.sam.spring.config.ordering.ReservedNumbersFinder
+import nsl.sam.spring.config.sequencer.SimpleVolatileSequencer
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.BeanFactoryAware
 import org.springframework.beans.factory.ListableBeanFactory
@@ -22,43 +22,47 @@ import kotlin.reflect.full.cast
 class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanFactoryAware {
 
     companion object {
-        const val CONFIGURATIONS_ORDERING_HELPER_NAME = "ENABLE-ORDERING-HELPER"
         val log by logger()
     }
 
     lateinit var listableBeanFactory: ListableBeanFactory
 
+    private val orderingHelper = OrderingHelper.getSingleton()
+
     override fun setBeanFactory(beanFactory: BeanFactory) {
         this.listableBeanFactory = ListableBeanFactory::class.cast(beanFactory)
     }
 
+    @Synchronized
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
 
-        val orderingHelper = ConfigurationsOrderingRepository.get(CONFIGURATIONS_ORDERING_HELPER_NAME)
         if(!orderingHelper.isAlreadyInitializedWithRestrictedList) {
-            val reservedNumbersFinder = ReservedNumbersFinder(listableBeanFactory)
-            val reservedNumbers = reservedNumbersFinder.findReservedNumbers()
-            orderingHelper.initializeWithRestrictedList(reservedNumbers)
+            orderingHelper.initializeWithRestrictedList(findReservedOrderNumbers())
         }
 
         val annotationAttributes = getAnnotationAttributes(importingClassMetadata)
         log.debug("annotation attributes for ${importingClassMetadata.className}: $annotationAttributes")
 
-        val dynamicClass = RenamedClassProvider.getRenamedClass(
-                DynamicWebSecurityConfigurer::class.java,
-                DynamicWebSecurityConfigurer::class.java.canonicalName + ClassNameSuffixSequencer.getNextValue()
+        val dynamicConfigurerClass = RenamedClassProvider.getRenamedClass(
+                DynamicWebSecurityConfigurerTemplate::class.java,
+                DynamicWebSecurityConfigurerTemplate::class.java.canonicalName +
+                        SimpleVolatileSequencer.getSingleton().getNextValue()
         )
-        val bd = BeanDefinitionBuilder.genericBeanDefinition(dynamicClass as Class<WebSecurityConfigurerAdapter>){
+        val bd = BeanDefinitionBuilder.genericBeanDefinition(dynamicConfigurerClass as Class<WebSecurityConfigurerAdapter>){
             val configurersFactories = listableBeanFactory.getBean(ConfigurersFactories::class.java)
             var simpleAuthenticationEntryPoint = listableBeanFactory.getBean(AuthenticationEntryPoint::class.java)
-            val constructor = dynamicClass.getConstructor(ConfigurersFactories::class.java, AuthenticationEntryPoint::class.java)
+            val constructor = dynamicConfigurerClass.getConstructor(ConfigurersFactories::class.java, AuthenticationEntryPoint::class.java)
             constructor.newInstance(configurersFactories, simpleAuthenticationEntryPoint)
         }.beanDefinition
 
         bd.propertyValues.add("enableAnnotationAttributes", annotationAttributes)
         registry.registerBeanDefinition(
-                dynamicClass.canonicalName, bd
+                dynamicConfigurerClass.canonicalName, bd
         )
+    }
+
+    private fun findReservedOrderNumbers(): List<Int> {
+        return ReservedNumbersFinder(listableBeanFactory).findReservedNumbers()
     }
 
     private fun getAnnotationAttributes(importingClassMetadata: AnnotationMetadata): EnableAnnotationAttributes {
@@ -99,7 +103,8 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
                         Int::class
                 )
                 if(value == -1) {
-                    ConfigurationsOrderingRepository.get(CONFIGURATIONS_ORDERING_HELPER_NAME).getNextNumber()
+                    //ConfigurationsOrderingRepository.get(CONFIGURATIONS_ORDERING_HELPER_NAME).getNextNumber()
+                    OrderingHelper.getSingleton().getNextNumber()
                 } else {
                     value
                 }

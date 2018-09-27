@@ -16,9 +16,10 @@ import org.springframework.util.Assert
 import javax.annotation.PostConstruct
 
 
-open class DynamicWebSecurityConfigurer(
+open class DynamicWebSecurityConfigurerTemplate(
         private val configurersFactories: ConfigurersFactories,
-        private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint): WebSecurityConfigurerAdapter(), Ordered {
+        private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint)
+    : WebSecurityConfigurerAdapter(), Ordered {
 
     companion object { val log by logger() }
 
@@ -44,7 +45,7 @@ open class DynamicWebSecurityConfigurer(
     }
 
     override fun getOrder(): Int {
-        log.debug("DynamicWebSecurityConfigurer order: ${this.enableAnnotationAttributes.order}")
+        log.debug("DynamicWebSecurityConfigurerTemplate order: ${this.enableAnnotationAttributes.order}")
         return this.enableAnnotationAttributes.order
     }
 

@@ -42,9 +42,7 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
 
         val passwordsFile = decideOnPasswordFilePath(simpleBasicAuthenticationAttributes)
 
-
         println("------> $simpleBasicAuthenticationAttributes")
-
 
         /*
          * To determine:
@@ -60,9 +58,7 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
                 usersDetailsService,
                 simpleAuthenticationEntryPoint,
                 serverAddress)
-
     }
-
 
     private fun decideOnPasswordFilePath(simpleBasicAuthenticationAttributes: SimpleBasicAuthenticationAttributes): String {
 
