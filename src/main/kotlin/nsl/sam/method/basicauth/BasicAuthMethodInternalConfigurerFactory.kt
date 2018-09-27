@@ -22,13 +22,13 @@ import org.springframework.security.web.AuthenticationEntryPoint
 class BasicAuthMethodInternalConfigurerFactory(override val name: String) : AuthMethodInternalConfigurerFactory {
 
     @Autowired
-    lateinit var environment: Environment
+    private lateinit var environment: Environment
 
     @Autowired
-    lateinit var simpleAuthenticationEntryPoint: AuthenticationEntryPoint
+    private lateinit var simpleAuthenticationEntryPoint: AuthenticationEntryPoint
 
     @Value("\${server.address:localhost}")
-    lateinit var serverAddress: String
+    private lateinit var serverAddress: String
 
     override fun getSupportedMethod(): AuthenticationMethod {
         return AuthenticationMethod.SIMPLE_BASIC_AUTH

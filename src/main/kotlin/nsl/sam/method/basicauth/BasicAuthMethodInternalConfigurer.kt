@@ -26,6 +26,7 @@ class BasicAuthMethodInternalConfigurer(
         authBuilder.userDetailsService(localUsersDetailsService)
     }
 
+    // TODO: this logic will go up to InstrumentedWebSecurityConfigurerTemplate
     private fun isActiveInternal(): Boolean {
         if (!isAvailable()) return false
 

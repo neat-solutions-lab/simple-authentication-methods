@@ -5,7 +5,6 @@ import nsl.sam.configurer.ConfigurersFactories
 import nsl.sam.logger.logger
 import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableAnnotationAttributes
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.Ordered
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -18,7 +17,8 @@ import javax.annotation.PostConstruct
 
 open class DynamicWebSecurityConfigurerTemplate(
         private val configurersFactories: ConfigurersFactories,
-        private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint)
+        // TODO: defaultAuthenticationEntryPoint should be configured
+        private val defaultAuthenticationEntryPoint: AuthenticationEntryPoint)
     : WebSecurityConfigurerAdapter(), Ordered {
 
     companion object { val log by logger() }
@@ -34,6 +34,10 @@ open class DynamicWebSecurityConfigurerTemplate(
     @PostConstruct
     fun initialize() {
 
+        /*
+         * for each enabled authentication method create "internal configurer" to which further configuration
+         * steps will be delegated
+         */
         enableAnnotationAttributes.methods
                 .filter{ it != AuthenticationMethod.SIMPLE_NO_METHOD }
                 .forEach {
@@ -52,6 +56,7 @@ open class DynamicWebSecurityConfigurerTemplate(
     override fun configure(http: HttpSecurity) {
 
         if(this.enableAnnotationAttributes.match != "") {
+            log.info("Configuring security for path: ${this.enableAnnotationAttributes.match}")
             http.antMatcher(this.enableAnnotationAttributes.match)
         }
 
@@ -65,7 +70,6 @@ open class DynamicWebSecurityConfigurerTemplate(
         }
 
         applyCommonSecuritySettings(http)
-
     }
 
     override fun configure(authBuilder: AuthenticationManagerBuilder) {
@@ -118,7 +122,7 @@ open class DynamicWebSecurityConfigurerTemplate(
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .exceptionHandling().authenticationEntryPoint(simpleAuthenticationEntryPoint)
+                .exceptionHandling().authenticationEntryPoint(defaultAuthenticationEntryPoint)
     }
 
 }
