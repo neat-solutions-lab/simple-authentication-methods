@@ -30,6 +30,36 @@ class SpelTest {
     lateinit var independentComponent: IndependentComponent
 
     @Test
+    fun rootObjectTest() {
+        val expressionParser = SpelExpressionParser()
+        val expression = expressionParser.parseExpression(
+                "methodOnEvaluationRoot('hello')")
+        val value = expression.getValue(EvaluationRoot())
+        println("value: $value")
+    }
+
+    @Test
+    fun rootObjectChainingExpressionTest() {
+        val expressionParser = SpelExpressionParser()
+        val expression = expressionParser.parseExpression(
+                "echo('hello').echo('from').echo('test')")
+        val value = expression.getValue(EvaluationRoot())
+        println("value: $value")
+    }
+
+
+    @Test
+    fun varargsTest() {
+        val expressionParser = SpelExpressionParser()
+        val expression = expressionParser.parseExpression(
+                "varargsMethod('one', 'two')"
+        )
+        val value = expression.getValue(EvaluationRoot())
+        println("value: $value")
+    }
+
+
+    @Test
     fun contextLoaded() {
         println("OK - context loaded")
         println("stringBean: ${appCtx.getBean("stringBean")}")

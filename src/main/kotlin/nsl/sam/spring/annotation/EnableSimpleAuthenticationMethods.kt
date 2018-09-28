@@ -34,13 +34,6 @@ annotation class EnableSimpleAuthenticationMethods(
                 [(AuthenticationMethod.SIMPLE_BASIC_AUTH), (AuthenticationMethod.SIMPLE_TOKEN)],
 
         /**
-         * e.g. if there is no passwords or tokens file then do not activate related
-         * authentication method at all
-         * TODO: RESIGN FROM THIS ATTRIBUTE
-         */
-        val deactivateIfNotFullyConfigured: Boolean = false,
-
-        /**
          * if there is no even one user in any UsersSource available and this attribute is set to true
          * then anonymous access to all resources is activated
          */

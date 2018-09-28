@@ -13,8 +13,8 @@ data class EnableAnnotationAttributes private constructor (
         val debug: Boolean,
         val order: Int,
         val anonymousFallback: Boolean,
-        val authentications: String,
-        val deactivateNotConfigured: Boolean
+        val authentications: String
+        //val deactivateNotConfigured: Boolean
 ) {
 
     companion object {
@@ -34,7 +34,7 @@ data class EnableAnnotationAttributes private constructor (
         var order = 0
         var anonymousFallback = false
         var authentications = ""
-        var deactivateNotConfigured = false
+        //var deactivateNotConfigured = false
 
         fun annotationMetadata(annotationMetadata: () -> AnnotationMetadata) = apply {this.annotationMetadata = annotationMetadata()}
 
@@ -50,7 +50,7 @@ data class EnableAnnotationAttributes private constructor (
 
         fun authentications(authentications: () -> String) = apply { this.authentications = authentications() }
 
-        fun deactivateNotConfigured(deactivateNotConfigured: () -> Boolean) = apply { this.deactivateNotConfigured = deactivateNotConfigured() }
+        //fun deactivateNotConfigured(deactivateNotConfigured: () -> Boolean) = apply { this.deactivateNotConfigured = deactivateNotConfigured() }
 
         fun build():EnableAnnotationAttributes {
 
@@ -58,7 +58,7 @@ data class EnableAnnotationAttributes private constructor (
 
             return EnableAnnotationAttributes(
                     this.annotationMetadata!!, this.methods, this.match, this.debug, this.order, this.anonymousFallback,
-                    this.authentications, this.deactivateNotConfigured
+                    this.authentications
             )
         }
     }

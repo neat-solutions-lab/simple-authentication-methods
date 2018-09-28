@@ -139,14 +139,14 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
                         Boolean::class
                 )
             }
-            deactivateNotConfigured {
-                AnnotationProcessor.getAnnotationAttributeValue(
-                        importingClassMetadata,
-                        EnableSimpleAuthenticationMethods::class,
-                        ENABLE_ANNOTATION_DEACTIVATE_ATTRIBUTE_NAME,
-                        Boolean::class
-                )
-            }
+            //deactivateNotConfigured {
+            //    AnnotationProcessor.getAnnotationAttributeValue(
+            //            importingClassMetadata,
+            //            EnableSimpleAuthenticationMethods::class,
+            //            ENABLE_ANNOTATION_DEACTIVATE_ATTRIBUTE_NAME,
+            //            Boolean::class
+            //    )
+            //}
             authentications {
                 AnnotationProcessor.getAnnotationAttributeValue(
                         importingClassMetadata,
