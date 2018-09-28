@@ -5,8 +5,10 @@ import nsl.sam.configurer.ConfigurersFactories
 import nsl.sam.logger.logger
 import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableAnnotationAttributes
+import nsl.sam.spring.config.spel.AuthorizationRulesProcessor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.Ordered
+import org.springframework.expression.spel.standard.SpelExpressionParser
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -148,7 +150,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
     private fun activateAuthenticationMechanisms(http: HttpSecurity) {
 
-        http.authorizeRequests().anyRequest().fullyAuthenticated()
+        applyAuthenticationRules(http)
 
         authMethodInternalConfigurers.filter {
             log.info("Checking if authentication method ${it.methodName()} is active.")
@@ -159,6 +161,26 @@ open class InstrumentedWebSecurityConfigurerTemplate(
             log.info("Registering authentication mechanism: ${it.methodName()}")
             it.configure(http)
         }
+    }
+
+    private fun applyAuthenticationRules(httpSecurity: HttpSecurity) {
+        when {
+            enableAnnotationAttributes.authentications.isBlank() ->
+                fullyAuthenticatedAccess(httpSecurity)
+            else ->
+                processAuthorizationRulesExpression(httpSecurity)
+        }
+    }
+
+    private fun processAuthorizationRulesExpression(httpSecurity: HttpSecurity) {
+        val authorizationProcessor = AuthorizationRulesProcessor(httpSecurity)
+        val parser = SpelExpressionParser()
+        val expression = parser.parseExpression(enableAnnotationAttributes.authentications)
+        expression.getValue(authorizationProcessor)
+    }
+
+    private fun fullyAuthenticatedAccess(httpSecurity: HttpSecurity) {
+        httpSecurity.authorizeRequests().anyRequest().fullyAuthenticated()
     }
 
     private fun permitAll(http: HttpSecurity) {

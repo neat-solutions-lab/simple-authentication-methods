@@ -4,7 +4,6 @@ import nsl.sam.spring.config.*
 import org.springframework.context.annotation.Import
 
 const val ENABLE_ANNOTATION_METHODS_ATTRIBUTE_NAME = "methods"
-const val ENABLE_ANNOTATION_DEACTIVATE_ATTRIBUTE_NAME = "deactivateIfNotFullyConfigured"
 const val ENABLE_ANNOTATION_ANONYMOUS_FALLBACK_ATTRIBUTE_NAME = "localAnonymousFallback"
 const val ENABLE_ANNOTATION_MATCH_ATTRIBUTE_NAME = "match"
 const val ENABLE_ANNOTATION_DEBUG_ATTRIBUTE_NAME = "debug"
