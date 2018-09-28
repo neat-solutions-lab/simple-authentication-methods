@@ -1,6 +1,6 @@
 package nsl.sam.instrumentation
 
-import nsl.sam.spring.config.DynamicWebSecurityConfigurerTemplate
+import nsl.sam.spring.config.InstrumentedWebSecurityConfigurerTemplate
 import org.junit.jupiter.api.Test
 
 internal class InstrumentedClassProviderTest {
@@ -8,13 +8,13 @@ internal class InstrumentedClassProviderTest {
     @Test
     fun getRenamedClass() {
 
-        val changedClass = InstrumentedClassProvider.getRenamedClass(DynamicWebSecurityConfigurerTemplate::class.java, "changed.name")
+        val changedClass = InstrumentedClassProvider.getRenamedClass(InstrumentedWebSecurityConfigurerTemplate::class.java, "changed.name")
 
         println("changedClass: $changedClass")
 
         println("compontent type: ${changedClass.componentType}")
 
-        //val classObj = Class<DynamicWebSecurityConfigurerTemplate>
+        //val classObj = Class<InstrumentedWebSecurityConfigurerTemplate>
     }
 
 

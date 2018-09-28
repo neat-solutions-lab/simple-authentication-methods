@@ -13,7 +13,7 @@ interface AuthMethodInternalConfigurer: AvailabilityAware {
      * Checks if given authentication method is active. It can be inactive when for example it could not find
      * configuration files or something like this.
      */
-    fun isActive(): Boolean
+    //fun isActive(): Boolean
 
     /**
      * Called by [nsl.sms.api.auth.config.WebSecurityConfiguration] to configure particular authentication method.

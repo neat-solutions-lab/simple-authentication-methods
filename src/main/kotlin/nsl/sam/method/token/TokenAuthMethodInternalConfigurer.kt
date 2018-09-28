@@ -12,10 +12,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 
 class TokenAuthMethodInternalConfigurer(
-        val tokensFilePath: String,
-        val serverAddress: String,
-        val tokenAuthenticator : TokenToUserMapper,
-        val unauthenticatedResponseSender: ResponseSender) : AuthMethodInternalConfigurer {
+        private val tokensFilePath: String,
+        private val serverAddress: String,
+        private val tokenAuthenticator : TokenToUserMapper,
+        private val unauthenticatedResponseSender: ResponseSender) : AuthMethodInternalConfigurer {
+
     override fun configure(auth: AuthenticationManagerBuilder) {
         // empty, the TokenAuthenticationFiler doesn't use AunthenticationManager
     }
@@ -42,7 +43,8 @@ class TokenAuthMethodInternalConfigurer(
         return true
     }
 
-    override fun isActive(): Boolean {
+    //override fun isActive(): Boolean {
+    override fun isAvailable(): Boolean {
         if (!isActiveVariableCalculated) {
             isActiveValue = isActiveInternal()
             isActiveVariableCalculated = true
@@ -50,9 +52,9 @@ class TokenAuthMethodInternalConfigurer(
         return isActiveValue
     }
 
-    override fun isAvailable(): Boolean {
-        return true
-    }
+//    override fun isAvailable(): Boolean {
+//        return true
+//    }
 
     override fun configure(http: HttpSecurity): HttpSecurity {
         log.info("Registering ${TokenAuthenticationFilter::class.qualifiedName} filter.")

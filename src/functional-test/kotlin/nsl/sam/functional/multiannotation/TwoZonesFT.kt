@@ -5,7 +5,7 @@ import nsl.sam.functional.controller.TwoZonesTestController
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
 import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.spring.config.DynamicWebSecurityConfigurerTemplate
+import nsl.sam.spring.config.InstrumentedWebSecurityConfigurerTemplate
 import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
@@ -103,7 +103,7 @@ class TwoZonesFT {
         val beanNames = dynamicConfigurers.keys
 
         assertThat(dynamicConfigurers.size).isEqualTo(2)
-        assertThat(beanNames).allMatch { it.startsWith(DynamicWebSecurityConfigurerTemplate::class.qualifiedName!!)}
+        assertThat(beanNames).allMatch { it.startsWith(InstrumentedWebSecurityConfigurerTemplate::class.qualifiedName!!)}
     }
 
 }

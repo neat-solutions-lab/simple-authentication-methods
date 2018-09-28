@@ -13,7 +13,7 @@ class AsmTest {
     @Test
     fun test() {
 
-        val cr = ClassReader("nsl.sam.spring.config.DynamicWebSecurityConfigurerTemplate")
+        val cr = ClassReader("nsl.sam.spring.config.InstrumentedWebSecurityConfigurerTemplate")
         println("bytes size: ${cr.b.size}")
 
         val cw = ClassWriter(0)
@@ -42,7 +42,7 @@ class AsmTest {
                 Opcodes.ASM6,
                 classWriter
         )
-        val classReader = ClassReader("nsl.sam.spring.config.DynamicWebSecurityConfigurerTemplate")
+        val classReader = ClassReader("nsl.sam.spring.config.InstrumentedWebSecurityConfigurerTemplate")
         classReader.accept(classVisitor, 0)
 
         val testClass = InstrumentedClassLoader().defineClass(

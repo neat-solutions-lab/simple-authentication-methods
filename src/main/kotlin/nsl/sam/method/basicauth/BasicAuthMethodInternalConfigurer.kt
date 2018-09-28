@@ -22,32 +22,33 @@ class BasicAuthMethodInternalConfigurer(
     private var isActiveValue = false
 
     override fun configure(authBuilder: AuthenticationManagerBuilder) {
-        if(!isActive()) return
+        //if(!isActive()) return
+        //if(!isAvailable()) return
         authBuilder.userDetailsService(localUsersDetailsService)
     }
 
-    // TODO: this logic will go up to InstrumentedWebSecurityConfigurerTemplate
-    private fun isActiveInternal(): Boolean {
-        if (!isAvailable()) return false
-
-        if(serverAddress in arrayOf("localhost", "127.0.0.1") && localUsersDetailsService.usersNumber() == 0) {
-            return false
-        }
-        return true
-    }
+//    // TODO: this logic will go up to InstrumentedWebSecurityConfigurerTemplate
+//    private fun isActiveInternal(): Boolean {
+//        if (!isAvailable()) return false
+//
+//        if(serverAddress in arrayOf("localhost", "127.0.0.1") && localUsersDetailsService.usersNumber() == 0) {
+//            return false
+//        }
+//        return true
+//    }
 
     override fun isAvailable(): Boolean {
         return this.localUsersDetailsService.isUsersSourceAvailable()
     }
 
-    override fun isActive(): Boolean {
-        if (!isActiveVariableAlreadyCalculated) {
-            isActiveValue = isActiveInternal()
-            isActiveVariableAlreadyCalculated = true
-
-        }
-        return isActiveValue
-    }
+//    override fun isActive(): Boolean {
+//        if (!isActiveVariableAlreadyCalculated) {
+//            isActiveValue = isActiveInternal()
+//            isActiveVariableAlreadyCalculated = true
+//
+//        }
+//        return isActiveValue
+//    }
 
     override fun configure(http: HttpSecurity): HttpSecurity {
         log.info("Enabling HttpBasic Auth method.")

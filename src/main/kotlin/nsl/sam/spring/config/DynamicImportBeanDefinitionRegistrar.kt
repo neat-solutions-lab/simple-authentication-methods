@@ -52,8 +52,8 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
          * generating brand new class which extends WebSecurityConfigurerAdapter
          */
         val dynamicConfigurerClass = InstrumentedClassProvider.getRenamedClass(
-                DynamicWebSecurityConfigurerTemplate::class.java,
-                DynamicWebSecurityConfigurerTemplate::class.java.canonicalName +
+                InstrumentedWebSecurityConfigurerTemplate::class.java,
+                InstrumentedWebSecurityConfigurerTemplate::class.java.canonicalName +
                         SimpleVolatileSequencer.getSingleton().getNextValue()
         )
 

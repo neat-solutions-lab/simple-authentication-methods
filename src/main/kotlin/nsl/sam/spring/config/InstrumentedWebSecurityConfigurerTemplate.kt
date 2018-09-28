@@ -15,7 +15,7 @@ import org.springframework.util.Assert
 import javax.annotation.PostConstruct
 
 
-open class DynamicWebSecurityConfigurerTemplate(
+open class InstrumentedWebSecurityConfigurerTemplate(
         private val configurersFactories: ConfigurersFactories,
         // TODO: defaultAuthenticationEntryPoint should be configured
         private val defaultAuthenticationEntryPoint: AuthenticationEntryPoint)
@@ -49,7 +49,7 @@ open class DynamicWebSecurityConfigurerTemplate(
     }
 
     override fun getOrder(): Int {
-        log.debug("DynamicWebSecurityConfigurerTemplate order: ${this.enableAnnotationAttributes.order}")
+        log.debug("InstrumentedWebSecurityConfigurerTemplate order: ${this.enableAnnotationAttributes.order}")
         return this.enableAnnotationAttributes.order
     }
 
@@ -80,10 +80,11 @@ open class DynamicWebSecurityConfigurerTemplate(
 
     private fun isAtLeastOneAuthMechanismAvailable() : Boolean {
         authMethodInternalConfigurers.asSequence().find {
-            log.info("Checking if authentication method ${it.methodName()} is active.")
-            val isActive = it.isActive()
-            log.info("Check result for authentication method ${it.methodName()}: $isActive")
-            isActive
+            log.info("Checking if authentication method ${it.methodName()} is available.")
+            //val isAvailable = it.isActive()
+            val isAvailable = it.isAvailable()
+            log.info("Check result for authentication method ${it.methodName()}: $isAvailable")
+            isAvailable
         }?.let{
             return true
         }
@@ -96,9 +97,10 @@ open class DynamicWebSecurityConfigurerTemplate(
 
         authMethodInternalConfigurers.filter {
             log.info("Checking if authentication method ${it.methodName()} is active.")
-            val isActive = it.isActive()
-            log.info("Check result for authentication method ${it.methodName()}: $isActive")
-            isActive
+            //val isAvailable = it.isActive()
+            val isAvailable = it.isAvailable()
+            log.info("Check result for authentication method ${it.methodName()}: $isAvailable")
+            isAvailable
         }.forEach {
             log.info("Registering authentication mechanism: ${it.methodName()}")
             it.configure(http)
