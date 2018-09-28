@@ -22,6 +22,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -31,6 +32,8 @@ import kotlin.test.assertNull
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
+@TestPropertySource(properties =
+    ["nsl.sam.anonymous-fallback=true", "server.address=localhost"])
 class NoAuthMethodEnabledFT {
 
     companion object {
@@ -52,7 +55,6 @@ class NoAuthMethodEnabledFT {
     //
     // Main beans arrangement
     //
-
 
     @Test
     fun webSecurityConfigurerBeanPresent() {

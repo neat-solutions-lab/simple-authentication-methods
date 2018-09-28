@@ -12,18 +12,12 @@ import org.springframework.security.web.AuthenticationEntryPoint
 
 class BasicAuthMethodInternalConfigurer(
         private val localUsersDetailsService: SourceAwareUserDetailsService,
-        private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint,
-        private val serverAddress: String) : AuthMethodInternalConfigurer {
+        private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint)
+    : AuthMethodInternalConfigurer {
 
     companion object { val log by logger() }
 
-    private var isActiveVariableAlreadyCalculated = false
-
-    private var isActiveValue = false
-
     override fun configure(authBuilder: AuthenticationManagerBuilder) {
-        //if(!isActive()) return
-        //if(!isAvailable()) return
         authBuilder.userDetailsService(localUsersDetailsService)
     }
 

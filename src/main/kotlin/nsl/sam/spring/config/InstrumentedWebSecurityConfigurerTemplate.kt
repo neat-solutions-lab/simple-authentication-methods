@@ -5,6 +5,7 @@ import nsl.sam.configurer.ConfigurersFactories
 import nsl.sam.logger.logger
 import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableAnnotationAttributes
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.Ordered
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -23,13 +24,22 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
     companion object { val log by logger() }
 
+    @Value("\${nsl.sam.anonymous-fallback:false}")
+    private var anonymousFallbackAttr: Boolean = false
+
+    @Value("\${server.address:}")
+    private var serverAddressAttr = ""
+
     /**
      * NOTE: This property is "injected" with the help of DynamicImportBeanDefinitionRegistar,
      * it holds values of attributes used with [nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods]
      */
+    @Suppress
     lateinit var enableAnnotationAttributes: EnableAnnotationAttributes
 
     private val authMethodInternalConfigurers: MutableList<AuthMethodInternalConfigurer> = mutableListOf()
+
+    //private
 
     @PostConstruct
     fun initialize() {
@@ -61,7 +71,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
         }
 
         log.info("${this::class.simpleName} configuration entry point called [configure(HttpSecurity)].")
-        if(isAtLeastOneAuthMechanismAvailable()) {
+        if(areActivationConditionsMet()) {
             log.info("Enabling authentication mechanisms")
             activateAuthenticationMechanisms(http)
         } else {
@@ -78,10 +88,55 @@ open class InstrumentedWebSecurityConfigurerTemplate(
         }
     }
 
+    private fun areActivationConditionsMet(): Boolean {
+
+        /*
+         * if at least one underlying UsersSource is able to provide at least one user then
+         * AA should be activated
+         */
+        if (isAtLeastOneAuthMechanismAvailable()) return true
+
+        /*
+         * it can be explicitly configured that services which listen only
+         * on localhost interface fallback to mode in which anonymous access
+         * is allowed to all resources
+         */
+        if(areLocalAnonymousAccessConditionsMet()) return false
+
+
+        /*
+         * even if all UserSource(s) are 'empty' still activate authentication rules
+         * to NOT ACCIDENTALLY OPEN ACCESS to protected resources
+         */
+        return true
+    }
+
+    /*
+     *
+     */
+    private fun areLocalAnonymousAccessConditionsMet(): Boolean {
+        return isItOnlyLocalService() && isLocalAnonymousAccessFallbackModeEnabled()
+    }
+
+    /*
+     * checks if the server listens only on localhost/127.0.0.1
+     */
+    private fun isItOnlyLocalService(): Boolean {
+        if(this.serverAddressAttr in arrayOf("localhost", "127.0.0.1")) return true
+        return false
+    }
+
+    /*
+     *
+     */
+    private fun isLocalAnonymousAccessFallbackModeEnabled(): Boolean {
+        if (this.enableAnnotationAttributes.anonymousFallback) return true
+        return this.anonymousFallbackAttr
+    }
+
     private fun isAtLeastOneAuthMechanismAvailable() : Boolean {
         authMethodInternalConfigurers.asSequence().find {
             log.info("Checking if authentication method ${it.methodName()} is available.")
-            //val isAvailable = it.isActive()
             val isAvailable = it.isAvailable()
             log.info("Check result for authentication method ${it.methodName()}: $isAvailable")
             isAvailable
@@ -97,7 +152,6 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
         authMethodInternalConfigurers.filter {
             log.info("Checking if authentication method ${it.methodName()} is active.")
-            //val isAvailable = it.isActive()
             val isAvailable = it.isAvailable()
             log.info("Check result for authentication method ${it.methodName()}: $isAvailable")
             isAvailable
@@ -126,5 +180,5 @@ open class InstrumentedWebSecurityConfigurerTemplate(
                 .and()
                 .exceptionHandling().authenticationEntryPoint(defaultAuthenticationEntryPoint)
     }
-
 }
+

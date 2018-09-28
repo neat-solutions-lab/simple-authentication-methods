@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Import
 
 const val ENABLE_ANNOTATION_METHODS_ATTRIBUTE_NAME = "methods"
 const val ENABLE_ANNOTATION_DEACTIVATE_ATTRIBUTE_NAME = "deactivateIfNotFullyConfigured"
-const val ENABLE_ANNOTATION_ANONYMOUS_FALLBACK_ATTRIBUTE_NAME = "fallbackToAnonymousAccessIfNoMethodAvailable"
+const val ENABLE_ANNOTATION_ANONYMOUS_FALLBACK_ATTRIBUTE_NAME = "localAnonymousFallback"
 const val ENABLE_ANNOTATION_MATCH_ATTRIBUTE_NAME = "match"
 const val ENABLE_ANNOTATION_DEBUG_ATTRIBUTE_NAME = "debug"
 const val ENABLE_ANNOTATION_ORDER_ATTRIBUTE_NAME = "order"
@@ -36,10 +36,15 @@ annotation class EnableSimpleAuthenticationMethods(
         /**
          * e.g. if there is no passwords or tokens file then do not activate related
          * authentication method at all
+         * TODO: RESIGN FROM THIS ATTRIBUTE
          */
         val deactivateIfNotFullyConfigured: Boolean = false,
 
-        val fallbackToAnonymousAccessIfNoMethodAvailable: Boolean = false,
+        /**
+         * if there is no even one user in any UsersSource available and this attribute is set to true
+         * then anonymous access to all resources is activated
+         */
+        val localAnonymousFallback: Boolean = false,
 
         /**
          * path used to define matching request with the help of
