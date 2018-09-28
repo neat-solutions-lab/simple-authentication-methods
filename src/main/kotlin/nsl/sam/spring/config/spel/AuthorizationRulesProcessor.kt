@@ -1,12 +1,16 @@
 package nsl.sam.spring.config.spel
 
+import org.springframework.expression.spel.standard.SpelExpressionParser
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer
 
 class AuthorizationRulesProcessor(private val httpSecurity: HttpSecurity) {
 
-    fun antMatchers(vararg antPatterns: String): ExpressionUrlAuthorizationConfigurer<HttpSecurity>.AuthorizedUrl {
-        return httpSecurity.authorizeRequests().antMatchers(*antPatterns)
-    }
+    fun process(expression: String) {
+        val root = AuthorizationRulesRoot(httpSecurity)
+        val parser = SpelExpressionParser()
+        val expression = parser.parseExpression(expression)
+        expression.getValue(root)
 
+        httpSecurity.authorizeRequests().antMatchers("/**").denyAll()
+    }
 }

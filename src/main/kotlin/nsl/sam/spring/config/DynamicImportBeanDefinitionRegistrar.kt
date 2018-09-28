@@ -147,7 +147,7 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
             //            Boolean::class
             //    )
             //}
-            authentications {
+            authorizations {
                 AnnotationProcessor.getAnnotationAttributeValue(
                         importingClassMetadata,
                         EnableSimpleAuthenticationMethods::class,

@@ -6,17 +6,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 
 /**
  * All implementations of this interface are to be found by [nsl.sms.api.auth.config.WebSecurityConfiguration]
- * which uses this interface's configure() method to configure new authentication method.
+ * which uses this interface's configure() method to configure new authorization method.
  */
 interface AuthMethodInternalConfigurer: AvailabilityAware {
     /**
-     * Checks if given authentication method is active. It can be inactive when for example it could not find
+     * Checks if given authorization method is active. It can be inactive when for example it could not find
      * configuration files or something like this.
      */
     //fun isActive(): Boolean
 
     /**
-     * Called by [nsl.sms.api.auth.config.WebSecurityConfiguration] to configure particular authentication method.
+     * Called by [nsl.sms.api.auth.config.WebSecurityConfiguration] to configure particular authorization method.
      */
     fun configure(http: HttpSecurity):HttpSecurity
 

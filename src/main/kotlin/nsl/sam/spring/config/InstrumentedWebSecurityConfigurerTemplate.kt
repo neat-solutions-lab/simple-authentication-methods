@@ -47,7 +47,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
     fun initialize() {
 
         /*
-         * for each enabled authentication method create "internal configurer" to which further configuration
+         * for each enabled authorization method create "internal configurer" to which further configuration
          * steps will be delegated
          */
         enableAnnotationAttributes.methods
@@ -55,7 +55,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
                 .forEach {
                     val factory = configurersFactories.getFactoryForMethod(it)
                     Assert.notNull(factory,"There is no AuthMethodInternalConfigurerFactory registered " +
-                        "for ${it.name} authentication method")
+                        "for ${it.name} authorization method")
                     this.authMethodInternalConfigurers.add(factory!!.create(enableAnnotationAttributes))
                 }
     }
@@ -74,7 +74,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
         log.info("${this::class.simpleName} configuration entry point called [configure(HttpSecurity)].")
         if(areActivationConditionsMet()) {
-            log.info("Enabling authentication mechanisms")
+            log.info("Enabling authorization mechanisms")
             activateAuthenticationMechanisms(http)
         } else {
             log.info("Enabling anonymous access")
@@ -107,7 +107,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
 
         /*
-         * even if all UserSource(s) are 'empty' still activate authentication rules
+         * even if all UserSource(s) are 'empty' still activate authorization rules
          * to NOT ACCIDENTALLY OPEN ACCESS to protected resources
          */
         return true
@@ -138,9 +138,9 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
     private fun isAtLeastOneAuthMechanismAvailable() : Boolean {
         authMethodInternalConfigurers.asSequence().find {
-            log.info("Checking if authentication method ${it.methodName()} is available.")
+            log.info("Checking if authorization method ${it.methodName()} is available.")
             val isAvailable = it.isAvailable()
-            log.info("Check result for authentication method ${it.methodName()}: $isAvailable")
+            log.info("Check result for authorization method ${it.methodName()}: $isAvailable")
             isAvailable
         }?.let{
             return true
@@ -153,19 +153,19 @@ open class InstrumentedWebSecurityConfigurerTemplate(
         applyAuthenticationRules(http)
 
         authMethodInternalConfigurers.filter {
-            log.info("Checking if authentication method ${it.methodName()} is active.")
+            log.info("Checking if authorization method ${it.methodName()} is active.")
             val isAvailable = it.isAvailable()
-            log.info("Check result for authentication method ${it.methodName()}: $isAvailable")
+            log.info("Check result for authorization method ${it.methodName()}: $isAvailable")
             isAvailable
         }.forEach {
-            log.info("Registering authentication mechanism: ${it.methodName()}")
+            log.info("Registering authorization mechanism: ${it.methodName()}")
             it.configure(http)
         }
     }
 
     private fun applyAuthenticationRules(httpSecurity: HttpSecurity) {
         when {
-            enableAnnotationAttributes.authentications.isBlank() ->
+            enableAnnotationAttributes.authorizations.isBlank() ->
                 fullyAuthenticatedAccess(httpSecurity)
             else ->
                 processAuthorizationRulesExpression(httpSecurity)
@@ -173,10 +173,8 @@ open class InstrumentedWebSecurityConfigurerTemplate(
     }
 
     private fun processAuthorizationRulesExpression(httpSecurity: HttpSecurity) {
-        val authorizationProcessor = AuthorizationRulesProcessor(httpSecurity)
-        val parser = SpelExpressionParser()
-        val expression = parser.parseExpression(enableAnnotationAttributes.authentications)
-        expression.getValue(authorizationProcessor)
+        log.info("Applying authorization rules: ${enableAnnotationAttributes.authorizations}")
+        AuthorizationRulesProcessor(httpSecurity).process(enableAnnotationAttributes.authorizations)
     }
 
     private fun fullyAuthenticatedAccess(httpSecurity: HttpSecurity) {
@@ -194,7 +192,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
     private fun applyCommonSecuritySettings(http: HttpSecurity) {
 
-        log.info("Applying common security settings for simple-authentication-methods")
+        log.info("Applying common security settings for simple-authorization-methods")
 
         http
                 .csrf().disable()

@@ -36,10 +36,10 @@ class TokenAuthenticationFilter(
             authorizationHeader.let {
                 log.debug("Processing Authentication header")
                 if(isBearerToken(authorizationHeader)) {
-                    log.debug("This is Bearer token based authentication")
+                    log.debug("This is Bearer token based authorization")
                     tryToAuthenticate(authorizationHeader)
                 } else {
-                    log.debug("Skipping Bearer token based authentication")
+                    log.debug("Skipping Bearer token based authorization")
                 }
             }
         } catch (e: AuthenticationException) {

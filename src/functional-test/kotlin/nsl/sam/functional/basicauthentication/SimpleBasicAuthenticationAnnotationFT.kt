@@ -1,4 +1,4 @@
-package nsl.sam.functional.basicauthannotation
+package nsl.sam.functional.basicauthentication
 
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication

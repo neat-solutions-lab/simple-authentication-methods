@@ -11,12 +11,12 @@ const val ENABLE_ANNOTATION_ORDER_ATTRIBUTE_NAME = "order"
 const val ENABLE_ANNOTATION_AUTHORIZATIONS_ATTRIBUTE_NAME = "authorizations"
 
 /**
- * Annotation to be used by simple-authentication-methods' consumers to enable
- * authentication methods implemented by this this library.
+ * Annotation to be used by simple-authorization-methods' consumers to enable
+ * authorization methods implemented by this this library.
  *
  * By default all methods are enabled but they can be narrow down selectively with [methods] parameter.
  *
- * @param methods array of authentication methods to be enabled
+ * @param methods array of authorization methods to be enabled
  */
 //@Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS)
 @Target(AnnotationTarget.CLASS)
