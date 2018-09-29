@@ -22,8 +22,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc(secure = false)
 @TestPropertySource(properties = [
-    "sam.passwords-file=src/functional-test/config/passwords.conf",
-    "sam.tokens-file=src/functional-test/config/tokens.conf"])
+    "sam.passwords-file=src/functional-test/config/passwords.conf"])
 class CustomAuthorizationTest {
 
     @Autowired
@@ -48,7 +47,7 @@ class CustomAuthorizationTest {
     }
 
     @Test
-    fun failedAuthorizationToAdminAreaWithBasicAuth() {
+    fun forbiddenAuthorizationToAdminAreaWithBasicAuth() {
 
         // ACT
         val response: MockHttpServletResponse = mvc
@@ -67,7 +66,7 @@ class CustomAuthorizationTest {
 
 
     @Test
-    fun failedAuthorizationToUserAreaWithBasicAuth() {
+    fun forbiddenAuthorizationToUserAreaWithBasicAuth() {
 
         // ACT
         val response: MockHttpServletResponse = mvc
@@ -84,11 +83,9 @@ class CustomAuthorizationTest {
         Assertions.assertThat(response.status).isEqualTo(HttpStatus.FORBIDDEN.value())
     }
 
-
     @Configuration
     @EnableSimpleAuthenticationMethods(
-            authorizations = "antMatchers('/user-area/**').hasRole('USER')"
-    )
+            authorizations = "antMatchers('/user-area/**').hasRole('USER')")
     class TestConfiguration {
         @Bean
         fun customAuthorizationTestController() = CustomAuthorizationTestController()
