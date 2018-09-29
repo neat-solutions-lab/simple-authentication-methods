@@ -175,6 +175,12 @@ open class InstrumentedWebSecurityConfigurerTemplate(
     private fun processAuthorizationRulesExpression(httpSecurity: HttpSecurity) {
         log.info("Applying authorization rules: ${enableAnnotationAttributes.authorizations}")
         AuthorizationRulesProcessor(httpSecurity).process(enableAnnotationAttributes.authorizations)
+
+        /*
+         * it is required to block access to all other places (paths) then those explicitly
+         * mentioned by authentications attribute
+         */
+        httpSecurity.authorizeRequests().antMatchers("/**").denyAll()
     }
 
     private fun fullyAuthenticatedAccess(httpSecurity: HttpSecurity) {

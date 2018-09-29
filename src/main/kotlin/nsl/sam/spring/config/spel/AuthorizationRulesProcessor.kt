@@ -10,7 +10,5 @@ class AuthorizationRulesProcessor(private val httpSecurity: HttpSecurity) {
         val parser = SpelExpressionParser()
         val expression = parser.parseExpression(expression)
         expression.getValue(root)
-
-        httpSecurity.authorizeRequests().antMatchers("/**").denyAll()
     }
 }
