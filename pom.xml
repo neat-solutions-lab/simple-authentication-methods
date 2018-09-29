@@ -224,23 +224,23 @@
             <version>5.3.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>RELEASE</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>cglib</groupId>-->
+            <!--<artifactId>cglib</artifactId>-->
+            <!--<version>RELEASE</version>-->
+        <!--</dependency>-->
         <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm -->
-        <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>6.2.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.ow2.asm</groupId>-->
+            <!--<artifactId>asm</artifactId>-->
+            <!--<version>6.2.1</version>-->
+        <!--</dependency>-->
         <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm-commons -->
-        <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm-commons</artifactId>
-            <version>6.2.1</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.ow2.asm</groupId>-->
+            <!--<artifactId>asm-commons</artifactId>-->
+            <!--<version>6.2.1</version>-->
+        <!--</dependency>-->
 
     </dependencies>
 
@@ -358,6 +358,7 @@
                         <configuration>
                             <sources>
                                 <source>src/main/kotlin</source>
+                                <source>src/main/java</source>
                             </sources>
                         </configuration>
                     </execution>
