@@ -41,8 +41,6 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
     private val authMethodInternalConfigurers: MutableList<AuthMethodInternalConfigurer> = mutableListOf()
 
-    //private
-
     @PostConstruct
     fun initialize() {
 

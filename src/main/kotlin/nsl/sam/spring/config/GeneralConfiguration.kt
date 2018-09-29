@@ -11,24 +11,23 @@ import nsl.sam.method.token.TokenAuthMethodInternalConfigurerFactory
 import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.method.token.localtokens.LocalFileTokensToUserMapper
 import nsl.sam.method.token.localtokens.LocalTokensSource
+import nsl.sam.spring.condition.SimpleNoMethodValueIsAbsent
 import nsl.sam.spring.sender.ResponseSender
 import nsl.sam.spring.sender.UnauthenticatedAccessResponseSender
 import nsl.sam.spring.entrypoint.SimpleFailedAuthenticationEntryPoint
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Conditional
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
+//@Conditional(SimpleNoMethodValueIsAbsent::class)
 @Configuration
 @EnableWebMvc
 class GeneralConfiguration {
-
-    @Value("\${sam.passwords-file:}")
-    //lateinit var passwordsFilePath: String
-
 
     @Bean
     fun beanDefinitionRegistryPostProcessor(): BeanDefinitionRegistryPostProcessor {
@@ -39,16 +38,6 @@ class GeneralConfiguration {
     fun unauthenticatedAccessResponseSender(): ResponseSender {
         return UnauthenticatedAccessResponseSender()
     }
-
-//    @Bean
-//    fun usersSource(@Value("\${sam.passwords-file:}") passwordsFilePath: String): UsersSource {
-//        return LocalFileUsersSource(passwordsFilePath)
-//    }
-//
-//    @Bean
-//    fun localUsersDetailsService(usersSource: UsersSource): UserDetailsService {
-//        return LocalUserDetailsService(usersSource)
-//    }
 
     @Bean
     fun simpleAuthenticationEntryPointForHttpBasic(): AuthenticationEntryPoint {
@@ -83,7 +72,4 @@ class GeneralConfiguration {
         configurersFactories.addFactory(factory)
         return factory
     }
-
-
-
 }

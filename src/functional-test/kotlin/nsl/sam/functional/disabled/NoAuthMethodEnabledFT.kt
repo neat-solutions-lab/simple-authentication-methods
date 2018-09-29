@@ -43,8 +43,8 @@ class NoAuthMethodEnabledFT {
     @Autowired
     private lateinit var ctx: ApplicationContext
 
-    @Autowired
-    lateinit var webSecurityConfigurer: WebSecurityConfigurerAdapter
+    //@Autowired
+    //lateinit var webSecurityConfigurer: WebSecurityConfigurerAdapter
 
     @Autowired
     lateinit var filterChain: FilterChainProxy

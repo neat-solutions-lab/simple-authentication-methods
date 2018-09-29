@@ -21,7 +21,8 @@ class WebSecurityDebugModeCondition: Condition {
         Assert.notNull(context.beanFactory, "No bean factory present in ConditionContext.")
         return AnnotationProcessor.isAtLeastOneAnnotationWithSpecifiedAttributeValue(
                 AnnotationProcessorContext.fromConditionContext(context),
-                AnnotationAttributeDefinition(EnableSimpleAuthenticationMethods::class, "debug", true)
+                AnnotationAttributeDefinition(
+                        EnableSimpleAuthenticationMethods::class, "debug", true)
         )
     }
 

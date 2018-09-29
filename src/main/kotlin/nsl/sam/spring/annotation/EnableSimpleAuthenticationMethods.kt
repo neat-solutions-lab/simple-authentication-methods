@@ -50,5 +50,7 @@ annotation class EnableSimpleAuthenticationMethods(
 
         val authorizations: String = "",
 
+        val forceHttps: Boolean = false,
+
         val debug: Boolean = false
 )
