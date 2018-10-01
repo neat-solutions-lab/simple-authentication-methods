@@ -23,12 +23,9 @@ import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import org.springframework.mock.web.MockHttpServletResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 //import org.junit.Rule
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus

@@ -24,7 +24,6 @@ class SimpleBasicAuthenticationAnnotationFT {
 
     @Configuration
     @EnableSimpleAuthenticationMethods
-    //@SimpleBasicAuthentication(passwordsFilePath = "raz", passwordsFilePropertyName = "dwa")
     @SimpleBasicAuthentication
     class TestConfiguration: FakeControllerConfiguration()
 

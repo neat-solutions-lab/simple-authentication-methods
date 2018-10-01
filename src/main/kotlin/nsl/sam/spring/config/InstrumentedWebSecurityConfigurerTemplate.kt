@@ -8,7 +8,6 @@ import nsl.sam.spring.annotation.EnableAnnotationAttributes
 import nsl.sam.spring.config.spel.AuthorizationRulesProcessor
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.Ordered
-import org.springframework.expression.spel.standard.SpelExpressionParser
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -203,6 +202,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling().authenticationEntryPoint(defaultAuthenticationEntryPoint)
+
     }
 }
 

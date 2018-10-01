@@ -10,10 +10,30 @@ import kotlin.reflect.full.cast
 
 object AnnotationProcessor {
 
+    @Suppress("UNUSED_PARAMETER")
+    inline fun <reified T:KClass<*>> getAnnotationAttributeAsKClass(
+            importingClassMetadata: AnnotationMetadata,
+            annotationClass: KClass<*>,
+            attributeName: String,
+            clazz: T): T {
+
+        val attributes = AnnotationAttributes.fromMap(
+                importingClassMetadata.getAnnotationAttributes(
+                        annotationClass.qualifiedName!!, true
+                )
+        )
+
+        val className = attributes?.get(attributeName) as String
+        val rv = Class.forName(className).kotlin
+
+        return T::class.cast(rv)
+    }
+
     fun <T:Any> getAnnotationAttributeValue(
             importingClassMetadata:AnnotationMetadata,
             annotationClass: KClass<*>,
-            attributeName:String, attributeClazz: KClass<T>): T {
+            attributeName:String,
+            attributeClazz: KClass<T>): T {
 
         val attributes = AnnotationAttributes.fromMap(
                 importingClassMetadata.getAnnotationAttributes(

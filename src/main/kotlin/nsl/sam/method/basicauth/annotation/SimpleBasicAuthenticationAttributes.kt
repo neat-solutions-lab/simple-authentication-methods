@@ -1,10 +1,13 @@
 package nsl.sam.method.basicauth.annotation
 
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties
+import nsl.sam.spring.entrypoint.AuthenticationEntryPointFactory
+import nsl.sam.spring.entrypoint.NullAuthenticationEntryPointFactory
+import kotlin.reflect.KClass
 
 data class SimpleBasicAuthenticationAttributes(
         val passwordsFilePathProperty: String = "",
-        val passwordsFilePath: String = ""
+        val passwordsFilePath: String = "",
+        val authenticationEntryPointFactory: KClass<out AuthenticationEntryPointFactory> = NullAuthenticationEntryPointFactory::class
 ) {
 
     companion object {
@@ -20,6 +23,7 @@ data class SimpleBasicAuthenticationAttributes(
 
         var passwordsFilePathProperty = ""
         var passwordsFilePath = ""
+        var authenticationEntryPointFactory: KClass<out AuthenticationEntryPointFactory> = NullAuthenticationEntryPointFactory::class
 
         fun passwordsFilePathProperty(passwordsFilePathProperty: ()->String) =
                 apply { this.passwordsFilePathProperty = passwordsFilePathProperty() }
@@ -27,7 +31,15 @@ data class SimpleBasicAuthenticationAttributes(
         fun passwordsFilePath(passwordsFilePath: ()->String) =
                 apply { this.passwordsFilePath = passwordsFilePath() }
 
-        fun build() = SimpleBasicAuthenticationAttributes(this.passwordsFilePathProperty, this.passwordsFilePath)
+        fun authenticationEntryPointFactory(authenticationEntryPointFactory: () -> KClass<out AuthenticationEntryPointFactory>) =
+                apply {
+                    this.authenticationEntryPointFactory = authenticationEntryPointFactory()}
+
+        fun build() = SimpleBasicAuthenticationAttributes(
+                this.passwordsFilePathProperty,
+                this.passwordsFilePath,
+                this.authenticationEntryPointFactory
+        )
     }
 
 }

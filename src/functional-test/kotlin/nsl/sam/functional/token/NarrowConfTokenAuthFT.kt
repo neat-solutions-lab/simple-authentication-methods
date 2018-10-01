@@ -1,5 +1,8 @@
 package nsl.sam.functional.token
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.google.gson.GsonBuilder
 import nsl.sam.FunctionalTestConstants
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -23,7 +26,8 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.beans.factory.NoSuchBeanDefinitionException
+import com.google.gson.JsonParser
+import nsl.sam.auxiliary.JsonUtils
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
@@ -39,12 +43,11 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 @ExtendWith(SpringExtension::class)
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [NarrowConfTokenAuthFunctionalTestConfig::class])
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
-    "sam.passwords-file=src/functional-test/config/passwords.conf",
-    "sam.tokens-file=src/functional-test/config/tokens.conf"])
+    "sam.tokens-file=src/functional-test/config/tokens.conf"
+])
 class NarrowConfTokenAuthFT {
 
     companion object { val log by logger() }
@@ -67,7 +70,6 @@ class NarrowConfTokenAuthFT {
     //
     // Main beans arrangement
     //
-
 
     @Test
     fun disableBasicAuthSimpleConfigurerBeanPresent() {
@@ -131,7 +133,8 @@ class NarrowConfTokenAuthFT {
         val response: MockHttpServletResponse = mvc
             .perform(
                 get(MOCK_MVC_TEST_ENDPOINT).header(
-                    FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME, FunctionalTestConstants.TOKEN_AUTH_HEADER_AUTHORIZED_VALUE
+                        FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME,
+                        FunctionalTestConstants.TOKEN_AUTH_HEADER_AUTHORIZED_VALUE
                 )
             )
             .andReturn().response
@@ -141,7 +144,6 @@ class NarrowConfTokenAuthFT {
         assertThat(response.contentAsString).isEqualTo(FAKE_CONTROLLER_RESPONSE_BODY)
     }
 
-
     @Test
     fun failedAuthenticationWithTokenWhenWrongToken() {
 
@@ -149,13 +151,16 @@ class NarrowConfTokenAuthFT {
         val response: MockHttpServletResponse = mvc
                 .perform(
                     get(MOCK_MVC_TEST_ENDPOINT).header(
-                        FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME, FunctionalTestConstants.TOKEN_AUTH_HEADER_NOT_AUTHORIZED_VALUE
+                            FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME,
+                            FunctionalTestConstants.TOKEN_AUTH_HEADER_NOT_AUTHORIZED_VALUE
                     )
                 )
                 .andReturn().response
 
         // ASSERT
         assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
+
+        println(JsonUtils.toPretty(response.contentAsString))
     }
 
     @Test

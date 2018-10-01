@@ -1,6 +1,8 @@
 package nsl.sam.spring.annotation
 
+import nsl.sam.spring.condition.SimpleNoMethodValueIsAbsent
 import nsl.sam.spring.config.*
+import org.springframework.context.annotation.Conditional
 import org.springframework.context.annotation.Import
 
 const val ENABLE_ANNOTATION_METHODS_ATTRIBUTE_NAME = "methods"
@@ -18,8 +20,8 @@ const val ENABLE_ANNOTATION_AUTHORIZATIONS_ATTRIBUTE_NAME = "authorizations"
  *
  * @param methods array of authorization methods to be enabled
  */
-//@Target(AnnotationTarget.TYPE, AnnotationTarget.CLASS)
 @Target(AnnotationTarget.CLASS)
+//@Conditional(SimpleNoMethodValueIsAbsent::class)
 @Import(value =
     [
         DynamicImportBeanDefinitionRegistrar::class,

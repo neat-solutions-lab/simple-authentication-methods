@@ -7,7 +7,6 @@ import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
 import org.assertj.core.api.Assertions as Assertj
-import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -23,8 +22,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import org.hamcrest.Matchers.equalTo
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.context.annotation.Configuration

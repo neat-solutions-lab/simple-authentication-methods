@@ -3,7 +3,6 @@ package nsl.sam.functional.basicauth
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.spring.annotation.AuthenticationMethod
 import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
-import org.junit.jupiter.api.Test
 //import nsl.sam.spring.config.DisableBasicAuthConfigurer
 //import org.junit.Rule
 //import org.junit.Test

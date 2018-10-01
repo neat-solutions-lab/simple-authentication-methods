@@ -5,7 +5,6 @@ import nsl.sam.configurer.ConfigurersFactories
 import nsl.sam.instrumentation.InstrumentedClassProvider
 import nsl.sam.logger.logger
 import nsl.sam.spring.annotation.*
-import nsl.sam.spring.condition.SimpleNoMethodValueIsAbsent
 import nsl.sam.spring.config.ordering.OrderingHelper
 import nsl.sam.spring.config.ordering.ReservedNumbersFinder
 import nsl.sam.spring.config.sequencer.SimpleVolatileSequencer
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.BeanFactoryAware
 import org.springframework.beans.factory.ListableBeanFactory
 import org.springframework.beans.factory.support.BeanDefinitionBuilder
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
-import org.springframework.context.annotation.Conditional
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar
 import org.springframework.core.type.AnnotationMetadata
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -41,11 +39,11 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
         val annotationAttributes = getAnnotationAttributes(importingClassMetadata)
         log.debug("annotation attributes for ${importingClassMetadata.className}: $annotationAttributes")
 
-        //if(annotationAttributes.methods.contains(AuthenticationMethod.SIMPLE_NO_METHOD)) {
-        //    log.debug("Skipping authentication configuration because one of declared methods is " +
-        //            "${AuthenticationMethod.SIMPLE_NO_METHOD.name}")
-        //    return
-        //}
+//        if(annotationAttributes.methods.contains(AuthenticationMethod.SIMPLE_NO_METHOD)) {
+//            log.debug("Skipping authentication configuration because one of declared methods is " +
+//                    "${AuthenticationMethod.SIMPLE_NO_METHOD.name}")
+//            return
+//        }
 
         /*
          * due to auto-ordering mechanism, I need to know all reserved order number,

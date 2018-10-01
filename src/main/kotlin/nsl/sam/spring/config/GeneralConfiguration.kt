@@ -12,6 +12,8 @@ import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.method.token.localtokens.LocalFileTokensToUserMapper
 import nsl.sam.method.token.localtokens.LocalTokensSource
 import nsl.sam.spring.condition.SimpleNoMethodValueIsAbsent
+import nsl.sam.spring.entrypoint.AuthenticationEntryPointFactory
+import nsl.sam.spring.entrypoint.SimpleAuthenticationEntryPointFactory
 import nsl.sam.spring.sender.ResponseSender
 import nsl.sam.spring.sender.UnauthenticatedAccessResponseSender
 import nsl.sam.spring.entrypoint.SimpleFailedAuthenticationEntryPoint
@@ -24,10 +26,14 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
-//@Conditional(SimpleNoMethodValueIsAbsent::class)
 @Configuration
 @EnableWebMvc
 class GeneralConfiguration {
+
+    @Bean
+    fun authenticationEntryPointFactory(): AuthenticationEntryPointFactory {
+        return SimpleAuthenticationEntryPointFactory()
+    }
 
     @Bean
     fun beanDefinitionRegistryPostProcessor(): BeanDefinitionRegistryPostProcessor {
