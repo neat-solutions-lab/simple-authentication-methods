@@ -1,7 +1,6 @@
 package nsl.sam.method.basicauth.annotation
 
 import nsl.sam.spring.entrypoint.AuthenticationEntryPointFactory
-import nsl.sam.spring.entrypoint.NullAuthenticationEntryPointFactory
 import kotlin.reflect.KClass
 
 data class SimpleBasicAuthenticationAttributes(
