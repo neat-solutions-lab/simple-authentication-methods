@@ -1,5 +1,6 @@
 package nsl.sam.method.basicauth
 
+import nsl.sam.annotation.AnnotationMetadataResolver
 import nsl.sam.annotation.AnnotationProcessor
 import nsl.sam.configurer.AuthMethodInternalConfigurer
 import nsl.sam.configurer.AuthMethodInternalConfigurerFactory
@@ -11,6 +12,7 @@ import nsl.sam.method.basicauth.userdetails.LocalFileUsersSource
 import nsl.sam.method.basicauth.userdetails.LocalUserDetailsService
 import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableAnnotationAttributes
+import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.entrypoint.AuthenticationEntryPointFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.annotation.AnnotationAttributes
@@ -26,8 +28,8 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
     @Autowired
     private lateinit var environment: Environment
 
-    @Autowired
-    private lateinit var authenticationEntryPointFactory: AuthenticationEntryPointFactory
+//    @Autowired
+//    private lateinit var authenticationEntryPointFactory: AuthenticationEntryPointFactory
 
     override fun getSupportedMethod(): AuthenticationMethod {
         return AuthenticationMethod.SIMPLE_BASIC_AUTH
@@ -35,7 +37,7 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
 
     override fun create(attributes: EnableAnnotationAttributes): AuthMethodInternalConfigurer {
 
-        val annotationMetadata = attributes.annotationMetadata
+        val annotationMetadata = attributes.enableAnnotationMetadata
 
         val simpleBasicAuthenticationAttributes = getSimpleAuthenticationAttributes(annotationMetadata)
         log.debug("Configuration of ${AuthenticationMethod.SIMPLE_BASIC_AUTH.name} picked up by " +
@@ -53,9 +55,24 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
         val usersSource = LocalFileUsersSource(passwordsFile)
         val usersDetailsService = LocalUserDetailsService(usersSource)
 
+        val parentAnnotationMetadataResolver = AnnotationMetadataResolver(
+                attributes.enableAnnotationMetadata, EnableSimpleAuthenticationMethods::class
+        )
+
+        val annotationMetadataResolver = AnnotationMetadataResolver(
+                attributes.enableAnnotationMetadata,
+                SimpleBasicAuthentication::class,
+                parentAnnotationMetadataResolver
+        )
+
+        val authenticationEntryPointFactory = AuthenticationEntryPointFactory.getFactory(
+                annotationMetadataResolver, environment
+        )
+
         return BasicAuthMethodInternalConfigurer(
                 usersDetailsService,
-                authenticationEntryPointFactory.create())
+                authenticationEntryPointFactory.create()
+        )
 
     }
 
@@ -101,7 +118,7 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
             }
             authenticationEntryPointFactory {
 //                AnnotationProcessor.getAnnotationAttributeAsKClass(
-//                        annotationMetadata,
+//                        enableAnnotationMetadata,
 //                        SimpleBasicAuthentication::class,
 //                        "authenticationEntryPointFactory",
 //                        AuthenticationEntryPointFactory::class

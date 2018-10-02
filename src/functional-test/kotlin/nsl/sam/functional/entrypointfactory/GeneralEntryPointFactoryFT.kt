@@ -1,7 +1,7 @@
-package nsl.sam.functional.authorization
+package nsl.sam.functional.entrypointfactory
 
-import nsl.sam.functional.controller.CustomAuthorizationTestController
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.functional.controller.CustomAuthorizationTestController
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -23,69 +23,34 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 @AutoConfigureMockMvc(secure = false)
 @TestPropertySource(properties = [
     "sam.passwords-file=src/functional-test/config/passwords.conf"])
-class CustomAuthorizationTest {
+class GeneralEntryPointFactoryFT {
 
     @Autowired
     private lateinit var mvc: MockMvc
 
-    @Test
-    fun succeedAuthorizationToUserAreaWithBasicAuth() {
 
+    @Test
+    fun responseFromCustomEntryPointWhenWrongCredentials() {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
                         MockMvcRequestBuilders.get("/user-area")
                                 .with(SecurityMockMvcRequestPostProcessors.httpBasic(
-                                        "user",
-                                        "user")
+                                        "wrong",
+                                        "wrong")
                                 )
                 )
                 .andReturn().response
 
-        // ASSERT
-        Assertions.assertThat(response.status).isEqualTo(HttpStatus.OK.value())
-    }
-
-    @Test
-    fun forbiddenAuthorizationToAdminAreaWithBasicAuth() {
-
-        // ACT
-        val response: MockHttpServletResponse = mvc
-                .perform(
-                        MockMvcRequestBuilders.get("/admin-area")
-                                .with(SecurityMockMvcRequestPostProcessors.httpBasic(
-                                        "user",
-                                        "user")
-                                )
-                )
-                .andReturn().response
+        println(response.contentAsString)
 
         // ASSERT
-        Assertions.assertThat(response.status).isEqualTo(HttpStatus.FORBIDDEN.value())
-    }
-
-
-    @Test
-    fun forbiddenAuthorizationToUserAreaWithBasicAuth() {
-
-        // ACT
-        val response: MockHttpServletResponse = mvc
-                .perform(
-                        MockMvcRequestBuilders.get("/user-area")
-                                .with(SecurityMockMvcRequestPostProcessors.httpBasic(
-                                        "admin",
-                                        "admin")
-                                )
-                )
-                .andReturn().response
-
-        // ASSERT
-        Assertions.assertThat(response.status).isEqualTo(HttpStatus.FORBIDDEN.value())
+        Assertions.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
+        Assertions.assertThat(response.contentAsString).isEqualTo("Response from ${TestTimeEntryPoint::class.qualifiedName}")
     }
 
     @Configuration
-    @EnableSimpleAuthenticationMethods(
-            authorizations = "antMatchers('/user-area/**').hasRole('USER')")
+    @EnableSimpleAuthenticationMethods(authenticationEntryPointFactory = [TestTimeEntryPointFactory::class])
     class TestConfiguration {
         @Bean
         fun customAuthorizationTestController() = CustomAuthorizationTestController()

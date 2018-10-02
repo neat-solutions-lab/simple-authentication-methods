@@ -1,7 +1,9 @@
 package nsl.sam.core.annotation
 
 import nsl.sam.core.config.*
+import nsl.sam.core.entrypoint.AuthenticationEntryPointFactory
 import org.springframework.context.annotation.Import
+import kotlin.reflect.KClass
 
 const val ENABLE_ANNOTATION_METHODS_ATTRIBUTE_NAME = "methods"
 const val ENABLE_ANNOTATION_ANONYMOUS_FALLBACK_ATTRIBUTE_NAME = "localAnonymousFallback"
@@ -52,5 +54,7 @@ annotation class EnableSimpleAuthenticationMethods(
 
         val forceHttps: Boolean = false,
 
-        val debug: Boolean = false
+        val debug: Boolean = false,
+
+        val authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = []
 )

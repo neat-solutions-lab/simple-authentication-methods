@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 @AutoConfigureMockMvc(secure = false)
 @TestPropertySource(properties = [
     "sam.passwords-file=src/functional-test/config/passwords.conf"])
-class CustomChainedAuthorizationTest {
+class CustomChainedAuthorizationFT {
 
     @Autowired
     private lateinit var mvc: MockMvc

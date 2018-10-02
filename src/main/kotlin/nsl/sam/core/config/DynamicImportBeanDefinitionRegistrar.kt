@@ -1,5 +1,6 @@
 package nsl.sam.core.config
 
+import nsl.sam.annotation.AnnotationMetadataResolver
 import nsl.sam.annotation.AnnotationProcessor
 import nsl.sam.configurer.ConfigurersFactories
 import nsl.sam.instrumentation.InstrumentedClassProvider
@@ -35,6 +36,11 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 
     @Synchronized
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
+
+        //val annotationMetadataResolver = AnnotationMetadataResolver(
+        //        importingClassMetadata, EnableSimpleAuthenticationMethods::class
+        //)
+        //val value = annotationMetadataResolver.getAttributeValue("debug", Boolean::class)
 
         val annotationAttributes = getAnnotationAttributes(importingClassMetadata)
         log.debug("annotation attributes for ${importingClassMetadata.className}: $annotationAttributes")
@@ -98,7 +104,7 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
     private fun getAnnotationAttributes(importingClassMetadata: AnnotationMetadata): EnableAnnotationAttributes {
 
         return EnableAnnotationAttributes.create {
-            annotationMetadata {
+            enableAnnotationMetadata {
                 importingClassMetadata
             }
             methods {

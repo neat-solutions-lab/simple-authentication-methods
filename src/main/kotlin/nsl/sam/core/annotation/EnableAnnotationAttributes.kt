@@ -7,7 +7,7 @@ import org.springframework.util.Assert
  * Represents attributes of [@EnableSimpleAuthentication] methods annotation
  */
 data class EnableAnnotationAttributes private constructor (
-        val annotationMetadata: AnnotationMetadata,
+        val enableAnnotationMetadata: AnnotationMetadata,
         val methods: Array<AuthenticationMethod>,
         val match: String,
         val debug: Boolean,
@@ -26,7 +26,7 @@ data class EnableAnnotationAttributes private constructor (
             init()
         }
 
-        var annotationMetadata: AnnotationMetadata? = null
+        var enableAnnotationMetadata: AnnotationMetadata? = null
         var methods: Array<AuthenticationMethod> = emptyArray()
         var match = ""
         var debug = false
@@ -34,7 +34,7 @@ data class EnableAnnotationAttributes private constructor (
         var anonymousFallback = false
         var authorizations = ""
 
-        fun annotationMetadata(annotationMetadata: () -> AnnotationMetadata) = apply {this.annotationMetadata = annotationMetadata()}
+        fun enableAnnotationMetadata(enableAnnotationMetadata: () -> AnnotationMetadata) = apply {this.enableAnnotationMetadata = enableAnnotationMetadata()}
 
         fun methods(methods: () -> Array<AuthenticationMethod>) = apply { this.methods = methods()}
 
@@ -50,10 +50,11 @@ data class EnableAnnotationAttributes private constructor (
 
         fun build():EnableAnnotationAttributes {
 
-            Assert.notNull(this.annotationMetadata, "annotationMetadata cannot be null")
+            Assert.notNull(this.enableAnnotationMetadata, "enableAnnotationMetadata cannot be null")
 
             return EnableAnnotationAttributes(
-                    this.annotationMetadata!!, this.methods, this.match, this.debug, this.order, this.anonymousFallback,
+                    this.enableAnnotationMetadata!!,
+                    this.methods, this.match, this.debug, this.order, this.anonymousFallback,
                     this.authorizations
             )
         }
