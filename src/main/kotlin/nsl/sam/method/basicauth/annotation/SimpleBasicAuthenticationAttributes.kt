@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
 data class SimpleBasicAuthenticationAttributes(
         val passwordsFilePathProperty: String = "",
         val passwordsFilePath: String = "",
-        val authenticationEntryPointFactory: KClass<out AuthenticationEntryPointFactory> = NullAuthenticationEntryPointFactory::class
+        val authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = emptyArray()
 ) {
 
     companion object {
@@ -23,7 +23,7 @@ data class SimpleBasicAuthenticationAttributes(
 
         var passwordsFilePathProperty = ""
         var passwordsFilePath = ""
-        var authenticationEntryPointFactory: KClass<out AuthenticationEntryPointFactory> = NullAuthenticationEntryPointFactory::class
+        var authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = emptyArray()
 
         fun passwordsFilePathProperty(passwordsFilePathProperty: ()->String) =
                 apply { this.passwordsFilePathProperty = passwordsFilePathProperty() }
@@ -31,7 +31,7 @@ data class SimpleBasicAuthenticationAttributes(
         fun passwordsFilePath(passwordsFilePath: ()->String) =
                 apply { this.passwordsFilePath = passwordsFilePath() }
 
-        fun authenticationEntryPointFactory(authenticationEntryPointFactory: () -> KClass<out AuthenticationEntryPointFactory>) =
+        fun authenticationEntryPointFactory(authenticationEntryPointFactory: () -> Array<KClass<out AuthenticationEntryPointFactory>>) =
                 apply {
                     this.authenticationEntryPointFactory = authenticationEntryPointFactory()}
 
@@ -41,5 +41,4 @@ data class SimpleBasicAuthenticationAttributes(
                 this.authenticationEntryPointFactory
         )
     }
-
 }

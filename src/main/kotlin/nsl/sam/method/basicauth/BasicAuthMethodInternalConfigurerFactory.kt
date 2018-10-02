@@ -101,14 +101,13 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
                 )
             }
             authenticationEntryPointFactory {
-//                AnnotationProcessor.getAnnotationAttributeValue(
+//                AnnotationProcessor.getAnnotationAttributeAsKClass(
 //                        annotationMetadata,
 //                        SimpleBasicAuthentication::class,
 //                        "authenticationEntryPointFactory",
 //                        AuthenticationEntryPointFactory::class
-//                        //Array<KClass<out AuthenticationEntryPointFactory>>::class
 //                )
-                AnnotationProcessor.getAnnotationAttributeAsKClass(
+                AnnotationProcessor.getAnnotationAttributeAsArray(
                         annotationMetadata,
                         SimpleBasicAuthentication::class,
                         "authenticationEntryPointFactory",

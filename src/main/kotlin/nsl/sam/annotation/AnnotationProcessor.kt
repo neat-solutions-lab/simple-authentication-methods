@@ -11,11 +11,31 @@ import kotlin.reflect.full.cast
 object AnnotationProcessor {
 
     @Suppress("UNUSED_PARAMETER")
+    fun <T: KClass<*>> getAnnotationAttributeAsArray(
+            importingClassMetadata: AnnotationMetadata,
+            annotationClass: KClass<*>,
+            attributeName: String,
+            typeTip: T
+    ): Array<T> {
+
+        val attributes = AnnotationAttributes.fromMap(
+                importingClassMetadata.getAnnotationAttributes(
+                        annotationClass.qualifiedName!!, false
+                )
+        )
+
+        val javaClasses = attributes?.get(attributeName) as Array<Class<T>>?
+
+        val kotlinClasses = javaClasses?.map { it.kotlin }?.toTypedArray() ?: emptyArray()
+        return kotlinClasses as Array<T>
+    }
+
+    @Suppress("UNUSED_PARAMETER")
     inline fun <reified T:KClass<*>> getAnnotationAttributeAsKClass(
             importingClassMetadata: AnnotationMetadata,
             annotationClass: KClass<*>,
             attributeName: String,
-            clazz: T): T {
+            typeTip: T): T {
 
         val attributes = AnnotationAttributes.fromMap(
                 importingClassMetadata.getAnnotationAttributes(

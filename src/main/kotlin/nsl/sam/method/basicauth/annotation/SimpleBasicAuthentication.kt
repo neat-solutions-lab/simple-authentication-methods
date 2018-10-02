@@ -11,5 +11,5 @@ annotation class SimpleBasicAuthentication (
 
     val passwordsFilePath: String = "",
 
-    val authenticationEntryPointFactory: KClass<out AuthenticationEntryPointFactory> = NullAuthenticationEntryPointFactory::class
+    val authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = []
 )
