@@ -24,6 +24,11 @@ class AnnotationMetadataResolver(
         return type.cast(attributeValue)
     }
 
+
+    fun <T:Any> getRequiredAttributeValue(name: String, type: KClass<T>): T {
+        return getAttributeValue(name, type)!!
+    }
+
     fun <T:Any> getAttributeValueAsArray(name: String, type: KClass<T>): Array<KClass<T>>? {
 
         val attributes = AnnotationAttributes.fromMap(
@@ -41,4 +46,22 @@ class AnnotationMetadataResolver(
         return kotlinClasses
     }
 
+    fun <T:Any> getRequiredAttributeValueAsArray(name: String, type: KClass<T>): Array<KClass<T>> {
+        return getAttributeValueAsArray(name, type)!!
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun <T: KClass<*>> getRequiredAttributeAsKClassArray(name: String, type: T): Array<T> {
+
+        val attributes = AnnotationAttributes.fromMap(
+                annotationMetadata.getAnnotationAttributes(
+                        annotationType.qualifiedName!!, false
+                )
+        )
+
+        val javaClasses = attributes?.get(name) as Array<Class<T>>?
+        val kotlinClasses = javaClasses?.map { it.kotlin }?.toTypedArray() ?: emptyArray()
+        return kotlinClasses as Array<T>
+
+    }
 }

@@ -98,34 +98,24 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
                 )
         ) ?: return SimpleBasicAuthenticationAttributes.default()
 
+        val annotationMetadataResolver = AnnotationMetadataResolver(
+                annotationMetadata, SimpleBasicAuthentication::class
+        )
+
         return create {
 
             passwordsFilePathProperty {
-                AnnotationProcessor.getAnnotationAttributeValue(
-                        annotationMetadata,
-                        SimpleBasicAuthentication::class,
-                        "passwordsFilePropertyName",
-                        String::class
+                annotationMetadataResolver.getRequiredAttributeValue(
+                        "passwordsFilePropertyName", String::class
                 )
             }
             passwordsFilePath {
-                AnnotationProcessor.getAnnotationAttributeValue(
-                        annotationMetadata,
-                        SimpleBasicAuthentication::class,
-                        "passwordsFilePath",
-                        String::class
+                annotationMetadataResolver.getRequiredAttributeValue(
+                        "passwordsFilePath", String::class
                 )
             }
             authenticationEntryPointFactory {
-//                AnnotationProcessor.getAnnotationAttributeAsKClass(
-//                        enableAnnotationMetadata,
-//                        SimpleBasicAuthentication::class,
-//                        "authenticationEntryPointFactory",
-//                        AuthenticationEntryPointFactory::class
-//                )
-                AnnotationProcessor.getAnnotationAttributeAsArray(
-                        annotationMetadata,
-                        SimpleBasicAuthentication::class,
+                annotationMetadataResolver.getRequiredAttributeAsKClassArray (
                         "authenticationEntryPointFactory",
                         AuthenticationEntryPointFactory::class
                 )

@@ -16,6 +16,15 @@ abstract class AuthenticationEntryPointFactory {
 
         private const val AUTHENTICATION_ENTRY_POINT_FACTORY = "nsl.sam.authentication-entry-point.factory"
 
+        private val cachedFactories = mutableMapOf<KClass<AuthenticationEntryPointFactory>, AuthenticationEntryPointFactory>()
+
+        @Synchronized
+        private fun getCachedOrCreate(clazz: KClass<AuthenticationEntryPointFactory>): AuthenticationEntryPointFactory {
+            return cachedFactories.getOrPut(clazz) {
+                clazz.createInstance()
+            }
+        }
+
         fun getFactory(annotationMetadataResolver: AnnotationMetadataResolver, environment: Environment): AuthenticationEntryPointFactory {
 
             /*
@@ -31,7 +40,8 @@ abstract class AuthenticationEntryPointFactory {
 
             if(null != factoryClasses &&factoryClasses.isNotEmpty()) {
                 val factoryClass = factoryClasses[0]
-                return factoryClass.createInstance()
+                //return factoryClass.createInstance()
+                return getCachedOrCreate(factoryClass)
             }
 
             /*
@@ -42,7 +52,8 @@ abstract class AuthenticationEntryPointFactory {
                     SimpleAuthenticationEntryPointFactory::class.qualifiedName!!
             )
             val factoryClass = Class.forName(factoryClassName).kotlin as KClass<AuthenticationEntryPointFactory>
-            return factoryClass.createInstance()
+            //return factoryClass.createInstance()
+            return getCachedOrCreate(factoryClass)
         }
     }
 

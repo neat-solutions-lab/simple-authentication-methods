@@ -79,9 +79,8 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
              * supplier logic
              */
             val configurersFactories = listableBeanFactory.getBean(ConfigurersFactories::class.java)
-            var simpleAuthenticationEntryPoint = listableBeanFactory.getBean(AuthenticationEntryPoint::class.java)
-            val constructor = dynamicConfigurerClass.getConstructor(ConfigurersFactories::class.java, AuthenticationEntryPoint::class.java)
-            constructor.newInstance(configurersFactories, simpleAuthenticationEntryPoint)
+            val constructor = dynamicConfigurerClass.getConstructor(ConfigurersFactories::class.java)
+            constructor.newInstance(configurersFactories)
         }.beanDefinition
 
         /*
@@ -103,38 +102,31 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 
     private fun getAnnotationAttributes(importingClassMetadata: AnnotationMetadata): EnableAnnotationAttributes {
 
+        val annotationResolver = AnnotationMetadataResolver(
+                importingClassMetadata, EnableSimpleAuthenticationMethods::class
+        )
+
         return EnableAnnotationAttributes.create {
             enableAnnotationMetadata {
                 importingClassMetadata
             }
             methods {
-                AnnotationProcessor.getAnnotationAttributeValue(
-                        importingClassMetadata,
-                        EnableSimpleAuthenticationMethods::class,
-                        ENABLE_ANNOTATION_METHODS_ATTRIBUTE_NAME,
-                        Array<AuthenticationMethod>::class
+                annotationResolver.getRequiredAttributeValue(
+                        ENABLE_ANNOTATION_METHODS_ATTRIBUTE_NAME, Array<AuthenticationMethod>::class
                 )
             }
             match {
-                AnnotationProcessor.getAnnotationAttributeValue(
-                        importingClassMetadata,
-                        EnableSimpleAuthenticationMethods::class,
-                        ENABLE_ANNOTATION_MATCH_ATTRIBUTE_NAME,
-                        String::class
+                annotationResolver.getRequiredAttributeValue(
+                        ENABLE_ANNOTATION_MATCH_ATTRIBUTE_NAME, String::class
                 )
             }
             debug {
-                AnnotationProcessor.getAnnotationAttributeValue(
-                        importingClassMetadata,
-                        EnableSimpleAuthenticationMethods::class,
-                        ENABLE_ANNOTATION_DEBUG_ATTRIBUTE_NAME,
-                        Boolean::class
+                annotationResolver.getRequiredAttributeValue(
+                        ENABLE_ANNOTATION_DEBUG_ATTRIBUTE_NAME, Boolean::class
                 )
             }
             order {
-                val value = AnnotationProcessor.getAnnotationAttributeValue(
-                        importingClassMetadata,
-                        EnableSimpleAuthenticationMethods::class,
+                val value = annotationResolver.getRequiredAttributeValue(
                         ENABLE_ANNOTATION_ORDER_ATTRIBUTE_NAME,
                         Int::class
                 )
@@ -145,19 +137,13 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
                 }
             }
             anonymousFallback {
-                AnnotationProcessor.getAnnotationAttributeValue(
-                        importingClassMetadata,
-                        EnableSimpleAuthenticationMethods::class,
-                        ENABLE_ANNOTATION_ANONYMOUS_FALLBACK_ATTRIBUTE_NAME,
-                        Boolean::class
+                annotationResolver.getRequiredAttributeValue(
+                        ENABLE_ANNOTATION_ANONYMOUS_FALLBACK_ATTRIBUTE_NAME, Boolean::class
                 )
             }
             authorizations {
-                AnnotationProcessor.getAnnotationAttributeValue(
-                        importingClassMetadata,
-                        EnableSimpleAuthenticationMethods::class,
-                        ENABLE_ANNOTATION_AUTHORIZATIONS_ATTRIBUTE_NAME,
-                        String::class
+                annotationResolver.getRequiredAttributeValue(
+                        ENABLE_ANNOTATION_AUTHORIZATIONS_ATTRIBUTE_NAME, String::class
                 )
             }
         }

@@ -1,13 +1,18 @@
 package nsl.sam.core.config
 
+import nsl.sam.annotation.AnnotationMetadataResolver
 import nsl.sam.configurer.AuthMethodInternalConfigurer
 import nsl.sam.configurer.ConfigurersFactories
 import nsl.sam.logger.logger
 import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableAnnotationAttributes
+import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.config.spel.AuthorizationRulesProcessor
+import nsl.sam.core.entrypoint.AuthenticationEntryPointFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.Ordered
+import org.springframework.core.env.Environment
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -18,9 +23,7 @@ import javax.annotation.PostConstruct
 
 
 open class InstrumentedWebSecurityConfigurerTemplate(
-        private val configurersFactories: ConfigurersFactories,
-        // TODO: defaultAuthenticationEntryPoint should be configured
-        private val defaultAuthenticationEntryPoint: AuthenticationEntryPoint)
+        private val configurersFactories: ConfigurersFactories)
     : WebSecurityConfigurerAdapter(), Ordered {
 
     companion object { val log by logger() }
@@ -30,6 +33,11 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
     @Value("\${server.address:}")
     private var serverAddressAttr = ""
+
+    @Autowired
+    private lateinit var environment: Environment
+
+    private lateinit var authenticationEntryPointFactory: AuthenticationEntryPointFactory
 
     /**
      * NOTE: This property is "injected" with the help of DynamicImportBeanDefinitionRegistar,
@@ -42,6 +50,15 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
     @PostConstruct
     fun initialize() {
+
+        val annotationMetadataResolver = AnnotationMetadataResolver(
+                enableAnnotationAttributes.enableAnnotationMetadata,
+                EnableSimpleAuthenticationMethods::class
+        )
+
+        authenticationEntryPointFactory = AuthenticationEntryPointFactory.getFactory(
+                annotationMetadataResolver, environment
+        )
 
         /*
          * for each enabled authorization method create "internal configurer" to which further configuration
@@ -201,7 +218,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .exceptionHandling().authenticationEntryPoint(defaultAuthenticationEntryPoint)
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPointFactory.create())
 
     }
 }
