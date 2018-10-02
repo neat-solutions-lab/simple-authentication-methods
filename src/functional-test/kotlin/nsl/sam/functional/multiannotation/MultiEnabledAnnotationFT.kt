@@ -1,6 +1,6 @@
 package nsl.sam.functional.multiannotation
 
-import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test

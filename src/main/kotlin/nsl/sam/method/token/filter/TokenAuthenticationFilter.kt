@@ -2,7 +2,7 @@ package nsl.sam.method.token.filter
 
 import nsl.sam.dto.UnauthenticatedResponseDto
 import nsl.sam.logger.logger
-import nsl.sam.spring.sender.ResponseSender
+import nsl.sam.core.sender.ResponseSender
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder

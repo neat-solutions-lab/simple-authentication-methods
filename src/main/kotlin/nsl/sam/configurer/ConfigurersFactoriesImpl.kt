@@ -1,6 +1,6 @@
 package nsl.sam.configurer
 
-import nsl.sam.spring.annotation.AuthenticationMethod
+import nsl.sam.core.annotation.AuthenticationMethod
 
 class ConfigurersFactoriesImpl: ConfigurersFactories {
 

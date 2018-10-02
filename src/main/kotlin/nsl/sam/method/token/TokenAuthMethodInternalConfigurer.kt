@@ -5,8 +5,7 @@ import nsl.sam.method.token.localtokens.TokenFileImporter
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.logger.logger
 import nsl.sam.configurer.AuthMethodInternalConfigurer
-import nsl.sam.spring.sender.ResponseSender
-import org.springframework.core.annotation.Order
+import nsl.sam.core.sender.ResponseSender
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter

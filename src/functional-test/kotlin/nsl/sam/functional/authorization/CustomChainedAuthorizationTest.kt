@@ -1,7 +1,7 @@
 package nsl.sam.functional.authorization
 
 import nsl.sam.functional.controller.CustomAuthorizationTestController
-import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

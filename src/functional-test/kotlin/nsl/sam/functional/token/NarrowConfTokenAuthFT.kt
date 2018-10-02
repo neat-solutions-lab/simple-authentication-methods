@@ -1,8 +1,5 @@
 package nsl.sam.functional.token
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.google.gson.GsonBuilder
 import nsl.sam.FunctionalTestConstants
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -16,8 +13,8 @@ import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
-import nsl.sam.spring.annotation.AuthenticationMethod
-import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.core.annotation.AuthenticationMethod
+import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import org.springframework.mock.web.MockHttpServletResponse
 
 import org.assertj.core.api.Assertions.assertThat
@@ -26,7 +23,6 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import com.google.gson.JsonParser
 import nsl.sam.auxiliary.JsonUtils
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Configuration

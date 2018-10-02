@@ -1,8 +1,8 @@
 package nsl.sam.functional.debugmode
 
-import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.spring.config.EnableWebSecurityInDebugMode
-import nsl.sam.spring.config.EnableWebSecurityInDefaultMode
+import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.core.config.EnableWebSecurityInDebugMode
+import nsl.sam.core.config.EnableWebSecurityInDefaultMode
 import org.junit.jupiter.api.Assertions
 import org.assertj.core.api.Assertions as Assertj
 import org.junit.jupiter.api.Test

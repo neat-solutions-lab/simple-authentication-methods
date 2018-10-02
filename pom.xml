@@ -66,7 +66,7 @@
     <dependencies>
         <!--<dependency>-->
             <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-cache</artifactId>-->
+            <!--<artifactId>core-boot-starter-cache</artifactId>-->
         <!--</dependency>-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -110,7 +110,7 @@
         </dependency>
         <!--<dependency>-->
             <!--<groupId>org.springframework</groupId>-->
-            <!--<artifactId>spring-test</artifactId>-->
+            <!--<artifactId>core-test</artifactId>-->
             <!--<version>${springframework.version}</version>-->
             <!--<scope>test</scope>-->
         <!--</dependency>-->

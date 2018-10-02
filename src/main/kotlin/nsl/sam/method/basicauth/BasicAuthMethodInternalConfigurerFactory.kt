@@ -9,14 +9,13 @@ import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributes
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributes.Companion.create
 import nsl.sam.method.basicauth.userdetails.LocalFileUsersSource
 import nsl.sam.method.basicauth.userdetails.LocalUserDetailsService
-import nsl.sam.spring.annotation.AuthenticationMethod
-import nsl.sam.spring.annotation.EnableAnnotationAttributes
-import nsl.sam.spring.entrypoint.AuthenticationEntryPointFactory
+import nsl.sam.core.annotation.AuthenticationMethod
+import nsl.sam.core.annotation.EnableAnnotationAttributes
+import nsl.sam.core.entrypoint.AuthenticationEntryPointFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.env.Environment
 import org.springframework.core.type.AnnotationMetadata
-import kotlin.reflect.KClass
 
 class BasicAuthMethodInternalConfigurerFactory(override val name: String) : AuthMethodInternalConfigurerFactory {
 

@@ -5,7 +5,7 @@ import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
-import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import org.assertj.core.api.Assertions as Assertj
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test

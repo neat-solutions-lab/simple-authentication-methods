@@ -1,6 +1,6 @@
 package nsl.sam.instrumentation
 
-import nsl.sam.spring.config.InstrumentedWebSecurityConfigurerTemplate
+import nsl.sam.core.config.InstrumentedWebSecurityConfigurerTemplate
 import org.junit.jupiter.api.Test
 
 internal class InstrumentedClassProviderTest {

@@ -3,9 +3,9 @@ package nsl.sam.method.token
 import nsl.sam.configurer.AuthMethodInternalConfigurer
 import nsl.sam.configurer.AuthMethodInternalConfigurerFactory
 import nsl.sam.method.token.filter.TokenToUserMapper
-import nsl.sam.spring.sender.ResponseSender
-import nsl.sam.spring.annotation.AuthenticationMethod
-import nsl.sam.spring.annotation.EnableAnnotationAttributes
+import nsl.sam.core.sender.ResponseSender
+import nsl.sam.core.annotation.AuthenticationMethod
+import nsl.sam.core.annotation.EnableAnnotationAttributes
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value

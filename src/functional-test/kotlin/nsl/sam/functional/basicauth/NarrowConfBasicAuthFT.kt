@@ -18,8 +18,8 @@ import nsl.sam.FunctionalTestConstants.NOT_EXISTING_BASIC_AUTH_USER_NAME
 import nsl.sam.FunctionalTestConstants.NOT_EXISTING_BASIC_AUTH_USER_PASSWORD
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
-import nsl.sam.spring.annotation.AuthenticationMethod
-import nsl.sam.spring.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.core.annotation.AuthenticationMethod
+import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import org.springframework.mock.web.MockHttpServletResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers
