@@ -8,7 +8,7 @@ internal class InstrumentedClassProviderTest {
     @Test
     fun getRenamedClass() {
 
-        val changedClass = InstrumentedClassProvider.getRenamedClass(InstrumentedWebSecurityConfigurerTemplate::class.java, "changed.name")
+        val changedClass = InstrumentedClassProvider.generateRenamedClass(InstrumentedWebSecurityConfigurerTemplate::class.java, "changed.name")
 
         println("changedClass: $changedClass")
 
@@ -24,7 +24,7 @@ internal class InstrumentedClassProviderTest {
         val dummyObj = DummyObject("one", "two")
         println("dummyObj: $dummyObj")
 
-        val renamedDummyObjClass = InstrumentedClassProvider.getRenamedClass(DummyObject::class.java, "some.changed.Obj")
+        val renamedDummyObjClass = InstrumentedClassProvider.generateRenamedClass(DummyObject::class.java, "some.changed.Obj")
         println("renamedDummyObjClass: ${renamedDummyObjClass}")
 
         //val cons = renamedDummyObjClass.getConstructor(String::class.java, String::class.java)

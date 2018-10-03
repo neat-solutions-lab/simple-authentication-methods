@@ -8,8 +8,8 @@ import nsl.sam.method.token.TokenAuthMethodInternalConfigurerFactory
 import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.method.token.localtokens.LocalFileTokensToUserMapper
 import nsl.sam.method.token.localtokens.LocalTokensSource
-import nsl.sam.core.entrypoint.AuthenticationEntryPointFactory
-import nsl.sam.core.entrypoint.SimpleAuthenticationEntryPointFactory
+import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
+import nsl.sam.core.entrypoint.factory.DefaultAuthenticationEntryPointFactory
 import nsl.sam.core.sender.ResponseSender
 import nsl.sam.core.sender.UnauthenticatedAccessResponseSender
 import nsl.sam.core.entrypoint.SimpleFailedAuthenticationEntryPoint
@@ -25,7 +25,7 @@ class GeneralConfiguration {
 
     @Bean
     fun authenticationEntryPointFactory(): AuthenticationEntryPointFactory {
-        return SimpleAuthenticationEntryPointFactory()
+        return DefaultAuthenticationEntryPointFactory()
     }
 
     @Bean

@@ -1,16 +1,13 @@
-package nsl.sam.core.entrypoint
+package nsl.sam.core.entrypoint.factory
 
 import nsl.sam.annotation.AnnotationMetadataResolver
-import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.logger.logger
 import org.springframework.core.env.Environment
-import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.util.Assert
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
-abstract class AuthenticationEntryPointFactory {
-
+class AuthenticationEntryPointFactories {
     companion object {
         val log by logger()
 
@@ -32,7 +29,7 @@ abstract class AuthenticationEntryPointFactory {
              */
             val factoryClasses = annotationMetadataResolver.getAttributeValueAsArray(
                     "authenticationEntryPointFactory", AuthenticationEntryPointFactory::class
-                    )
+            )
 
             Assert.isTrue(factoryClasses?.size == 0 || factoryClasses?.size == 1,
                     "There can be only one ${AuthenticationEntryPointFactory::class.qualifiedName} provided" +
@@ -49,7 +46,7 @@ abstract class AuthenticationEntryPointFactory {
              */
             val factoryClassName = environment.getProperty(
                     AUTHENTICATION_ENTRY_POINT_FACTORY,
-                    SimpleAuthenticationEntryPointFactory::class.qualifiedName!!
+                    DefaultAuthenticationEntryPointFactory::class.qualifiedName!!
             )
             val factoryClass = Class.forName(factoryClassName).kotlin as KClass<AuthenticationEntryPointFactory>
             //return factoryClass.createInstance()
@@ -57,5 +54,4 @@ abstract class AuthenticationEntryPointFactory {
         }
     }
 
-    abstract fun create(): AuthenticationEntryPoint
 }

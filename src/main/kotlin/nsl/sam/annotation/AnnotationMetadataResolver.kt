@@ -11,6 +11,19 @@ class AnnotationMetadataResolver(
         private val parent: AnnotationMetadataResolver? = null) {
 
 
+    fun isAnnotationPresent(): Boolean {
+
+        val attributes = AnnotationAttributes.fromMap(
+                annotationMetadata.getAnnotationAttributes(
+                        annotationType.qualifiedName!!, true
+                )
+        )
+        if (null == attributes && null != parent) {
+            return parent.isAnnotationPresent()
+        }
+        return null != attributes
+    }
+
     fun <T:Any> getAttributeValue(name: String, type: KClass<T>): T? {
 
         val attributes = AnnotationAttributes.fromMap(

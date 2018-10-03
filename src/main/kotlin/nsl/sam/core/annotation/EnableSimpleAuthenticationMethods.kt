@@ -1,7 +1,7 @@
 package nsl.sam.core.annotation
 
 import nsl.sam.core.config.*
-import nsl.sam.core.entrypoint.AuthenticationEntryPointFactory
+import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import org.springframework.context.annotation.Import
 import kotlin.reflect.KClass
 

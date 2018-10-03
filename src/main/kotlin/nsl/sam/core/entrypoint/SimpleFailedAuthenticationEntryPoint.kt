@@ -7,7 +7,8 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class SimpleFailedAuthenticationEntryPoint(val errorResponseSender: ResponseSender): AuthenticationEntryPoint {
+class SimpleFailedAuthenticationEntryPoint(
+        private val errorResponseSender: ResponseSender): AuthenticationEntryPoint {
     override fun commence(
             request: HttpServletRequest,
             response: HttpServletResponse,
