@@ -3,41 +3,39 @@ package nsl.sam.method.basicauth.annotation
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import kotlin.reflect.KClass
 
-data class SimpleBasicAuthenticationAttributes(
+class SimpleBasicAuthenticationAttributes private constructor(
         val passwordsFilePathProperty: String = "",
         val passwordsFilePath: String = "",
         val authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = emptyArray()
 ) {
 
     companion object {
-        fun create(init: Builder.()->Unit) = Builder(init).build()
         fun default() = SimpleBasicAuthenticationAttributes()
     }
 
-    class Builder private constructor() {
+    private constructor (builder: Builder1):this(
+            builder.passwordFilePathProperty, builder.passwordFilePath, builder.authenticationEntryPointFactory
+    )
 
-        constructor(init: Builder.()->Unit):this() {
-            init()
-        }
+    class Builder1 {
+        var passwordFilePathProperty: String = ""
+            private set
 
-        var passwordsFilePathProperty = ""
-        var passwordsFilePath = ""
+        var passwordFilePath: String = ""
+            private set
+
         var authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = emptyArray()
+            private set
 
-        fun passwordsFilePathProperty(passwordsFilePathProperty: ()->String) =
-                apply { this.passwordsFilePathProperty = passwordsFilePathProperty() }
+        fun passwordFilePathProperty(passwordFilePathProperty: String) =
+                apply { this.passwordFilePathProperty = passwordFilePathProperty }
 
-        fun passwordsFilePath(passwordsFilePath: ()->String) =
-                apply { this.passwordsFilePath = passwordsFilePath() }
+        fun passwordFilePath(passwordFilePath: String) =
+                apply { this.passwordFilePath = passwordFilePath }
 
-        fun authenticationEntryPointFactory(authenticationEntryPointFactory: () -> Array<KClass<out AuthenticationEntryPointFactory>>) =
-                apply {
-                    this.authenticationEntryPointFactory = authenticationEntryPointFactory()}
+        fun authenticationEntryPointFactory(authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>>) =
+                apply { this.authenticationEntryPointFactory = authenticationEntryPointFactory }
 
-        fun build() = SimpleBasicAuthenticationAttributes(
-                this.passwordsFilePathProperty,
-                this.passwordsFilePath,
-                this.authenticationEntryPointFactory
-        )
+        fun build() = SimpleBasicAuthenticationAttributes(this)
     }
 }

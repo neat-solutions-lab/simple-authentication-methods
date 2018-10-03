@@ -6,7 +6,6 @@ import nsl.sam.configurer.AuthMethodInternalConfigurerFactory
 import nsl.sam.logger.logger
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributes
-import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributes.Companion.create
 import nsl.sam.method.basicauth.userdetails.LocalFileUsersSource
 import nsl.sam.method.basicauth.userdetails.LocalUserDetailsService
 import nsl.sam.core.annotation.AuthenticationMethod
@@ -14,11 +13,9 @@ import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactories
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
-import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributes.Companion.default
 import nsl.sam.method.basicauth.userdetails.SourceAwareUserDetailsService
 import nsl.sam.method.basicauth.userdetails.UsersSource
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.annotation.AnnotationAttributes
 import org.springframework.core.env.Environment
 import org.springframework.core.type.AnnotationMetadata
 import org.springframework.security.web.AuthenticationEntryPoint
@@ -110,24 +107,17 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
             return SimpleBasicAuthenticationAttributes.default()
         }
 
-        return create {
-
-            passwordsFilePathProperty {
-                annotationMetadataResolver.getRequiredAttributeValue(
+        return SimpleBasicAuthenticationAttributes.Builder1()
+                .passwordFilePathProperty(annotationMetadataResolver.getRequiredAttributeValue(
                         "passwordsFilePropertyName", String::class
-                )
-            }
-            passwordsFilePath {
-                annotationMetadataResolver.getRequiredAttributeValue(
+                ))
+                .passwordFilePath(annotationMetadataResolver.getRequiredAttributeValue(
                         "passwordsFilePath", String::class
-                )
-            }
-            authenticationEntryPointFactory {
-                annotationMetadataResolver.getRequiredAttributeAsKClassArray (
+                ))
+                .authenticationEntryPointFactory(annotationMetadataResolver.getRequiredAttributeAsKClassArray (
                         "authenticationEntryPointFactory",
                         AuthenticationEntryPointFactory::class
-                )
-            }
-        }
+                ))
+                .build()
     }
 }
