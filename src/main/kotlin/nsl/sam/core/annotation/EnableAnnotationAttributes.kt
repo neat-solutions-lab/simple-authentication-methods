@@ -6,7 +6,7 @@ import org.springframework.util.Assert
 /**
  * Represents attributes of [@EnableSimpleAuthentication] methods annotation
  */
-data class EnableAnnotationAttributes private constructor (
+class EnableAnnotationAttributes private constructor (
         val enableAnnotationMetadata: AnnotationMetadata,
         val methods: Array<AuthenticationMethod>,
         val match: String,
@@ -16,16 +16,7 @@ data class EnableAnnotationAttributes private constructor (
         val authorizations: String
 ) {
 
-    companion object {
-        fun create(init: Builder.() -> Unit) = Builder(init).build()
-    }
-
-    class Builder private constructor(){
-
-        constructor(init: Builder.()->Unit):this() {
-            init()
-        }
-
+    class Builder {
         var enableAnnotationMetadata: AnnotationMetadata? = null
         var methods: Array<AuthenticationMethod> = emptyArray()
         var match = ""
@@ -34,29 +25,33 @@ data class EnableAnnotationAttributes private constructor (
         var anonymousFallback = false
         var authorizations = ""
 
-        fun enableAnnotationMetadata(enableAnnotationMetadata: () -> AnnotationMetadata) = apply {this.enableAnnotationMetadata = enableAnnotationMetadata()}
+        fun enableAnnotationMetadata(enableAnnotationMetadata: AnnotationMetadata) =
+                apply {this.enableAnnotationMetadata = enableAnnotationMetadata}
 
-        fun methods(methods: () -> Array<AuthenticationMethod>) = apply { this.methods = methods()}
+        fun methods(methods: Array<AuthenticationMethod>) =
+                apply { this.methods = methods}
 
-        fun match(match: () -> String) = apply { this.match = match() }
+        fun match(match: String) =
+                apply { this.match = match }
 
-        fun debug(debug: () -> Boolean) = apply { this.debug = debug() }
+        fun debug(debug: Boolean) =
+                apply { this.debug = debug }
 
-        fun order(order: () -> Int) = apply { this.order = order() }
+        fun order(order: Int) =
+                apply { this.order = order }
 
-        fun anonymousFallback(anonymousFallback: () -> Boolean) = apply { this.anonymousFallback = anonymousFallback() }
+        fun anonymousFallback(anonymousFallback: Boolean) =
+                apply { this.anonymousFallback = anonymousFallback }
 
-        fun authorizations(authorizations: () -> String) = apply { this.authorizations = authorizations() }
+        fun authorizations(authorizations: String) =
+                apply { this.authorizations = authorizations }
 
         fun build():EnableAnnotationAttributes {
-
             Assert.notNull(this.enableAnnotationMetadata, "enableAnnotationMetadata cannot be null")
-
             return EnableAnnotationAttributes(
-                    this.enableAnnotationMetadata!!,
-                    this.methods, this.match, this.debug, this.order, this.anonymousFallback,
-                    this.authorizations
-            )
+                this.enableAnnotationMetadata!!,
+                this.methods, this.match, this.debug, this.order, this.anonymousFallback,
+                this.authorizations)
         }
     }
 }

@@ -107,7 +107,7 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
             return SimpleBasicAuthenticationAttributes.default()
         }
 
-        return SimpleBasicAuthenticationAttributes.Builder1()
+        return SimpleBasicAuthenticationAttributes.Builder()
                 .passwordFilePathProperty(annotationMetadataResolver.getRequiredAttributeValue(
                         "passwordsFilePropertyName", String::class
                 ))

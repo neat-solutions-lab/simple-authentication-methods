@@ -13,11 +13,11 @@ class SimpleBasicAuthenticationAttributes private constructor(
         fun default() = SimpleBasicAuthenticationAttributes()
     }
 
-    private constructor (builder: Builder1):this(
+    private constructor (builder: Builder):this(
             builder.passwordFilePathProperty, builder.passwordFilePath, builder.authenticationEntryPointFactory
     )
 
-    class Builder1 {
+    class Builder {
         var passwordFilePathProperty: String = ""
             private set
 

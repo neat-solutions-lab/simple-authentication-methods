@@ -109,46 +109,36 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
                 importingClassMetadata, EnableSimpleAuthenticationMethods::class
         )
 
-        return EnableAnnotationAttributes.create {
-            enableAnnotationMetadata {
-                importingClassMetadata
-            }
-            methods {
-                annotationResolver.getRequiredAttributeValue(
+        return EnableAnnotationAttributes.Builder()
+                .enableAnnotationMetadata(importingClassMetadata)
+                .methods(annotationResolver.getRequiredAttributeValue(
                         ENABLE_ANNOTATION_METHODS_ATTRIBUTE_NAME, Array<AuthenticationMethod>::class
-                )
-            }
-            match {
-                annotationResolver.getRequiredAttributeValue(
+                ))
+                .match(annotationResolver.getRequiredAttributeValue(
                         ENABLE_ANNOTATION_MATCH_ATTRIBUTE_NAME, String::class
-                )
-            }
-            debug {
-                annotationResolver.getRequiredAttributeValue(
+                ))
+                .debug(annotationResolver.getRequiredAttributeValue(
                         ENABLE_ANNOTATION_DEBUG_ATTRIBUTE_NAME, Boolean::class
-                )
-            }
-            order {
-                val value = annotationResolver.getRequiredAttributeValue(
-                        ENABLE_ANNOTATION_ORDER_ATTRIBUTE_NAME,
-                        Int::class
-                )
-                if(value == -1) {
-                    OrderingHelper.getSingleton().getNextNumber()
-                } else {
-                    value
-                }
-            }
-            anonymousFallback {
-                annotationResolver.getRequiredAttributeValue(
+                ))
+                .order(calculateOrderValue(annotationResolver))
+                .anonymousFallback(annotationResolver.getRequiredAttributeValue(
                         ENABLE_ANNOTATION_ANONYMOUS_FALLBACK_ATTRIBUTE_NAME, Boolean::class
-                )
-            }
-            authorizations {
-                annotationResolver.getRequiredAttributeValue(
+                ))
+                .authorizations(annotationResolver.getRequiredAttributeValue(
                         ENABLE_ANNOTATION_AUTHORIZATIONS_ATTRIBUTE_NAME, String::class
-                )
-            }
+                ))
+                .build()
+    }
+
+    private fun calculateOrderValue(annotationResolver: AnnotationMetadataResolver):Int {
+        val value = annotationResolver.getRequiredAttributeValue(
+                ENABLE_ANNOTATION_ORDER_ATTRIBUTE_NAME,
+                Int::class
+        )
+        if(value == -1) {
+            return OrderingHelper.getSingleton().getNextNumber()
+        } else {
+            return value
         }
     }
 }
