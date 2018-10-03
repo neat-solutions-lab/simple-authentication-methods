@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.security.core.AuthenticationException
+import org.springframework.security.web.AuthenticationEntryPoint
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -17,7 +18,8 @@ const val AUTHORIZATION_HEADER = "Authorization"
 
 class TokenAuthenticationFilter(
         private val tokenAuthenticator: TokenToUserMapper,
-        private val errorResponseSender: ResponseSender) : OncePerRequestFilter() {
+        //private val errorResponseSender: ResponseSender,
+        private val authenticationEntryPoint: AuthenticationEntryPoint) : OncePerRequestFilter() {
 
     companion object { val log by logger() }
 
@@ -45,7 +47,10 @@ class TokenAuthenticationFilter(
         } catch (e: AuthenticationException) {
             SecurityContextHolder.clearContext()
             log.debug("Access denied by ${this::class.qualifiedName} filter")
-            errorResponseSender.send(response, UnauthenticatedResponseDto.Builder(request).build())
+            //errorResponseSender.send(response, UnauthenticatedResponseDto.Builder(request).build())
+            authenticationEntryPoint.commence(
+                    request, response, e
+            )
             return
         }
 

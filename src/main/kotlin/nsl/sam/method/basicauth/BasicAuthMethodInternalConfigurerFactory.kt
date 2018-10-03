@@ -13,6 +13,7 @@ import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactories
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
+import nsl.sam.core.entrypoint.helper.AuthenticationEntryPointHelper
 import nsl.sam.method.basicauth.userdetails.SourceAwareUserDetailsService
 import nsl.sam.method.basicauth.userdetails.UsersSource
 import org.springframework.beans.factory.annotation.Autowired
@@ -56,31 +57,10 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
     }
 
     private fun getAuthenticationEntryPoint(attributes: EnableAnnotationAttributes): AuthenticationEntryPoint {
-        return getAuthenticationEntryPointFactory(attributes).create()
-    }
-
-    private fun getAuthenticationEntryPointFactory(attributes: EnableAnnotationAttributes)
-            : AuthenticationEntryPointFactory {
-
-        val annotationMetadataResolver = getHierarchicalAnnotationMetadataResolver(attributes)
-
-        return AuthenticationEntryPointFactories.getFactory(
-                annotationMetadataResolver, environment
-        )
-    }
-
-    private fun getHierarchicalAnnotationMetadataResolver(attributes: EnableAnnotationAttributes)
-            : AnnotationMetadataResolver {
-
-        val parentAnnotationMetadataResolver = AnnotationMetadataResolver(
-                attributes.enableAnnotationMetadata, EnableSimpleAuthenticationMethods::class
-        )
-
-        return AnnotationMetadataResolver(
+        return AuthenticationEntryPointHelper.getAuthenticationEntryPoint(
+                environment,
                 attributes.enableAnnotationMetadata,
-                SimpleBasicAuthentication::class,
-                parentAnnotationMetadataResolver
-        )
+                arrayOf(EnableSimpleAuthenticationMethods::class, SimpleBasicAuthentication::class))
     }
 
     private fun decideOnPasswordFilePath(simpleBasicAuthenticationAttributes: SimpleBasicAuthenticationAttributes): String {

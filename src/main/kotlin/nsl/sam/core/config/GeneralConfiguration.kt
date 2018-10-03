@@ -23,10 +23,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc
 @EnableWebMvc
 class GeneralConfiguration {
 
-    @Bean
-    fun unauthenticatedAccessResponseSender(): ResponseSender {
-        return UnauthenticatedAccessResponseSender()
-    }
+//    @Bean
+//    fun unauthenticatedAccessResponseSender(): ResponseSender {
+//        return UnauthenticatedAccessResponseSender()
+//    }
 
     @Bean
     fun beanDefinitionRegistryPostProcessor(): BeanDefinitionRegistryPostProcessor {
