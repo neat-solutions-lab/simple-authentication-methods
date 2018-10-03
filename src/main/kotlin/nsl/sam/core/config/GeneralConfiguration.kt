@@ -24,23 +24,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc
 class GeneralConfiguration {
 
     @Bean
-    fun authenticationEntryPointFactory(): AuthenticationEntryPointFactory {
-        return DefaultAuthenticationEntryPointFactory()
-    }
-
-    @Bean
-    fun beanDefinitionRegistryPostProcessor(): BeanDefinitionRegistryPostProcessor {
-        return BeanDefinitionRegistryPostProcessorImpl()
-    }
-
-    @Bean
     fun unauthenticatedAccessResponseSender(): ResponseSender {
         return UnauthenticatedAccessResponseSender()
     }
 
     @Bean
-    fun simpleAuthenticationEntryPointForHttpBasic(): AuthenticationEntryPoint {
-        return SimpleFailedAuthenticationEntryPoint(unauthenticatedAccessResponseSender())
+    fun beanDefinitionRegistryPostProcessor(): BeanDefinitionRegistryPostProcessor {
+        return BeanDefinitionRegistryPostProcessorImpl()
     }
 
     @Bean

@@ -42,7 +42,6 @@ class TokenAuthMethodInternalConfigurer(
         return true
     }
 
-    //override fun isActive(): Boolean {
     override fun isAvailable(): Boolean {
         if (!isActiveVariableCalculated) {
             isActiveValue = isActiveInternal()
@@ -50,10 +49,6 @@ class TokenAuthMethodInternalConfigurer(
         }
         return isActiveValue
     }
-
-//    override fun isAvailable(): Boolean {
-//        return true
-//    }
 
     override fun configure(http: HttpSecurity): HttpSecurity {
         log.info("Registering ${TokenAuthenticationFilter::class.qualifiedName} filter.")

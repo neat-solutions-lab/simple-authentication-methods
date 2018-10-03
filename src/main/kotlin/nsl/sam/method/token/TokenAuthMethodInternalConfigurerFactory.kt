@@ -30,6 +30,8 @@ class TokenAuthMethodInternalConfigurerFactory(override val name: String) : Auth
     }
 
     override fun create(attributes: EnableAnnotationAttributes): AuthMethodInternalConfigurer {
+
+
         return  TokenAuthMethodInternalConfigurer(
                 tokensFilePath,
                 serverAddress,
