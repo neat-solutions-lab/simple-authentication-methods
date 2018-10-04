@@ -7,8 +7,8 @@ internal class FactoriesCachesTest {
 
     @Test
     fun itShouldBeOnlyOneInstanceOfFactoriesRegistryOfGivenType() {
-        val factoriesCache1 = FactoriesCaches.getFactoriesRegistry(ImaginayCommunicatorFactory::class)
-        val factoriesCache2 = FactoriesCaches.getFactoriesRegistry(ImaginayCommunicatorFactory::class)
+        val factoriesCache1 = FactoriesCaches.getFactoriesRegistry(ImaginaryCommunicatorFactory::class)
+        val factoriesCache2 = FactoriesCaches.getFactoriesRegistry(ImaginaryCommunicatorFactory::class)
 
         Assertions.assertThat(factoriesCache1 == factoriesCache2)
         Assertions.assertThat(factoriesCache1 === factoriesCache2)
@@ -16,7 +16,7 @@ internal class FactoriesCachesTest {
 
     @Test
     fun factoriesRegistersOfDifferentTypesCanBeRetrieved() {
-        val factoriesCache1 = FactoriesCaches.getFactoriesRegistry(ImaginayCommunicatorFactory::class)
+        val factoriesCache1 = FactoriesCaches.getFactoriesRegistry(ImaginaryCommunicatorFactory::class)
         val factoriesCache2 = FactoriesCaches.getFactoriesRegistry(ImaginaryJokesDispenserFactory::class)
 
         Assertions.assertThat(factoriesCache1 != factoriesCache2)

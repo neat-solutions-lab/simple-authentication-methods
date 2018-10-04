@@ -8,7 +8,7 @@ internal class FactoriesCacheTest {
     @Test
     fun callOnCommunicatorsTest() {
 
-        val factories = FactoriesCache(ImaginayCommunicatorFactory::class)
+        val factories = FactoriesCache(ImaginaryCommunicatorFactory::class)
 
         factories.getOrPut(LocalCommunicatorFactory::class) {
             LocalCommunicatorFactory()
@@ -29,7 +29,7 @@ internal class FactoriesCacheTest {
     @Test
     fun getOrPutTest() {
 
-        val factories = FactoriesCache(ImaginayCommunicatorFactory::class)
+        val factories = FactoriesCache(ImaginaryCommunicatorFactory::class)
 
         val localCommunicatorFactory1 = factories.getOrPut(LocalCommunicatorFactory::class) {
             LocalCommunicatorFactory()
