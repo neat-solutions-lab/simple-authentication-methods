@@ -18,7 +18,7 @@ class AuthenticationEntryPointFactories {
         @Synchronized
         private fun getCachedOrCreate(clazz: KClass<AuthenticationEntryPointFactory>): AuthenticationEntryPointFactory {
             return cachedFactories.getOrPut(clazz) {
-                clazz.createInstance()
+                SingletoneFactoryWrapper(clazz.createInstance())
             }
         }
 
@@ -37,7 +37,6 @@ class AuthenticationEntryPointFactories {
 
             if(null != factoryClasses &&factoryClasses.isNotEmpty()) {
                 val factoryClass = factoryClasses[0]
-                //return factoryClass.createInstance()
                 return getCachedOrCreate(factoryClass)
             }
 
@@ -49,7 +48,6 @@ class AuthenticationEntryPointFactories {
                     DefaultAuthenticationEntryPointFactory::class.qualifiedName!!
             )
             val factoryClass = Class.forName(factoryClassName).kotlin as KClass<AuthenticationEntryPointFactory>
-            //return factoryClass.createInstance()
             return getCachedOrCreate(factoryClass)
         }
     }
