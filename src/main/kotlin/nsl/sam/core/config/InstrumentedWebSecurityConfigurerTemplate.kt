@@ -10,6 +10,9 @@ import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.config.spel.AuthorizationRulesProcessor
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactories
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
+import nsl.sam.core.entrypoint.factory.DefaultAuthenticationEntryPointFactory
+import nsl.sam.core.entrypoint.factory.Factory
+import nsl.sam.core.entrypoint.helper.AnnotationAttributeToObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.Ordered
@@ -18,6 +21,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.util.Assert
 import javax.annotation.PostConstruct
 
@@ -43,7 +47,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
     @Autowired
     private lateinit var environment: Environment
 
-    private lateinit var authenticationEntryPointFactory: AuthenticationEntryPointFactory
+    //private lateinit var authenticationEntryPointFactory: AuthenticationEntryPointFactory
 
     /**
      * NOTE: This property is "injected" with the help of DynamicImportBeanDefinitionRegistar,
@@ -54,18 +58,32 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
     private val authMethodInternalConfigurers: MutableList<AuthMethodInternalConfigurer> = mutableListOf()
 
+    private lateinit var authenticationEntryPoint: AuthenticationEntryPoint
+
     @PostConstruct
     fun initialize() {
 
-        val annotationMetadataResolver = AnnotationMetadataResolver(
+        authenticationEntryPoint = AnnotationAttributeToObjectMapper.getObject(
+                "authenticationEntryPointFactory",
+                "nsl.sam.authentication-entry-point.factory",
+                listOf(EnableSimpleAuthenticationMethods::class),
                 enableAnnotationAttributes.enableAnnotationMetadata,
-                EnableSimpleAuthenticationMethods::class
+                environment,
+                AuthenticationEntryPoint::class,
+                AuthenticationEntryPointFactory::class
+                //DefaultAuthenticationEntryPointFactory::class
         )
 
-        authenticationEntryPointFactory = AuthenticationEntryPointFactories.getFactory(
-                annotationMetadataResolver, environment
-        )
 
+//        val annotationMetadataResolver = AnnotationMetadataResolver(
+//                enableAnnotationAttributes.enableAnnotationMetadata,
+//                EnableSimpleAuthenticationMethods::class
+//        )
+//
+//        authenticationEntryPointFactory = AuthenticationEntryPointFactories.getFactory(
+//                annotationMetadataResolver, environment
+//        )
+//
         /*
          * for each enabled authorization method create "internal configurer" to which further configuration
          * steps will be delegated
@@ -224,7 +242,8 @@ open class InstrumentedWebSecurityConfigurerTemplate(
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .exceptionHandling().authenticationEntryPoint(authenticationEntryPointFactory.create())
+                //.exceptionHandling().authenticationEntryPoint(authenticationEntryPointFactory.create())
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
 
     }
 }

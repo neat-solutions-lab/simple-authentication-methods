@@ -1,6 +1,6 @@
 package nsl.sam.core.entrypoint.factory
 
-interface Factory<T> {
+interface Factory<out T> {
 
     fun create(): T
 
