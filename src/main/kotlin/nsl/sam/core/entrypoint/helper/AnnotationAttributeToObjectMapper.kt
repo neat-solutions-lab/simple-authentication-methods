@@ -15,25 +15,23 @@ object AnnotationAttributeToObjectMapper {
             involvedAnnotationTypes: List<KClass<out Annotation>>,
             annotationMetadata: AnnotationMetadata,
             environment: Environment,
-            objectType: KClass<T>,
-            factoryType: KClass<*>,
-            defaultFactory: KClass<Factory<T>>? = null
+            factoryType: KClass<out Factory<T>>,
+            defaultFactory: KClass<out Factory<T>>? = null
     ):Factory<T> {
         var annotationMetadataResolver: AnnotationMetadataResolver? = null
         for(type in involvedAnnotationTypes) {
             annotationMetadataResolver = AnnotationMetadataResolver(annotationMetadata, type, annotationMetadataResolver)
         }
 
-        val factory: Factory<T> = FactoryRetriever.getFactory(
+        return FactoryRetriever.getFactory(
                 factoryType,
-                objectType,
                 attributeName,
                 annotationMetadataResolver!!,
                 environment,
-                defaultFactoryPropertyName
+                defaultFactoryPropertyName,
+                defaultFactory
         )
 
-        return factory
     }
 
     fun <T:Any> getObject(
@@ -42,9 +40,8 @@ object AnnotationAttributeToObjectMapper {
         involvedAnnotationTypes: List<KClass<out Annotation>>,
         annotationMetadata: AnnotationMetadata,
         environment: Environment,
-        objectType: KClass<T>,
-        factoryType: KClass<*>,
-        defaultFactory: KClass<Factory<T>>? = null
+        factoryType: KClass<out Factory<T>>,
+        defaultFactory: KClass<out Factory<T>>? = null
     ): T {
         val factory = getObjectFactory(
                 attributeName,
@@ -52,8 +49,8 @@ object AnnotationAttributeToObjectMapper {
                 involvedAnnotationTypes,
                 annotationMetadata,
                 environment,
-                objectType,
-                factoryType
+                factoryType,
+                defaultFactory
         )
         return factory.create()
     }

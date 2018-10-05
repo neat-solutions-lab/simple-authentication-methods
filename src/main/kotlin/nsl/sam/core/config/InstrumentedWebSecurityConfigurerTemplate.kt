@@ -69,9 +69,8 @@ open class InstrumentedWebSecurityConfigurerTemplate(
                 listOf(EnableSimpleAuthenticationMethods::class),
                 enableAnnotationAttributes.enableAnnotationMetadata,
                 environment,
-                AuthenticationEntryPoint::class,
-                AuthenticationEntryPointFactory::class
-                //DefaultAuthenticationEntryPointFactory::class
+                AuthenticationEntryPointFactory::class,
+                DefaultAuthenticationEntryPointFactory::class
         )
 
 

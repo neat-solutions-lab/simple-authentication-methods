@@ -11,13 +11,12 @@ object FactoryRetriever {
     private val createdFactories: MutableMap<KClass<*>, Factory<out Any>> = mutableMapOf()
 
     fun <T:Any> getFactory(
-            factoryType: KClass<*>,
-            objectType: KClass<T>,
+            factoryType: KClass<out Factory<T>>,
             attributeName: String,
             annotationMetadataResolver: AnnotationMetadataResolver,
             environment: Environment,
             defaultFactoryPropertyName: String,
-            defaultFactory: KClass<Factory<T>>? = null): Factory<T> {
+            defaultFactory: KClass<out Factory<T>>? = null): Factory<T> {
 
 
         /*
@@ -37,24 +36,26 @@ object FactoryRetriever {
 
 
         if(null != factoryClasses && factoryClasses.isNotEmpty()) {
-            val factoryClass = factoryClasses[0] as KClass<Factory<*>>
-            println("ale jaja")
+            val factoryClass = factoryClasses[0] as KClass<out Factory<T>>
             return getCachedOrCreate(factoryClass)
         }
 
         /*
          * 2. Return default factory
          */
-        val factoryClassName = environment.getProperty(
-                defaultFactoryPropertyName
-        )
+        val factoryClassName = when {
+            defaultFactory != null -> environment.getProperty(
+                    defaultFactoryPropertyName, defaultFactory::class.qualifiedName!!
+            )
+            else -> environment.getProperty(defaultFactoryPropertyName)
+        }
 
-        val factoryClass = Class.forName(factoryClassName).kotlin as KClass<Factory<*>>
+        val factoryClass = Class.forName(factoryClassName).kotlin as KClass<out Factory<T>>
 
         return getCachedOrCreate(factoryClass)
     }
 
-    private fun <T> getCachedOrCreate(factoryClass: KClass<Factory<*>>): Factory<T> {
+    private fun <T> getCachedOrCreate(factoryClass: KClass<out Factory<T>>): Factory<T> {
 
         val factory  = createdFactories.getOrPut(factoryClass) {
             factoryClass.createInstance() as Factory<out Any>
