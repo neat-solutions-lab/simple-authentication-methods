@@ -58,15 +58,14 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
 
     private fun getAuthenticationEntryPoint(attributes: EnableAnnotationAttributes): AuthenticationEntryPoint {
 
-        return InjectedObjectsProvider.getObject(
-                "authenticationEntryPointFactory",
-                "nsl.sam.authentication-entry-point.factory",
-                listOf(EnableSimpleAuthenticationMethods::class, SimpleBasicAuthentication::class),
-                attributes.enableAnnotationMetadata,
-                environment,
-                AuthenticationEntryPointFactory::class,
-                DefaultAuthenticationEntryPointFactory::class
-        )
+        return InjectedObjectsProvider.Builder(AuthenticationEntryPointFactory::class)
+                .attributeName("authenticationEntryPointFactory")
+                .defaultFactoryPropertyName("nsl.sam.authentication-entry-point.factory")
+                .involvedAnnotationTypes(listOf(EnableSimpleAuthenticationMethods::class, SimpleBasicAuthentication::class))
+                .annotationMetadata(attributes.enableAnnotationMetadata)
+                .environment(environment)
+                .defaultFactory(DefaultAuthenticationEntryPointFactory::class)
+                .build().getObject()
     }
 
     private fun decideOnPasswordFilePath(simpleBasicAuthenticationAttributes: SimpleBasicAuthenticationAttributes): String {

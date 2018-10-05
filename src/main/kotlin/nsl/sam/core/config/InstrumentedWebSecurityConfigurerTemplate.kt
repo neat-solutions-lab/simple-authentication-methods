@@ -58,16 +58,14 @@ open class InstrumentedWebSecurityConfigurerTemplate(
     @PostConstruct
     fun initialize() {
 
-        authenticationEntryPoint = InjectedObjectsProvider.getObject(
-                "authenticationEntryPointFactory",
-                "nsl.sam.authentication-entry-point.factory",
-                listOf(EnableSimpleAuthenticationMethods::class),
-                enableAnnotationAttributes.enableAnnotationMetadata,
-                environment,
-                AuthenticationEntryPointFactory::class,
-                DefaultAuthenticationEntryPointFactory::class
-        )
-
+        authenticationEntryPoint = InjectedObjectsProvider.Builder(AuthenticationEntryPointFactory::class)
+                .attributeName("authenticationEntryPointFactory")
+                .defaultFactoryPropertyName("nsl.sam.authentication-entry-point.factory")
+                .involvedAnnotationTypes(listOf(EnableSimpleAuthenticationMethods::class))
+                .annotationMetadata(enableAnnotationAttributes.enableAnnotationMetadata)
+                .environment(environment)
+                .defaultFactory(DefaultAuthenticationEntryPointFactory::class)
+                .build().getObject()
 
         /*
          * for each enabled authorization method create "internal configurer" to which further configuration
