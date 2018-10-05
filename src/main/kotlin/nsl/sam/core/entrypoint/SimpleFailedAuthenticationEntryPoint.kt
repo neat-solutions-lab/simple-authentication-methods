@@ -12,9 +12,8 @@ class SimpleFailedAuthenticationEntryPoint(
     override fun commence(
             request: HttpServletRequest,
             response: HttpServletResponse,
-            authException: AuthenticationException) {
-
+            authException: AuthenticationException
+    ) {
         errorResponseSender.send(response, UnauthenticatedResponseDto.Builder(request).build())
-
     }
 }

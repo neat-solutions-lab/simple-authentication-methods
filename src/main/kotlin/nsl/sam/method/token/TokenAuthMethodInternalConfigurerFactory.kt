@@ -8,7 +8,7 @@ import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import nsl.sam.core.entrypoint.factory.DefaultAuthenticationEntryPointFactory
-import nsl.sam.core.entrypoint.helper.AnnotationAttributeToObjectMapper
+import nsl.sam.annotation.inject.InjectedObjectsProvider
 import nsl.sam.method.token.annotation.SimpleTokenAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -32,7 +32,7 @@ class TokenAuthMethodInternalConfigurerFactory(override val name: String) : Auth
 
     override fun create(attributes: EnableAnnotationAttributes): AuthMethodInternalConfigurer {
 
-        val authenticatedEntryPoint = AnnotationAttributeToObjectMapper.getObject(
+        val authenticatedEntryPoint = InjectedObjectsProvider.getObject(
                 "authenticationEntryPointFactory",
                 "nsl.sam.authentication-entry-point.factory",
                 listOf(EnableSimpleAuthenticationMethods::class, SimpleTokenAuthentication::class),
@@ -41,11 +41,6 @@ class TokenAuthMethodInternalConfigurerFactory(override val name: String) : Auth
                 AuthenticationEntryPointFactory::class,
                 DefaultAuthenticationEntryPointFactory::class
         )
-
-//        val authenticatedEntryPoint = AuthenticationEntryPointHelper.getAuthenticationEntryPoint(
-//                environment, attributes.enableAnnotationMetadata,
-//                arrayOf(EnableSimpleAuthenticationMethods::class, SimpleTokenAuthentication::class)
-//        )
 
         return  TokenAuthMethodInternalConfigurer(
                 tokensFilePath,

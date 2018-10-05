@@ -1,4 +1,4 @@
-package nsl.sam.core.entrypoint.factory
+package nsl.sam.annotation.inject
 
 class SingletonObjectFactoryWrapper<T>(private val wrappedFactory: Factory<T>): Factory<T> {
 

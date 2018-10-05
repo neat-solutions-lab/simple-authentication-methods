@@ -1,4 +1,4 @@
-package nsl.sam.core.entrypoint.factory
+package nsl.sam.annotation.inject
 
 import nsl.sam.annotation.AnnotationMetadataResolver
 import org.springframework.core.env.Environment
@@ -18,7 +18,6 @@ object FactoryRetriever {
             defaultFactoryPropertyName: String,
             defaultFactory: KClass<out Factory<T>>? = null): Factory<T> {
 
-
         /*
          * try to obtain factory basing on explicitly defined, annotation attributes
          */
@@ -36,7 +35,7 @@ object FactoryRetriever {
 
 
         if(null != factoryClasses && factoryClasses.isNotEmpty()) {
-            val factoryClass = factoryClasses[0] as KClass<out Factory<T>>
+            val factoryClass = factoryClasses[0]
             return getCachedOrCreate(factoryClass)
         }
 
@@ -59,7 +58,6 @@ object FactoryRetriever {
 
         val factory  = createdFactories.getOrPut(factoryClass) {
             SingletonObjectFactoryWrapper(factoryClass.createInstance()) as Factory<out Any>
-            //factoryClass.createInstance() as Factory<out Any>
         }
         return factory as Factory<T>
     }

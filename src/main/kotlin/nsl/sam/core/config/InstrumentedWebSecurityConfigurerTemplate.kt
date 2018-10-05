@@ -9,7 +9,7 @@ import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.config.spel.AuthorizationRulesProcessor
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import nsl.sam.core.entrypoint.factory.DefaultAuthenticationEntryPointFactory
-import nsl.sam.core.entrypoint.helper.AnnotationAttributeToObjectMapper
+import nsl.sam.annotation.inject.InjectedObjectsProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.Ordered
@@ -58,7 +58,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
     @PostConstruct
     fun initialize() {
 
-        authenticationEntryPoint = AnnotationAttributeToObjectMapper.getObject(
+        authenticationEntryPoint = InjectedObjectsProvider.getObject(
                 "authenticationEntryPointFactory",
                 "nsl.sam.authentication-entry-point.factory",
                 listOf(EnableSimpleAuthenticationMethods::class),
