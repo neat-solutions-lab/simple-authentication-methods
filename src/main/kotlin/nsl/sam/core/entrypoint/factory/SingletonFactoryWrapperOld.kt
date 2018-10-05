@@ -2,7 +2,7 @@ package nsl.sam.core.entrypoint.factory
 
 import org.springframework.security.web.AuthenticationEntryPoint
 
-class SingletoneFactoryWrapper(
+class SingletonFactoryWrapperOld(
         private val wrappedFactory: AuthenticationEntryPointFactory)
     : AuthenticationEntryPointFactory {
 

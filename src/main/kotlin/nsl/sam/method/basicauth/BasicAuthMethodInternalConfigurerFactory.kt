@@ -13,6 +13,8 @@ import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactories
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
+import nsl.sam.core.entrypoint.factory.DefaultAuthenticationEntryPointFactory
+import nsl.sam.core.entrypoint.helper.AnnotationAttributeToObjectMapper
 import nsl.sam.core.entrypoint.helper.AuthenticationEntryPointHelper
 import nsl.sam.method.basicauth.userdetails.SourceAwareUserDetailsService
 import nsl.sam.method.basicauth.userdetails.UsersSource
@@ -57,10 +59,21 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
     }
 
     private fun getAuthenticationEntryPoint(attributes: EnableAnnotationAttributes): AuthenticationEntryPoint {
-        return AuthenticationEntryPointHelper.getAuthenticationEntryPoint(
-                environment,
+
+        return AnnotationAttributeToObjectMapper.getObject(
+                "authenticationEntryPointFactory",
+                "nsl.sam.authentication-entry-point.factory",
+                listOf(EnableSimpleAuthenticationMethods::class, SimpleBasicAuthentication::class),
                 attributes.enableAnnotationMetadata,
-                arrayOf(EnableSimpleAuthenticationMethods::class, SimpleBasicAuthentication::class))
+                environment,
+                AuthenticationEntryPointFactory::class,
+                DefaultAuthenticationEntryPointFactory::class
+        )
+
+        //return AuthenticationEntryPointHelper.getAuthenticationEntryPoint(
+        //        environment,
+        //        attributes.enableAnnotationMetadata,
+        //        arrayOf(EnableSimpleAuthenticationMethods::class, SimpleBasicAuthentication::class))
     }
 
     private fun decideOnPasswordFilePath(simpleBasicAuthenticationAttributes: SimpleBasicAuthenticationAttributes): String {

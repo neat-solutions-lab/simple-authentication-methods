@@ -58,9 +58,9 @@ object FactoryRetriever {
     private fun <T> getCachedOrCreate(factoryClass: KClass<out Factory<T>>): Factory<T> {
 
         val factory  = createdFactories.getOrPut(factoryClass) {
-            factoryClass.createInstance() as Factory<out Any>
+            SingletonObjectFactoryWrapper(factoryClass.createInstance()) as Factory<out Any>
+            //factoryClass.createInstance() as Factory<out Any>
         }
-
         return factory as Factory<T>
     }
 }

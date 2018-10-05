@@ -1,6 +1,5 @@
 package nsl.sam.core.config
 
-import nsl.sam.annotation.AnnotationMetadataResolver
 import nsl.sam.configurer.AuthMethodInternalConfigurer
 import nsl.sam.configurer.ConfigurersFactories
 import nsl.sam.logger.logger
@@ -8,10 +7,8 @@ import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.config.spel.AuthorizationRulesProcessor
-import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactories
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import nsl.sam.core.entrypoint.factory.DefaultAuthenticationEntryPointFactory
-import nsl.sam.core.entrypoint.factory.Factory
 import nsl.sam.core.entrypoint.helper.AnnotationAttributeToObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -47,8 +44,6 @@ open class InstrumentedWebSecurityConfigurerTemplate(
     @Autowired
     private lateinit var environment: Environment
 
-    //private lateinit var authenticationEntryPointFactory: AuthenticationEntryPointFactory
-
     /**
      * NOTE: This property is "injected" with the help of DynamicImportBeanDefinitionRegistar,
      * it holds values of attributes used with [nsl.sam.core.annotation.EnableSimpleAuthenticationMethods]
@@ -74,15 +69,6 @@ open class InstrumentedWebSecurityConfigurerTemplate(
         )
 
 
-//        val annotationMetadataResolver = AnnotationMetadataResolver(
-//                enableAnnotationAttributes.enableAnnotationMetadata,
-//                EnableSimpleAuthenticationMethods::class
-//        )
-//
-//        authenticationEntryPointFactory = AuthenticationEntryPointFactories.getFactory(
-//                annotationMetadataResolver, environment
-//        )
-//
         /*
          * for each enabled authorization method create "internal configurer" to which further configuration
          * steps will be delegated
@@ -241,9 +227,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                //.exceptionHandling().authenticationEntryPoint(authenticationEntryPointFactory.create())
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
 
     }
 }
-

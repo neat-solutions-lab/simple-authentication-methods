@@ -18,7 +18,7 @@ object AuthenticationEntryPointFactories {
     @Synchronized
     private fun getCachedOrCreate(clazz: KClass<AuthenticationEntryPointFactory>): AuthenticationEntryPointFactory {
         return cachedFactories.getOrPut(clazz) {
-            SingletoneFactoryWrapper(clazz.createInstance())
+            SingletonFactoryWrapperOld(clazz.createInstance())
         }
     }
 
