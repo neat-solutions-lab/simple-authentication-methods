@@ -9,7 +9,6 @@ import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import nsl.sam.core.entrypoint.factory.DefaultAuthenticationEntryPointFactory
 import nsl.sam.annotation.inject.InjectedObjectsProvider
-import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
 import nsl.sam.method.token.annotation.SimpleTokenAuthentication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value

@@ -1,4 +1,4 @@
-package nsl.sam.core.entrypoint.factory
+package nsl.sam.annotation.inject
 
 class RemoteCommunicatorFactory: ImaginaryCommunicatorFactory {
     override fun create(): ImaginaryCommunicator {

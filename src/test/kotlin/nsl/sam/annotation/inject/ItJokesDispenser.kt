@@ -1,4 +1,4 @@
-package nsl.sam.core.entrypoint.factory
+package nsl.sam.annotation.inject
 
 class ItJokesDispenser: ImaginaryJokesDispenser {
 
@@ -14,6 +14,6 @@ class ItJokesDispenser: ImaginaryJokesDispenser {
     )
 
     override fun getJokes(amount: Int): List<String> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return jokesList.subList(0, amount-1)
     }
 }

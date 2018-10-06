@@ -1,35 +1,36 @@
 package nsl.sam.instrumentation
 
 import nsl.sam.core.config.InstrumentedWebSecurityConfigurerTemplate
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
 internal class InstrumentedClassProviderTest {
 
     @Test
-    fun getRenamedClass() {
+    fun renamedClassCanonicalNameTest() {
 
-        val changedClass = InstrumentedClassProvider.generateRenamedClass(InstrumentedWebSecurityConfigurerTemplate::class.java, "changed.name")
-
-        println("changedClass: $changedClass")
-
-        println("compontent type: ${changedClass.componentType}")
-
-        //val classObj = Class<InstrumentedWebSecurityConfigurerTemplate>
+        val changedClass = InstrumentedClassProvider.generateRenamedClass(
+                InstrumentedWebSecurityConfigurerTemplate::class.java,
+                "changed.name"
+        )
+        Assertions.assertThat(changedClass.canonicalName).isEqualTo("changed.name")
     }
-
 
     @Test
-    fun dummyObjectTest() {
+    fun renamedDummyObjectTest() {
 
         val dummyObj = DummyObject("one", "two")
-        println("dummyObj: $dummyObj")
 
-        val renamedDummyObjClass = InstrumentedClassProvider.generateRenamedClass(DummyObject::class.java, "some.changed.Obj")
-        println("renamedDummyObjClass: ${renamedDummyObjClass}")
+        val renamedDummyObjClass = InstrumentedClassProvider.generateRenamedClass(
+                DummyObject::class.java,
+                "some.changed.Obj"
+        )
 
-        //val cons = renamedDummyObjClass.getConstructor(String::class.java, String::class.java)
-        //println("constructor $cons")
+        val constructor = renamedDummyObjClass.getConstructor(String::class.java, String::class.java)
+        val changedObj = constructor.newInstance("one", "two") as DummyInterface
 
+        Assertions.assertThat(renamedDummyObjClass.canonicalName).isEqualTo("some.changed.Obj")
+        Assertions.assertThat(dummyObj.fieldOne).isEqualTo(changedObj.fieldOne)
+        Assertions.assertThat(dummyObj.fieldTwo).isEqualTo(changedObj.fieldTwo)
     }
-
 }

@@ -1,4 +1,4 @@
 package nsl.sam.instrumentation
 
-class DummyObject(val fieldOne: String, val fieldTwo: String) {
+class DummyObject(override val fieldOne: String, override val fieldTwo: String) : DummyInterface {
 }
