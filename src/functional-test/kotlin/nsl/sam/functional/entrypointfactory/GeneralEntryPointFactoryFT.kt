@@ -46,11 +46,11 @@ class GeneralEntryPointFactoryFT {
 
         // ASSERT
         Assertions.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
-        Assertions.assertThat(response.contentAsString).isEqualTo("Response from ${TestTimeEntryPoint::class.qualifiedName}")
+        Assertions.assertThat(response.contentAsString).isEqualTo("Response from ${FirstTestTimeEntryPoint::class.qualifiedName}")
     }
 
     @Configuration
-    @EnableSimpleAuthenticationMethods(authenticationEntryPointFactory = [TestTimeEntryPointFactory::class])
+    @EnableSimpleAuthenticationMethods(authenticationEntryPointFactory = [FirstTestTimeEntryPointFactory::class])
     class TestConfiguration {
         @Bean
         fun customAuthorizationTestController() = CustomAuthorizationTestController()

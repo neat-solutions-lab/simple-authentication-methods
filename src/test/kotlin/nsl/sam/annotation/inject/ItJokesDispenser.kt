@@ -2,7 +2,7 @@ package nsl.sam.annotation.inject
 
 class ItJokesDispenser: ImaginaryJokesDispenser {
 
-    val jokesList = listOf(
+    private val jokesList = listOf(
             "Q: What is the biggest lie in the universe? A: I have read and agree to the Terms & Conditions",
             "Q: How does a computer get drunk? A: It takes screenshots.",
             "PATIENT: Doctor, I need your help. I'm addicted to checking my Twitter! DOCTOR: I'm so sorry, I don't follow.",

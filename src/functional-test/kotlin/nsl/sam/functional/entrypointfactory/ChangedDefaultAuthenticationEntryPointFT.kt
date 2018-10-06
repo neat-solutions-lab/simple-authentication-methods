@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -37,12 +36,12 @@ class ChangedDefaultAuthenticationEntryPointFT {
 
         // ASSERT
         Assertions.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
-        Assertions.assertThat(response.contentAsString).isEqualTo("Response from ${TestTimeEntryPoint::class.qualifiedName}")
+        Assertions.assertThat(response.contentAsString).isEqualTo("Response from ${FirstTestTimeEntryPoint::class.qualifiedName}")
 
     }
 
     @Configuration
-    @EnableSimpleAuthenticationMethods(authenticationEntryPointFactory = [TestTimeEntryPointFactory::class])
+    @EnableSimpleAuthenticationMethods(authenticationEntryPointFactory = [FirstTestTimeEntryPointFactory::class])
     class TestConfiguration {
         @Bean
         fun customAuthorizationTestController() = CustomAuthorizationTestController()

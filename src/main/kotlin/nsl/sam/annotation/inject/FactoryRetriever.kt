@@ -29,11 +29,6 @@ object FactoryRetriever {
                 "There can be only one ${factoryType::class.qualifiedName} provided" +
                         "by $attributeName attribute.")
 
-        factoryClasses?.forEach {
-            println("factoryClass: $it ")
-        }
-
-
         if(null != factoryClasses && factoryClasses.isNotEmpty()) {
             val factoryClass = factoryClasses[0]
             return getCachedOrCreate(factoryClass)
