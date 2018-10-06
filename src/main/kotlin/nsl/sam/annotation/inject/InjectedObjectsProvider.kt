@@ -17,10 +17,11 @@ class InjectedObjectsProvider<T:Any> private constructor(
 ) {
 
     fun getObjectFactory(): Factory<T> {
-        var annotationMetadataResolver: AnnotationMetadataResolver? = null
-        for(type in involvedAnnotationTypes) {
-            annotationMetadataResolver = AnnotationMetadataResolver(annotationMetadata, type, annotationMetadataResolver)
-        }
+
+        val annotationMetadataResolver = AnnotationMetadataResolver.Builder()
+                .annotationMetadata(annotationMetadata)
+                .annotationTypes(*involvedAnnotationTypes.toTypedArray())
+                .build()
 
         return FactoryRetriever.getFactory(
                 factoryType,

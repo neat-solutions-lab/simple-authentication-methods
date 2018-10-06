@@ -5,11 +5,10 @@ import org.springframework.core.type.AnnotationMetadata
 import kotlin.reflect.KClass
 import kotlin.reflect.full.cast
 
-class AnnotationMetadataResolver(
+class AnnotationMetadataResolver private constructor(
         private val annotationMetadata: AnnotationMetadata,
-        private val annotationType: KClass<*>,
+        private val annotationType: KClass<out Annotation>,
         private val parent: AnnotationMetadataResolver? = null) {
-
 
     fun isAnnotationPresent(): Boolean {
 
@@ -36,7 +35,6 @@ class AnnotationMetadataResolver(
 
         return type.cast(attributeValue)
     }
-
 
     fun <T:Any> getRequiredAttributeValue(name: String, type: KClass<T>): T {
         return getAttributeValue(name, type)!!
@@ -75,6 +73,37 @@ class AnnotationMetadataResolver(
         val javaClasses = attributes?.get(name) as Array<Class<T>>?
         val kotlinClasses = javaClasses?.map { it.kotlin }?.toTypedArray() ?: emptyArray()
         return kotlinClasses as Array<T>
+    }
 
+    class Builder {
+        private var annotationMetadata: AnnotationMetadata? = null
+        private var annotationTypes: Array<out KClass<out Annotation>>? = null
+
+        fun annotationMetadata(value: AnnotationMetadata) = apply { annotationMetadata = value }
+
+        fun annotationTypes(vararg value: KClass<out Annotation>) = apply { annotationTypes = value }
+
+        fun build(): AnnotationMetadataResolver {
+
+            var beingBuildObject: AnnotationMetadataResolver? = null
+
+            if(null == annotationTypes) {
+                throw IllegalStateException(
+                        "annotationTypes() has to be called before build()"
+                )
+            }
+
+            if(null == annotationMetadata) {
+                throw IllegalStateException(
+                        "annotationMetadata() has to be called before build()"
+                )
+            }
+
+            for(annotationType in annotationTypes!!) {
+                beingBuildObject = AnnotationMetadataResolver(annotationMetadata!!, annotationType, beingBuildObject)
+            }
+
+            return beingBuildObject!!
+        }
     }
 }

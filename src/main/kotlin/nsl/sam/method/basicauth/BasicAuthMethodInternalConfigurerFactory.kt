@@ -84,9 +84,10 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
 
     private fun getSimpleAuthenticationAttributes(annotationMetadata: AnnotationMetadata): SimpleBasicAuthenticationAttributes {
 
-        val annotationMetadataResolver = AnnotationMetadataResolver(
-                annotationMetadata, SimpleBasicAuthentication::class
-        )
+        val annotationMetadataResolver = AnnotationMetadataResolver.Builder()
+                .annotationMetadata(annotationMetadata)
+                .annotationTypes(SimpleBasicAuthentication::class)
+                .build()
 
         if (!annotationMetadataResolver.isAnnotationPresent()) {
             return SimpleBasicAuthenticationAttributes.default()

@@ -105,9 +105,10 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
 
     private fun getAnnotationAttributes(importingClassMetadata: AnnotationMetadata): EnableAnnotationAttributes {
 
-        val annotationResolver = AnnotationMetadataResolver(
-                importingClassMetadata, EnableSimpleAuthenticationMethods::class
-        )
+        val annotationResolver = AnnotationMetadataResolver.Builder()
+                .annotationMetadata(importingClassMetadata)
+                .annotationTypes(EnableSimpleAuthenticationMethods::class)
+                .build()
 
         return EnableAnnotationAttributes.Builder()
                 .enableAnnotationMetadata(importingClassMetadata)
@@ -135,10 +136,10 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
                 ENABLE_ANNOTATION_ORDER_ATTRIBUTE_NAME,
                 Int::class
         )
-        if(value == -1) {
-            return OrderingHelper.getSingleton().getNextNumber()
-        } else {
-            return value
+
+        return when(value == -1) {
+            true -> OrderingHelper.getSingleton().getNextNumber()
+            else -> value
         }
     }
 }
