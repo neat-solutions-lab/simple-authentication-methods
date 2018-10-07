@@ -7,7 +7,6 @@ class OrderingHelper(initialValue: Int = 0, private val delta: Int = 1) {
     var isAlreadyInitializedWithRestrictedList = false
 
     companion object {
-        @Volatile
         private var instance: OrderingHelper? = null
 
         @Synchronized

@@ -2,17 +2,16 @@ package nsl.sam.core.config.sequencer
 
 import java.util.concurrent.atomic.AtomicLong
 
-open class SimpleVolatileSequencer(initValue: Long = 0, private val delta: Long = 1) {
+open class SimpleSequencer(initValue: Long = 0, private val delta: Long = 1) {
 
     companion object {
 
-        @Volatile
-        var instance: SimpleVolatileSequencer? = null
+        var instance: SimpleSequencer? = null
 
         @Synchronized
-        fun getSingleton(initValue: Long = 1, delta: Long = 1): SimpleVolatileSequencer {
+        fun getSingleton(initValue: Long = 1, delta: Long = 1): SimpleSequencer {
             if (instance == null)
-                instance = SimpleVolatileSequencer(initValue, delta)
+                instance = SimpleSequencer(initValue, delta)
             return instance!!
         }
     }

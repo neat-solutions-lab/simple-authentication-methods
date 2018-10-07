@@ -3,13 +3,16 @@ package nsl.sam.annotation.inject
 import nsl.sam.annotation.AnnotationMetadataResolver
 import org.springframework.core.env.Environment
 import org.springframework.util.Assert
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
 object FactoryRetriever {
 
     private val createdFactories: MutableMap<KClass<*>, Factory<out Any>> = mutableMapOf()
+    //private val createdFactories: MutableMap<KClass<*>, Factory<out Any>> = ConcurrentHashMap()
 
+    @Synchronized
     fun <T:Any> getFactory(
             factoryType: KClass<out Factory<T>>,
             attributeName: String,
