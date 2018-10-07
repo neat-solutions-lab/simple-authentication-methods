@@ -1,11 +1,10 @@
-package nsl.sam.method.basicauth.userdetails
+package nsl.sam.method.basicauth.userdetails.importer
 
 import nsl.sam.logger.logger
-import java.io.Closeable
 import java.io.File
 import java.util.Scanner
 
-class LocalFileUsersImporter(val path:String) : Closeable, Iterator<Triple<String, String, Array<String>>> {
+class LocalFileUsersImporter(val path:String): UsersImporter {
 
     companion object {
         const val WRONG_FORMAT_MESSAGE = "Wrong format of the passwords file (%s)."

@@ -33,5 +33,4 @@ internal class OrderingHelperTest {
             orderingManager.occupyNumber(1)
         }
     }
-
 }

@@ -3,10 +3,7 @@ package nsl.sam.annotation.inject
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
-
 internal class SingletonObjectFactoryWrapperTest {
-
 
     @Test
     fun differentTargetObjectsWhenNoWrapperIsUsed() {

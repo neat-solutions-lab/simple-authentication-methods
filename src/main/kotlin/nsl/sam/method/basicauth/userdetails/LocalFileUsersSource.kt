@@ -1,6 +1,7 @@
 package nsl.sam.method.basicauth.userdetails
 
 import nsl.sam.logger.logger
+import nsl.sam.method.basicauth.userdetails.importer.LocalFileUsersImporter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 
@@ -21,7 +22,6 @@ class LocalFileUsersSource(@Autowired private val passwordsFilePath: String): Us
         return usersCounter
     }
 
-
     companion object { private val log by logger() }
 
     private val usersPasswordsAndRolesMap: MutableMap<String, Pair<String, Array<String>>> = mutableMapOf()
@@ -38,7 +38,6 @@ class LocalFileUsersSource(@Autowired private val passwordsFilePath: String): Us
         if(passwordsFilePath.isBlank()) return false
         return (usersNumberInternal() > 0)
     }
-
 
     private fun importUsersFromFile() {
         LocalFileUsersImporter(passwordsFilePath).use { importer ->

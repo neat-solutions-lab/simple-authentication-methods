@@ -6,15 +6,21 @@ import kotlin.reflect.KClass
 class SimpleBasicAuthenticationAttributes private constructor(
         val passwordsFilePathProperty: String = "",
         val passwordsFilePath: String = "",
+        val users: Array<String> = arrayOf(),
         val authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = emptyArray()
 ) {
 
     companion object {
+        /**
+         * In case no [SimpleBasicAuthentication] annotation is used explicitly,
+         * the default values of attributes are used.
+         */
         fun default() = SimpleBasicAuthenticationAttributes()
     }
 
     private constructor (builder: Builder):this(
-            builder.passwordFilePathProperty, builder.passwordFilePath, builder.authenticationEntryPointFactory
+            builder.passwordFilePathProperty, builder.passwordFilePath,
+            builder.users, builder.authenticationEntryPointFactory
     )
 
     class Builder {
@@ -24,17 +30,21 @@ class SimpleBasicAuthenticationAttributes private constructor(
         var passwordFilePath: String = ""
             private set
 
+        var users: Array<String> = arrayOf()
+
         var authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = emptyArray()
             private set
 
-        fun passwordFilePathProperty(passwordFilePathProperty: String) =
-                apply { this.passwordFilePathProperty = passwordFilePathProperty }
+        fun passwordFilePathProperty(value: String) =
+                apply { this.passwordFilePathProperty = value }
 
-        fun passwordFilePath(passwordFilePath: String) =
-                apply { this.passwordFilePath = passwordFilePath }
+        fun passwordFilePath(value: String) =
+                apply { this.passwordFilePath = value }
 
-        fun authenticationEntryPointFactory(authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>>) =
-                apply { this.authenticationEntryPointFactory = authenticationEntryPointFactory }
+        fun users(value: Array<String>) = apply { this.users = value}
+
+        fun authenticationEntryPointFactory(value: Array<KClass<out AuthenticationEntryPointFactory>>) =
+                apply { this.authenticationEntryPointFactory = value }
 
         fun build() = SimpleBasicAuthenticationAttributes(this)
     }
