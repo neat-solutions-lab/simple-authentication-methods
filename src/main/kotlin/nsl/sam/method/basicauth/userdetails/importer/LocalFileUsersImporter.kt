@@ -2,9 +2,25 @@ package nsl.sam.method.basicauth.userdetails.importer
 
 import nsl.sam.logger.logger
 import java.io.File
+import java.io.FileNotFoundException
 import java.util.Scanner
 
 class LocalFileUsersImporter(val path:String): UsersImporter {
+
+    override fun hasItems(): Boolean {
+        if(!File(path).exists()) return false
+        reset()
+        val isItemAvailable = hasNext()
+        reset()
+        return isItemAvailable
+    }
+
+    override fun reset() {
+        if(!File(path).exists()) return
+        close()
+        scanner = Scanner(File(path))
+        currentLine = null
+    }
 
     companion object {
         const val WRONG_FORMAT_MESSAGE = "Wrong format of the passwords file (%s)."
@@ -13,20 +29,22 @@ class LocalFileUsersImporter(val path:String): UsersImporter {
 
     private var currentLine: String? = null
 
-    private val scanner : Scanner by lazy {
-        Scanner(File(path))
-    }
+    private var scanner : Scanner? = null
+    //by lazy {
+    //    Scanner(File(path))
+    //}
 
     override fun close() {
-       scanner.close()
+        scanner?.close()
     }
 
     override fun hasNext(): Boolean {
+        if(!File(path).exists()) return false
 
         var nextLine: String? = null
 
-        while(scanner.hasNextLine()) {
-            nextLine = scanner.nextLine()
+        while(scanner!!.hasNextLine()) {
+            nextLine = scanner!!.nextLine()
             log.debug("Line read from users file: ${nextLine.takeIf { it.length > 2 }?.substring(0, 2)}...trunced...")
             if(nextLine.trim().startsWith("#") || nextLine.isBlank()) continue
             break
@@ -37,7 +55,7 @@ class LocalFileUsersImporter(val path:String): UsersImporter {
             return true
         }
 
-        scanner.close()
+        scanner?.close()
         currentLine = null
         return false
     }

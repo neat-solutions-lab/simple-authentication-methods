@@ -10,6 +10,7 @@ internal class LocalFileUsersImporterTest {
     @Test
     fun oneUserWithNoAnyAdditionalLines() {
         val importer = LocalFileUsersImporter("src/test/config/passwords-one-user.conf")
+        importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
         for((user, password, roles) in importer) {
             resultAccumulator.add(Triple(user, password, roles))
@@ -21,6 +22,7 @@ internal class LocalFileUsersImporterTest {
     @Test
     fun oneUserWithOneEmptyLineAtTop() {
         val importer = LocalFileUsersImporter("src/test/config/passwords-one-user-with-empty-line-at-top.conf")
+        importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
         for((user, password, roles) in importer) {
             resultAccumulator.add(Triple(user, password, roles))
@@ -32,6 +34,7 @@ internal class LocalFileUsersImporterTest {
     @Test
     fun oneUserWithOneEmptyLineAtBottom() {
         val importer = LocalFileUsersImporter("src/test/config/passwords-one-user-with-empty-line-at-bottom.conf")
+        importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
         for((user, password, roles) in importer) {
             resultAccumulator.add(Triple(user, password, roles))
@@ -43,6 +46,7 @@ internal class LocalFileUsersImporterTest {
     @Test
     fun emptyFileTest() {
         val importer = LocalFileUsersImporter("src/test/config/passwords-empty.conf")
+        importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
         for((user, password, roles) in importer) {
             resultAccumulator.add(Triple(user, password, roles))
@@ -54,6 +58,7 @@ internal class LocalFileUsersImporterTest {
     @Test
     fun onlyCommentsAndBlankLinesFileTest() {
         val importer = LocalFileUsersImporter("src/test/config/passwords-comments-and-blank-lines.conf")
+        importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
         for((user, password, roles) in importer) {
             resultAccumulator.add(Triple(user, password, roles))
@@ -65,6 +70,7 @@ internal class LocalFileUsersImporterTest {
     @Test
     fun mixedContentTest() {
         val importer = LocalFileUsersImporter("src/test/config/passwords-mixed.conf")
+        importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
         for((user, password, roles) in importer) {
             resultAccumulator.add(Triple(user, password, roles))

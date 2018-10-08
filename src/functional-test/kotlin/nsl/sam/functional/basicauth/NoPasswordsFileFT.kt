@@ -18,12 +18,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
  *  <ul>
  *      <li>http basic auth disabled (how to check it?)</li>
  *      <li>DisableBasicAuthConfigurer bean present in ApplicationContext</li>
- *      <li>LocalUserDetailsService bean not present in ApplicationContext</li>
+ *      <li>DefaultUserDetailsService bean not present in ApplicationContext</li>
  *      <li>BasicAuthConfiguration bean not present in ApplicationContext</li>
  *  </ul>
  */
 //TODO: Finish this test after instrumentation web configurators are finished.
-//@RunWith(SpringRunner::class)
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
