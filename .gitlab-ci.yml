@@ -7,6 +7,7 @@ build-on-java10.0.2-kotlin1.2.51:
   stage: build
   tags:
   - docker
+  - nsl-infrastructure
   script:
   - mvn package -Dmaven.test.skip=true
 
@@ -14,5 +15,6 @@ test-on-java10.0.2-kotlin1.2.51:
   stage: test
   tags:
   - docker
+  - nsl-infrastructure
   script:
   - mvn verify
