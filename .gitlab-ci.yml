@@ -18,3 +18,19 @@ test-on-java10.0.2-kotlin1.2.51:
   - nsl-infrastructure
   script:
   - mvn verify
+
+build-on-java11.0.0-kotlin1.2.51:
+  image: neatsolutionslab/jdk:11.0.0open
+  stage: build
+  tags:
+  - docker
+  script:
+  - mvn package -Dmaven.test.skip=true
+
+test-on-java11.0.0-kotlin1.2.51:
+  image: neatsolutionslab/jdk:11.0.0open
+  stage: test
+  tags:
+  - docker
+  script:
+  - mvn verify
