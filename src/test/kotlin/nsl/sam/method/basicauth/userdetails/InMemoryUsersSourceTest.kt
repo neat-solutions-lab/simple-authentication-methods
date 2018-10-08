@@ -1,6 +1,7 @@
 package nsl.sam.method.basicauth.userdetails
 
 import nsl.sam.method.basicauth.userdetails.importer.LocalFileUsersImporter
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -13,24 +14,24 @@ internal class InMemoryUsersSourceTest {
     fun userWithNoRoles() {
         val localFileUsersImporter = LocalFileUsersImporter("src/test/config/passwords-no-roles.conf")
         val usersSource = InMemoryUsersSource(localFileUsersImporter)
-        assertEquals(1, usersSource.usersNumber())
-        assertEquals(true, usersSource.isAvailable())
+        //assertEquals(1, usersSource.usersNumber())
+        assertEquals(true, usersSource.hasItems())
     }
 
     @Test
     fun testEmptyFile() {
         val localFileUsersImporter = LocalFileUsersImporter("src/test/config/passwords-empty.conf")
         val usersSource = InMemoryUsersSource(localFileUsersImporter)
-        assertEquals(0, usersSource.usersNumber())
-        assertEquals(false, usersSource.isAvailable())
+        //assertEquals(0, usersSource.usersNumber())
+        assertEquals(false, usersSource.hasItems())
     }
 
     @Test
     fun testBlankFilePath() {
         val localFileUsersImporter = LocalFileUsersImporter("")
         val usersSource = InMemoryUsersSource(localFileUsersImporter)
-        assertEquals(0, usersSource.usersNumber())
-        assertEquals(false, usersSource.isAvailable())
+        //assertEquals(0, usersSource.usersNumber())
+        assertEquals(false, usersSource.hasItems())
     }
 
     @Test
@@ -63,8 +64,26 @@ internal class InMemoryUsersSourceTest {
     fun testMixed() {
         val localFileUsersImporter = LocalFileUsersImporter("src/test/config/passwords-mixed.conf")
         val usersSource = InMemoryUsersSource(localFileUsersImporter)
-        assertEquals(8, usersSource.usersNumber())
-        assertEquals(true, usersSource.isAvailable())
+        //assertEquals(8, usersSource.usersNumber())
+        assertEquals(true, usersSource.hasItems())
+    }
+
+    @Test
+    fun testIndividualUsersAvailability() {
+        val localFileUsersImporter = LocalFileUsersImporter("src/test/config/passwords-mixed.conf")
+        val usersSource = InMemoryUsersSource(localFileUsersImporter)
+
+        val users = arrayOf("test1", "test2", "test3", "test5", "test6", "test8", "test9", "test10")
+        val passwordAndRolesList = mutableListOf<Pair<String, Array<String>>>()
+
+        users.forEach {
+            passwordAndRolesList.add(usersSource.getUserPasswordAndRoles(it))
+        }
+
+        Assertions.assertThat(passwordAndRolesList.size).isEqualTo(8)
+        Assertions.assertThat(passwordAndRolesList).allMatch{ it.first == "{noop}test" }
+        Assertions.assertThat(passwordAndRolesList.stream().map {it.second})
+                .allMatch { it.contains("USER") && it.contains("ADMIN") }
     }
 
 }

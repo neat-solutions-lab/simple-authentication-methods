@@ -18,8 +18,8 @@ class BasicAuthMethodInternalConfigurer(
         authBuilder.userDetailsService(localUsersDetailsService)
     }
 
-    override fun isAvailable(): Boolean {
-        return this.localUsersDetailsService.isUsersSourceAvailable()
+    override fun hasItems(): Boolean {
+        return this.localUsersDetailsService.hasItems()
     }
 
     override fun configure(http: HttpSecurity): HttpSecurity {

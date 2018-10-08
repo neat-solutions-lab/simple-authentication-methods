@@ -160,7 +160,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
     private fun isAtLeastOneAuthMechanismAvailable() : Boolean {
         authMethodInternalConfigurers.asSequence().find {
             log.info("Checking if authorization method ${it.methodName()} is available.")
-            val isAvailable = it.isAvailable()
+            val isAvailable = it.hasItems()
             log.info("Check result for authorization method ${it.methodName()}: $isAvailable")
             isAvailable
         }?.let{
@@ -175,7 +175,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
         authMethodInternalConfigurers.filter {
             log.info("Checking if authorization method ${it.methodName()} is active.")
-            val isAvailable = it.isAvailable()
+            val isAvailable = it.hasItems()
             log.info("Check result for authorization method ${it.methodName()}: $isAvailable")
             isAvailable
         }.forEach {

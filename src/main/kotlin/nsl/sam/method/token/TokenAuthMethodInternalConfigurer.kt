@@ -45,7 +45,7 @@ class TokenAuthMethodInternalConfigurer(
         return true
     }
 
-    override fun isAvailable(): Boolean {
+    override fun hasItems(): Boolean {
         if (!isActiveVariableCalculated) {
             isActiveValue = isActiveInternal()
             isActiveVariableCalculated = true

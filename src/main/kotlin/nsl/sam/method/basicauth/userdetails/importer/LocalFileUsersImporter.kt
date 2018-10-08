@@ -13,6 +13,7 @@ class LocalFileUsersImporter(val path:String): UsersImporter {
         val isItemAvailable = hasNext()
         reset()
         return isItemAvailable
+
     }
 
     override fun reset() {
