@@ -1,7 +1,8 @@
-package nsl.sam.method.basicauth.userdetails
+package nsl.sam.method.basicauth.userssource.impl
 
 import nsl.sam.logger.logger
-import nsl.sam.method.basicauth.userdetails.importer.UsersImporter
+import nsl.sam.method.basicauth.usersimporter.UsersImporter
+import nsl.sam.method.basicauth.userssource.UsersSource
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 
 class InMemoryUsersSource(private val usersImporter: UsersImporter): UsersSource {

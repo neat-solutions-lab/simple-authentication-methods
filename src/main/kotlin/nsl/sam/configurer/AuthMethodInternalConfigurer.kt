@@ -1,6 +1,6 @@
 package nsl.sam.configurer
 
-import nsl.sam.availability.ItemsAvailabilityAware
+import nsl.sam.interfaces.ItemsAvailabilityAware
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 

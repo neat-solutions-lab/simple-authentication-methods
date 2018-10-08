@@ -2,13 +2,13 @@ package nsl.sam.method.basicauth
 
 import nsl.sam.logger.logger
 import nsl.sam.configurer.AuthMethodInternalConfigurer
-import nsl.sam.method.basicauth.userdetails.SourceAwareUserDetailsService
+import nsl.sam.method.basicauth.userdetails.AvailabilityAwareUserDetailsService
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.AuthenticationEntryPoint
 
 class BasicAuthMethodInternalConfigurer(
-        private val localUsersDetailsService: SourceAwareUserDetailsService,
+        private val localUsersDetailsService: AvailabilityAwareUserDetailsService,
         private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint)
     : AuthMethodInternalConfigurer {
 

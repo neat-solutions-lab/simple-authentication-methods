@@ -1,6 +1,8 @@
 package nsl.sam.method.basicauth.userdetails
 
-import nsl.sam.method.basicauth.userdetails.importer.LocalFileUsersImporter
+import nsl.sam.method.basicauth.userdetails.impl.DefaultUserDetailsService
+import nsl.sam.method.basicauth.usersimporter.impl.LocalFileUsersImporter
+import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
 import org.junit.jupiter.api.Test
 
 internal class DefaultUserDetailsServiceTest {

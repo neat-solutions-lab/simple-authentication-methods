@@ -1,6 +1,8 @@
 package nsl.sam.method.basicauth.userdetails
 
-import nsl.sam.method.basicauth.userdetails.importer.LocalFileUsersImporter
+import nsl.sam.method.basicauth.usersimporter.impl.LocalFileUsersImporter
+import nsl.sam.method.basicauth.usersimporter.parser.UserLineParser
+import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Disabled
@@ -45,7 +47,7 @@ internal class InMemoryUsersSourceTest {
         }
 
         assertEquals(
-                String.format(LocalFileUsersImporter.WRONG_FORMAT_MESSAGE, path),
+                String.format(UserLineParser.SYNTAX_ERROR_MESSAGE, path),
                 exception.message
         )
     }

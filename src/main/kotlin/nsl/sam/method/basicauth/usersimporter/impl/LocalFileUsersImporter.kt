@@ -1,8 +1,9 @@
-package nsl.sam.method.basicauth.userdetails.importer
+package nsl.sam.method.basicauth.usersimporter.impl
 
 import nsl.sam.logger.logger
+import nsl.sam.method.basicauth.usersimporter.UsersImporter
+import nsl.sam.method.basicauth.usersimporter.parser.UserLineParser
 import java.io.File
-import java.io.FileNotFoundException
 import java.util.Scanner
 
 class LocalFileUsersImporter(val path:String): UsersImporter {
@@ -24,16 +25,12 @@ class LocalFileUsersImporter(val path:String): UsersImporter {
     }
 
     companion object {
-        const val WRONG_FORMAT_MESSAGE = "Wrong format of the passwords file (%s)."
         private val log by logger()
     }
 
     private var currentLine: String? = null
 
     private var scanner : Scanner? = null
-    //by lazy {
-    //    Scanner(File(path))
-    //}
 
     override fun close() {
         scanner?.close()
@@ -67,18 +64,20 @@ class LocalFileUsersImporter(val path:String): UsersImporter {
 
         if (currentLine == null) throw IllegalStateException("next() method used on null currentLine")
 
-        val lineParts: List<String> = currentLine!!.trim().split(Regex("\\s+"))
-        if (lineParts.size < 1) throw RuntimeException("Wrong format of passwords file.")
+        return UserLineParser.parseToTriple(currentLine!!)
 
-        val userAndPassword : List<String> = lineParts[0].split(":")
-        if (userAndPassword.size != 2) throw RuntimeException(String.format(WRONG_FORMAT_MESSAGE, path))
-
-        val user = userAndPassword[0].trim()
-        val pass = userAndPassword[1].trim()
-
-        //val roles = if(lineParts.size > 1) lineParts.subList(1, lineParts.lastIndex+1) else listOf("USER")
-        val roles = if(lineParts.size > 1) lineParts.subList(1, lineParts.lastIndex+1) else emptyList()
-
-        return Triple(user, pass, roles.toTypedArray())
+//        val lineParts: List<String> = currentLine!!.trim().split(Regex("\\s+"))
+//        if (lineParts.size < 1) throw RuntimeException("Wrong format of passwords file.")
+//
+//        val userAndPassword : List<String> = lineParts[0].split(":")
+//        if (userAndPassword.size != 2) throw RuntimeException(String.format(WRONG_FORMAT_MESSAGE, path))
+//
+//        val user = userAndPassword[0].trim()
+//        val pass = userAndPassword[1].trim()
+//
+//        //val roles = if(lineParts.size > 1) lineParts.subList(1, lineParts.lastIndex+1) else listOf("USER")
+//        val roles = if(lineParts.size > 1) lineParts.subList(1, lineParts.lastIndex+1) else emptyList()
+//
+//        return Triple(user, pass, roles.toTypedArray())
     }
 }

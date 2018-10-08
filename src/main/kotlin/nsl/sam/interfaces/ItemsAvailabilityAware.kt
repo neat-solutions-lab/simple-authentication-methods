@@ -1,4 +1,4 @@
-package nsl.sam.availability
+package nsl.sam.interfaces
 
 interface ItemsAvailabilityAware {
 

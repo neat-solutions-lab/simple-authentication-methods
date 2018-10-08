@@ -1,22 +1,17 @@
-package nsl.sam.method.basicauth.userdetails
+package nsl.sam.method.basicauth.userdetails.impl
 
-import nsl.sam.availability.ItemsAvailabilityAware
 import nsl.sam.logger.logger
-import org.springframework.beans.factory.annotation.Autowired
+import nsl.sam.method.basicauth.userdetails.AvailabilityAwareUserDetailsService
+import nsl.sam.method.basicauth.userssource.UsersSource
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
 
-class DefaultUserDetailsService(private val usersSource: UsersSource) : SourceAwareUserDetailsService {
-//class DefaultUserDetailsService(private val usersSource: UsersSource): UserDetailsService, ItemsAvailabilityAware {
+class DefaultUserDetailsService(private val usersSource: UsersSource) : AvailabilityAwareUserDetailsService {
 
-    //override fun usersNumber(): Int {
-    //    return usersSource.usersNumber()
-    //}
-
-//    override fun isUsersSourceAvailable(): Boolean {
-//        return usersSource.hasItems()
-//    }
+    /**
+     * Checks if underlying [UsersSource] is able to provide at once one valid user
+     * @see [UsersSource.hasItems]
+     */
     override fun hasItems(): Boolean {
         return usersSource.hasItems()
     }

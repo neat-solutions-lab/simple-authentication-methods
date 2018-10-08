@@ -1,6 +1,6 @@
 package nsl.sam.method.basicauth.userdetails
 
-import nsl.sam.method.basicauth.userdetails.importer.LocalFileUsersImporter
+import nsl.sam.method.basicauth.usersimporter.impl.LocalFileUsersImporter
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

@@ -6,18 +6,20 @@ import nsl.sam.configurer.AuthMethodInternalConfigurerFactory
 import nsl.sam.logger.logger
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributes
-import nsl.sam.method.basicauth.userdetails.InMemoryUsersSource
-import nsl.sam.method.basicauth.userdetails.DefaultUserDetailsService
+import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
+import nsl.sam.method.basicauth.userdetails.impl.DefaultUserDetailsService
 import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import nsl.sam.core.entrypoint.factory.DefaultAuthenticationEntryPointFactory
 import nsl.sam.annotation.inject.InjectedObjectsProvider
-import nsl.sam.method.basicauth.userdetails.SourceAwareUserDetailsService
-import nsl.sam.method.basicauth.userdetails.UsersSource
-import nsl.sam.method.basicauth.userdetails.importer.LocalFileUsersImporter
-import nsl.sam.method.basicauth.userdetails.importer.UsersImporter
+import nsl.sam.method.basicauth.userdetails.AvailabilityAwareUserDetailsService
+import nsl.sam.method.basicauth.userssource.UsersSource
+import nsl.sam.method.basicauth.usersimporter.impl.LocalFileUsersImporter
+import nsl.sam.method.basicauth.usersimporter.UsersImporter
+import nsl.sam.method.basicauth.userssource.UsersSourceFactory
+import nsl.sam.method.basicauth.userssource.factory.InMemoryUsersSourceFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.core.type.AnnotationMetadata
@@ -43,29 +45,18 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
         )
     }
 
-    private fun getUsersDetailsService(attributes: EnableAnnotationAttributes): SourceAwareUserDetailsService {
+    private fun getUsersDetailsService(attributes: EnableAnnotationAttributes): AvailabilityAwareUserDetailsService {
         val usersSource = getUsersSource(attributes)
         return DefaultUserDetailsService(usersSource)
     }
 
-
     private fun getUsersSource(attributes: EnableAnnotationAttributes): UsersSource {
-        val usersImporter = getUsersImporter(attributes)
-        return InMemoryUsersSource(usersImporter)
-        //val passwordsFilePath = getPasswordsFilePath(attributes)
-        //return InMemoryUsersSource(passwordsFilePath)
+        val usersSourceFactory = getUsersSourceFactory()
+        return usersSourceFactory.create(attributes, environment)
     }
 
-
-    private fun getUsersImporter(attributes: EnableAnnotationAttributes): UsersImporter {
-        val passwordsFilePath = getPasswordsFilePath(attributes)
-        return LocalFileUsersImporter(passwordsFilePath)
-    }
-
-
-    private fun getPasswordsFilePath(attributes: EnableAnnotationAttributes): String {
-        val simpleBasicAuthenticationAttributes = getSimpleAuthenticationAttributes(attributes.enableAnnotationMetadata)
-        return decideOnPasswordFilePath(simpleBasicAuthenticationAttributes)
+    private fun getUsersSourceFactory(): UsersSourceFactory {
+        return InMemoryUsersSourceFactory()
     }
 
     private fun getAuthenticationEntryPoint(attributes: EnableAnnotationAttributes): AuthenticationEntryPoint {
@@ -78,44 +69,5 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
                 .environment(environment)
                 .defaultFactory(DefaultAuthenticationEntryPointFactory::class)
                 .build().getObject()
-    }
-
-    private fun decideOnPasswordFilePath(simpleBasicAuthenticationAttributes: SimpleBasicAuthenticationAttributes): String {
-
-        if(simpleBasicAuthenticationAttributes.passwordsFilePath.isNotBlank())
-            return simpleBasicAuthenticationAttributes.passwordsFilePath
-
-        if(simpleBasicAuthenticationAttributes.passwordsFilePathProperty.isNotBlank())
-            return environment.getProperty(simpleBasicAuthenticationAttributes.passwordsFilePathProperty, "")
-
-        if(environment.containsProperty("sam.passwords-file"))
-            return environment.getProperty("sam.passwords-file", "")
-
-        return ""
-    }
-
-    private fun getSimpleAuthenticationAttributes(annotationMetadata: AnnotationMetadata): SimpleBasicAuthenticationAttributes {
-
-        val annotationMetadataResolver = AnnotationMetadataResolver.Builder()
-                .annotationMetadata(annotationMetadata)
-                .annotationTypes(SimpleBasicAuthentication::class)
-                .build()
-
-        if (!annotationMetadataResolver.isAnnotationPresent()) {
-            return SimpleBasicAuthenticationAttributes.default()
-        }
-
-        return SimpleBasicAuthenticationAttributes.Builder()
-                .passwordFilePathProperty(annotationMetadataResolver.getRequiredAttributeValue(
-                        "passwordsFilePropertyName", String::class
-                ))
-                .passwordFilePath(annotationMetadataResolver.getRequiredAttributeValue(
-                        "passwordsFilePath", String::class
-                ))
-                .authenticationEntryPointFactory(annotationMetadataResolver.getRequiredAttributeAsKClassArray (
-                        "authenticationEntryPointFactory",
-                        AuthenticationEntryPointFactory::class
-                ))
-                .build()
     }
 }
