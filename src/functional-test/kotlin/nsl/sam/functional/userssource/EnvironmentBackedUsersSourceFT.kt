@@ -45,7 +45,6 @@ class EnvironmentBackedUsersSourceFT {
         fun clearSystemProperties() {
             System.clearProperty(SteeredEnvironmentVariablesAccessor.SUPPLIER_PROPERTY_NAME)
         }
-
     }
 
     @Test

@@ -2,6 +2,7 @@ package nsl.sam.method.basicauth.userdetails
 
 import nsl.sam.method.basicauth.usersimporter.impl.LocalFileUsersImporter
 import nsl.sam.method.basicauth.usersimporter.parser.BasicUserLineParser
+import nsl.sam.method.basicauth.usersimporter.parser.BasicUserLineParsingException
 import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.*
@@ -39,7 +40,7 @@ internal class InMemoryUsersSourceTest {
 
         val localFileUsersImporter = LocalFileUsersImporter(path)
 
-        val exception =assertThrows(RuntimeException::class.java) {
+        val exception = assertThrows(BasicUserLineParsingException::class.java) {
             InMemoryUsersSource(localFileUsersImporter)
         }
 

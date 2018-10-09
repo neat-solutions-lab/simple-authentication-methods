@@ -7,15 +7,15 @@ object BasicUserLineParser {
     fun parseToTriple(line: String):  Triple<String, String, Array<String>> {
 
         if(line.isBlank())
-            throw RuntimeException(SYNTAX_ERROR_MESSAGE)
+            throw BasicUserLineParsingException(SYNTAX_ERROR_MESSAGE)
 
         val lineParts: List<String> = line.trim().split(Regex("\\s+"))
         if (lineParts.isEmpty())
-            throw RuntimeException(SYNTAX_ERROR_MESSAGE)
+            throw BasicUserLineParsingException(SYNTAX_ERROR_MESSAGE)
 
         val userAndPassword : List<String> = lineParts[0].split(":")
         if (userAndPassword.size != 2)
-            throw RuntimeException(SYNTAX_ERROR_MESSAGE)
+            throw BasicUserLineParsingException(SYNTAX_ERROR_MESSAGE)
 
         val user = userAndPassword[0].trim()
         val pass = userAndPassword[1].trim()
