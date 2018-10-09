@@ -1,4 +1,4 @@
-package nsl.sam.method.token.filter
+package nsl.sam.method.token.token
 
 /**
  * Internal representation of user and his roles.

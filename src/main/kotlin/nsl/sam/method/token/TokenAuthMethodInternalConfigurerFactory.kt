@@ -9,7 +9,7 @@ import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import nsl.sam.core.entrypoint.factory.DefaultAuthenticationEntryPointFactory
 import nsl.sam.method.token.annotation.SimpleTokenAuthentication
-import nsl.sam.method.token.filter.TokenToUserMapper
+import nsl.sam.method.token.tokendetails.TokenDetailsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.env.Environment
@@ -21,7 +21,7 @@ class TokenAuthMethodInternalConfigurerFactory(override val name: String) : Auth
     lateinit var tokensFilePath: String
 
     @Autowired
-    lateinit var tokenAuthenticator: TokenToUserMapper
+    lateinit var tokenAuthenticator: TokenDetailsService
 
     @Autowired
     lateinit var environment: Environment

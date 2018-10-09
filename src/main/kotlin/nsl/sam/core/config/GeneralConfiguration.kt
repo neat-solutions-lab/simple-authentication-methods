@@ -5,9 +5,9 @@ import nsl.sam.configurer.ConfigurersFactories
 import nsl.sam.configurer.ConfigurersFactoriesImpl
 import nsl.sam.method.basicauth.BasicAuthMethodInternalConfigurerFactory
 import nsl.sam.method.token.TokenAuthMethodInternalConfigurerFactory
-import nsl.sam.method.token.filter.TokenToUserMapper
-import nsl.sam.method.token.localtokens.LocalFileTokensToUserMapper
-import nsl.sam.method.token.localtokens.LocalTokensSource
+import nsl.sam.method.token.tokendetails.TokenDetailsService
+import nsl.sam.method.token.tokendetails.impl.DefaultTokenDetailsService
+import nsl.sam.method.token.tokenssource.LocalTokensSource
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -28,8 +28,8 @@ class GeneralConfiguration {
     }
 
     @Bean
-    fun tokenToUserMapper(): TokenToUserMapper {
-        return LocalFileTokensToUserMapper()
+    fun tokenToUserMapper(): TokenDetailsService {
+        return DefaultTokenDetailsService()
     }
 
     @Bean

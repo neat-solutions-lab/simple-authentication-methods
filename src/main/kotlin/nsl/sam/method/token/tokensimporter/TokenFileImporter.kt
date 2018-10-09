@@ -1,13 +1,14 @@
-package nsl.sam.method.token.localtokens
+package nsl.sam.method.token.tokensimporter
 
 import nsl.sam.logger.logger
-import nsl.sam.method.token.filter.UserAndRoles
+import nsl.sam.method.token.token.UserAndRoles
+import nsl.sam.method.token.token.ResolvedToken
 import java.io.BufferedReader
 import java.io.Closeable
 import java.io.File
 import java.io.FileReader
 
-class TokenFileImporter(val path: String) : Closeable, Iterator<LocalToken> {
+class TokenFileImporter(val path: String) : Closeable, Iterator<ResolvedToken> {
 
     companion object {
         val log by logger()
@@ -25,7 +26,7 @@ class TokenFileImporter(val path: String) : Closeable, Iterator<LocalToken> {
         BufferedReader(FileReader(this.file))
     }
 
-    override fun next(): LocalToken {
+    override fun next(): ResolvedToken {
 
         log.debug("next(); currentLine: ${currentLine?.let { it.takeIf { it.length > 2 }?.substring(0, 2) }}")
 
@@ -41,7 +42,7 @@ class TokenFileImporter(val path: String) : Closeable, Iterator<LocalToken> {
 
         val roles = if (lineParts.size > 2) lineParts.subList(2, lineParts.lastIndex + 1) else emptyList()
 
-        return LocalToken(tokenValue, UserAndRoles(userName, roles.map { "ROLE_${it}" }.toTypedArray()))
+        return ResolvedToken(tokenValue, UserAndRoles(userName, roles.map { "ROLE_${it}" }.toTypedArray()))
     }
 
     override fun hasNext(): Boolean {

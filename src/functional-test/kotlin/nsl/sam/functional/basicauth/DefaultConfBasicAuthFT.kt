@@ -5,7 +5,7 @@ import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
-import nsl.sam.method.token.filter.TokenToUserMapper
+import nsl.sam.method.token.tokendetails.TokenDetailsService
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -54,7 +54,7 @@ class DefaultConfBasicAuthFT {
     private lateinit var securityConfigurer: WebSecurityConfigurerAdapter
 
     @Autowired
-    private lateinit var localFileTokensToUserMapper: TokenToUserMapper
+    private lateinit var localFileTokensDetailsService: TokenDetailsService
 
     //
     // Main beans arrangement
@@ -81,7 +81,7 @@ class DefaultConfBasicAuthFT {
 
     @Test
     fun localFileTokensToUserMapperActiveWhenSimpleTokenMethodNotDisabled() {
-        val userAndRoles = localFileTokensToUserMapper.mapToUser("12345")
+        val userAndRoles = localFileTokensDetailsService.loadUserByToken("12345")
         assertEquals("tester", userAndRoles.name)
     }
 

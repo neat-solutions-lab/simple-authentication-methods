@@ -6,7 +6,7 @@ import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
-import nsl.sam.method.token.filter.TokenToUserMapper
+import nsl.sam.method.token.tokendetails.TokenDetailsService
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -86,7 +86,7 @@ class NoAuthMethodEnabledFT {
             " time in ApplicationContext.")
     fun localFileTokensToUserMapperBeanNotPresentWhenSimpleTokenMethodDisabled() {
         Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
-            this.ctx.getBean(TokenToUserMapper::class.java)
+            this.ctx.getBean(TokenDetailsService::class.java)
         }
     }
 

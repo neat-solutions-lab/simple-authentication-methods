@@ -1,15 +1,13 @@
-package nsl.sam.method.token.localtokens
-
-import nsl.sam.method.token.filter.UserAndRoles
+package nsl.sam.method.token.token
 
 /**
  * Internal representation of individual token read from "tokens file"
  */
-data class LocalToken(
+data class ResolvedToken(
         val tokenValue: String,
         val userAndRole: UserAndRoles
 ) {
     override fun toString(): String {
-        return "LocalToken([SECRET_TOKEN], ${userAndRole})"
+        return "ResolvedToken([SECRET_TOKEN], $userAndRole)"
     }
 }

@@ -8,7 +8,7 @@ import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
-import nsl.sam.method.token.filter.TokenToUserMapper
+import nsl.sam.method.token.tokendetails.TokenDetailsService
 import nsl.sam.utils.JsonUtils
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers
@@ -59,7 +59,7 @@ class NarrowConfTokenAuthFT {
     private lateinit var securityConfigurer: WebSecurityConfigurerAdapter
 
     @Autowired
-    private lateinit var localFileTokensToUserMapper: TokenToUserMapper
+    private lateinit var localFileTokensDetailsService: TokenDetailsService
 
     //
     // Main beans arrangement
@@ -91,7 +91,7 @@ class NarrowConfTokenAuthFT {
     //
     @Test
     fun localFileTokensToUserMapperActiveWhenSimpleTokenMethodIsEnabled() {
-        val userAndRoles = localFileTokensToUserMapper.mapToUser("12345")
+        val userAndRoles = localFileTokensDetailsService.loadUserByToken("12345")
         assertEquals("tester", userAndRoles.name)
     }
 

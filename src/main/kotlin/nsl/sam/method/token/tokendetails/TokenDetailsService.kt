@@ -1,10 +1,12 @@
-package nsl.sam.method.token.filter
+package nsl.sam.method.token.tokendetails
+
+import nsl.sam.method.token.token.UserAndRoles
 
 /**
  * To be implemented by class which will map token (probably acquired from HTTP header) to
  * internal representation of associated user and his roles.
  */
-interface TokenToUserMapper {
+interface TokenDetailsService {
 
     /**
      * Maps given [token] value to underlying user (in form of [UserAndRoles] data class).
@@ -14,5 +16,5 @@ interface TokenToUserMapper {
      * @throws javax.naming.AuthenticationException  Exception being thrown when given [token] doesn't map
      *         to any existing user.
      */
-    fun mapToUser(token: String): UserAndRoles
+    fun loadUserByToken(token: String): UserAndRoles
 }

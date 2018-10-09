@@ -1,6 +1,8 @@
-package nsl.sam.method.token.localtokens
+package nsl.sam.method.token.tokenssource
 
 import nsl.sam.logger.logger
+import nsl.sam.method.token.token.ResolvedToken
+import nsl.sam.method.token.tokensimporter.TokenFileImporter
 import org.springframework.beans.factory.annotation.Value
 import javax.annotation.PostConstruct
 
@@ -13,9 +15,9 @@ class LocalTokensSource {
     @Value("\${sam.tokens-file:}")
     lateinit var tokensFilePath: String
 
-    val tokensMap: MutableMap<String, LocalToken> = mutableMapOf()
+    val tokensMap: MutableMap<String, ResolvedToken> = mutableMapOf()
 
-    fun get(tokenAsString: String): LocalToken? {
+    fun get(tokenAsString: String): ResolvedToken? {
         return tokensMap.get(tokenAsString)
     }
 

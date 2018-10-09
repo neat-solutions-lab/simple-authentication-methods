@@ -3,8 +3,8 @@ package nsl.sam.method.token
 import nsl.sam.configurer.AuthMethodInternalConfigurer
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
-import nsl.sam.method.token.filter.TokenToUserMapper
-import nsl.sam.method.token.localtokens.TokenFileImporter
+import nsl.sam.method.token.tokendetails.TokenDetailsService
+import nsl.sam.method.token.tokensimporter.TokenFileImporter
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.AuthenticationEntryPoint
@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 class TokenAuthMethodInternalConfigurer(
         private val tokensFilePath: String,
-        private val tokenAuthenticator: TokenToUserMapper,
+        private val tokenAuthenticator: TokenDetailsService,
         private val authenticationEntryPoint: AuthenticationEntryPoint) : AuthMethodInternalConfigurer {
 
     override fun configure(auth: AuthenticationManagerBuilder) {
@@ -56,7 +56,6 @@ class TokenAuthMethodInternalConfigurer(
     override fun configure(http: HttpSecurity): HttpSecurity {
         log.info("Registering ${TokenAuthenticationFilter::class.qualifiedName} filter.")
         return http.addFilterBefore(
-                //TokenAuthenticationFilter(tokenAuthenticator, unauthenticatedResponseSender, authenticationEntryPoint),
                 TokenAuthenticationFilter(tokenAuthenticator, authenticationEntryPoint),
                 BasicAuthenticationFilter::class.java)
     }

@@ -1,6 +1,7 @@
 package nsl.sam.method.token.filter
 
 import nsl.sam.logger.logger
+import nsl.sam.method.token.tokendetails.TokenDetailsService
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.AuthenticationException
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletResponse
 const val AUTHORIZATION_HEADER = "Authorization"
 
 class TokenAuthenticationFilter(
-        private val tokenAuthenticator: TokenToUserMapper,
+        private val tokenAuthenticator: TokenDetailsService,
         private val authenticationEntryPoint: AuthenticationEntryPoint) : OncePerRequestFilter() {
 
     companion object {
@@ -75,7 +76,7 @@ class TokenAuthenticationFilter(
 
         try {
 
-            val localUser = tokenAuthenticator.mapToUser(authToken)
+            val localUser = tokenAuthenticator.loadUserByToken(authToken)
 
             log.debug("user: ${localUser}")
 
