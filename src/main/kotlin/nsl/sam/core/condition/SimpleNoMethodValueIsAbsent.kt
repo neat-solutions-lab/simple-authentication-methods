@@ -15,6 +15,7 @@ class SimpleNoMethodValueIsAbsent: Condition {
 
     override fun matches(context: ConditionContext, metadata: AnnotatedTypeMetadata): Boolean {
 
+        @Suppress("UNCHECKED_CAST")
         val methodsAttributeValue = metadata.getAnnotationAttributes(
                 EnableSimpleAuthenticationMethods::class.qualifiedName!!)?.get("methods")
                 as Array<AuthenticationMethod>?

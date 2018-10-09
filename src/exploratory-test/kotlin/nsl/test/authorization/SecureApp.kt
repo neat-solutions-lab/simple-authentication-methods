@@ -12,21 +12,22 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.Authentication
-import org.springframework.security.crypto.password.NoOpPasswordEncoder
+import org.springframework.security.crypto.password.*
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import java.io.Serializable
+fun main(args: Array<String>) {
+    SpringApplication.run(SecureApp::class.java, *args)
+}
+
 
 @SpringBootApplication
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecureApp
 
-fun main(args: Array<String>) {
-    SpringApplication.run(SecureApp::class.java, *args)
-}
-
+@Suppress("DEPRECATION")
 @Configuration
 @Order(90)
 class SecurityConfiguration: WebSecurityConfigurerAdapter() {

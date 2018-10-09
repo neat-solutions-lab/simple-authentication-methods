@@ -8,7 +8,7 @@ class AuthorizationRulesProcessor(private val httpSecurity: HttpSecurity) {
     fun process(expression: String) {
         val root = AuthorizationRulesRoot(httpSecurity)
         val parser = SpelExpressionParser()
-        val expression = parser.parseExpression(expression)
-        expression.getValue(root)
+        val parsedExpression = parser.parseExpression(expression)
+        parsedExpression.getValue(root)
     }
 }

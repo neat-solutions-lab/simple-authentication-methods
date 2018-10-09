@@ -48,20 +48,20 @@ class AnnotationMetadataResolver private constructor(
                 )
         )
 
-        var attributeValue: Array<Class<T>>? = attributes?.get(name) as Array<Class<T>>?
+        @Suppress("UNCHECKED_CAST")
+        val attributeValue: Array<Class<T>>? = attributes?.get(name) as Array<Class<T>>?
         if (attributeValue == null || attributeValue.isEmpty()) {
             if(null != parent) return parent.getAttributeValueAsArray(name, type)
         }
 
-        val kotlinClasses = attributeValue?.map {it.kotlin}?.toTypedArray()
-        return kotlinClasses
+        return attributeValue?.map {it.kotlin}?.toTypedArray()
     }
 
     fun <T:Any> getRequiredAttributeValueAsArray(name: String, type: KClass<T>): Array<KClass<T>> {
         return getAttributeValueAsArray(name, type)!!
     }
 
-    @Suppress("UNUSED_PARAMETER")
+    @Suppress("UNUSED_PARAMETER", "UNCHECKED_CAST")
     fun <T: KClass<*>> getRequiredAttributeAsKClassArray(name: String, type: T): Array<T> {
 
         val attributes = AnnotationAttributes.fromMap(

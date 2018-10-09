@@ -26,7 +26,7 @@ class InjectedObjectsProvider<T:Any> private constructor(
         return FactoryRetriever.getFactory(
                 factoryType,
                 attributeName,
-                annotationMetadataResolver!!,
+                annotationMetadataResolver,
                 environment,
                 defaultFactoryPropertyName,
                 defaultFactory

@@ -14,8 +14,8 @@ class BasicAuthMethodInternalConfigurer(
 
     companion object { val log by logger() }
 
-    override fun configure(authBuilder: AuthenticationManagerBuilder) {
-        authBuilder.userDetailsService(localUsersDetailsService)
+    override fun configure(auth: AuthenticationManagerBuilder) {
+        auth.userDetailsService(localUsersDetailsService)
     }
 
     override fun hasItems(): Boolean {

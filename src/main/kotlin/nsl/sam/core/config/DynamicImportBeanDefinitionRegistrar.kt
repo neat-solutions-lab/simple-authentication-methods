@@ -72,6 +72,7 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
          * bean definition with supplier to provide instance of the above generated class which
          * extends WebSecurityConfigurerAdapter
          */
+        @Suppress("UNCHECKED_CAST")
         val bd = BeanDefinitionBuilder.genericBeanDefinition(dynamicConfigurerClass as Class<WebSecurityConfigurerAdapter>){
             /*
              * supplier logic

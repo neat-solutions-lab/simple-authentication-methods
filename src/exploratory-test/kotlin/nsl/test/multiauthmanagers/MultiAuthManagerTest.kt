@@ -13,8 +13,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder
-import org.springframework.security.crypto.password.NoOpPasswordEncoder
+import org.springframework.security.crypto.password.*
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import kotlin.reflect.full.cast
@@ -43,9 +42,8 @@ fun main(args: Array<String>) {
 class SecurityConfigurationOne: WebSecurityConfigurerAdapter() {
 
 
+    @Suppress("DEPRECATION")
     override fun configure(auth: AuthenticationManagerBuilder) {
-    //@Autowired
-    //fun configureGlobal(auth: AuthenticationManagerBuilder) {
         auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance())
                 .withUser("user-one").password("password").roles("USER").and()
                 .withUser("admin").password("password").roles("USER", "ADMIN")
@@ -71,10 +69,8 @@ class SecurityConfigurationOne: WebSecurityConfigurerAdapter() {
 @Order(20)
 class SecurityConfigurationTwo: WebSecurityConfigurerAdapter() {
 
-
+    @Suppress("DEPRECATION")
     override fun configure(auth: AuthenticationManagerBuilder) {
-    //@Autowired
-    //fun configureGlobal(auth: AuthenticationManagerBuilder) {
         auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance())
                 .withUser("user-two").password("password").roles("USER").and()
                 .withUser("admin").password("password").roles("USER", "ADMIN")
@@ -122,7 +118,6 @@ class ControllerThree {
     fun entryPoint() = "Hello form controller THREE."
 
 }
-
 
 @RestController
 class CloseController {

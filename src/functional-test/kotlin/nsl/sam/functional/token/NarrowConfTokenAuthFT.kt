@@ -97,17 +97,6 @@ class NarrowConfTokenAuthFT {
         assertEquals("tester", userAndRoles.name)
     }
 
-    @Test
-    @Disabled("Not relavant after refactoring")
-    fun fakeUserDetailsServiceActive() {
-        val userDetailsService = securityConfigurer.userDetailsServiceBean()
-        val exception = Assertions.assertThrows(UsernameNotFoundException::class.java) {
-            userDetailsService.loadUserByUsername("test")
-        }
-        //assertEquals(USERNAME_NOT_FOUND_EXCEPTION_MESSAGE, exception.message)
-    }
-
-
     //
     // Request against MockMVC
     //

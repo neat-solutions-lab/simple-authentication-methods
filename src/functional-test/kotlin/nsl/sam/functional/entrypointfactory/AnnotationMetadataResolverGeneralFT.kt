@@ -35,12 +35,12 @@ class AnnotationMetadataResolverGeneralFT {
                 .annotationTypes(EnableSimpleAuthenticationMethods::class, SimpleBasicAuthentication::class)
                 .build()
 
-        val factoryClasses = resolver?.getAttributeValueAsArray(
+        val factoryClasses = resolver.getAttributeValueAsArray(
                 "authenticationEntryPointFactory", AuthenticationEntryPointFactory::class
         )
         val factoryClass = factoryClasses!![0]
 
-        Assertions.assertThat(factoryClasses?.size).isEqualTo(1)
+        Assertions.assertThat(factoryClasses.size).isEqualTo(1)
         Assertions.assertThat(factoryClass).isEqualTo(SecondTestTimeEntryPointFactory::class)
     }
 }

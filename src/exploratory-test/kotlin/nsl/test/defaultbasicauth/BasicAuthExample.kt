@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -35,6 +34,7 @@ fun main(args: Array<String>) {
 class SecurityConfigurer: WebSecurityConfigurerAdapter() {
 
     @Bean
+    @Suppress("DEPRECATION")
     fun users():UserDetailsService {
         val users = User.withDefaultPasswordEncoder()
         val manager = InMemoryUserDetailsManager()

@@ -26,6 +26,7 @@ class SteeredEnvironmentVariablesAccessor: EnvironmentVariablesAccessor {
 
     private fun getVarsMapFromDynamicSupplier(supplierFqName: String): Map<String, String> {
 
+        @Suppress("UNCHECKED_CAST")
         val supplierClass: KClass<Supplier<Map<String, String>>> =
                 Class.forName(supplierFqName).kotlin as KClass<Supplier<Map<String, String>>>
 

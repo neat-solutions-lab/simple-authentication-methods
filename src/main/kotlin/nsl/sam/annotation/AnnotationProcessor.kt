@@ -10,7 +10,7 @@ import kotlin.reflect.full.cast
 
 object AnnotationProcessor {
 
-    @Suppress("UNUSED_PARAMETER")
+    @Suppress("UNUSED_PARAMETER", "UNCHECKED_CAST")
     fun <T: KClass<*>> getAnnotationAttributeAsArray(
             importingClassMetadata: AnnotationMetadata,
             annotationClass: KClass<*>,
