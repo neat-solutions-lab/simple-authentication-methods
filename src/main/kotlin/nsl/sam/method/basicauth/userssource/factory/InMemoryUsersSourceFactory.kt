@@ -1,21 +1,16 @@
 package nsl.sam.method.basicauth.userssource.factory
 
-import nsl.sam.annotation.AnnotationMetadataResolver
 import nsl.sam.core.annotation.EnableAnnotationAttributes
-import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import nsl.sam.logger.logger
-import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
-import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributes
 import nsl.sam.method.basicauth.usersimporter.UsersImporter
 import nsl.sam.method.basicauth.usersimporter.UsersImporterFactory
 import nsl.sam.method.basicauth.usersimporter.factory.AnnotationAttributeUsersImporterFactory
+import nsl.sam.method.basicauth.usersimporter.factory.EnvironmentVariableUsersImporterFactory
 import nsl.sam.method.basicauth.usersimporter.factory.LocalFileUsersImporterFactory
-import nsl.sam.method.basicauth.usersimporter.impl.LocalFileUsersImporter
 import nsl.sam.method.basicauth.userssource.UsersSource
 import nsl.sam.method.basicauth.userssource.UsersSourceFactory
 import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
 import org.springframework.core.env.Environment
-import org.springframework.core.type.AnnotationMetadata
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
@@ -60,6 +55,7 @@ class InMemoryUsersSourceFactory: UsersSourceFactory {
     private fun getUsersImportersFactories(): Array<KClass<out UsersImporterFactory>> {
         return arrayOf(
                 LocalFileUsersImporterFactory::class,
+                EnvironmentVariableUsersImporterFactory::class,
                 AnnotationAttributeUsersImporterFactory::class
         )
     }

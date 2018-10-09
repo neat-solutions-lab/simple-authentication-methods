@@ -7,6 +7,7 @@ class SimpleBasicAuthenticationAttributes private constructor(
         val passwordsFilePathProperty: String = "",
         val passwordsFilePath: String = "",
         val users: Array<String> = arrayOf(),
+        val usersEnvPrefix: String = "",
         val authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = emptyArray()
 ) {
 
@@ -20,7 +21,7 @@ class SimpleBasicAuthenticationAttributes private constructor(
 
     private constructor (builder: Builder):this(
             builder.passwordFilePathProperty, builder.passwordFilePath,
-            builder.users, builder.authenticationEntryPointFactory
+            builder.users, builder.usersEnvPrefix, builder.authenticationEntryPointFactory
     )
 
     class Builder {
@@ -32,6 +33,8 @@ class SimpleBasicAuthenticationAttributes private constructor(
 
         var users: Array<String> = arrayOf()
 
+        var usersEnvPrefix: String = ""
+
         var authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = emptyArray()
             private set
 
@@ -42,6 +45,9 @@ class SimpleBasicAuthenticationAttributes private constructor(
                 apply { this.passwordFilePath = value }
 
         fun users(value: Array<String>) = apply { this.users = value}
+
+        fun usersEnvPrefix(value: String) =
+                apply { this.usersEnvPrefix = value }
 
         fun authenticationEntryPointFactory(value: Array<KClass<out AuthenticationEntryPointFactory>>) =
                 apply { this.authenticationEntryPointFactory = value }

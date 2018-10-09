@@ -8,5 +8,6 @@ annotation class SimpleBasicAuthentication (
         val passwordsFilePropertyName: String = "",
         val passwordsFilePath: String = "",
         val users: Array<String> = [],
+        val usersEnvPrefix: String = "",
         val authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = []
 )

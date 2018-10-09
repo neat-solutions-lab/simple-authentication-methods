@@ -27,6 +27,9 @@ object SimpleBasicAuthenticationAttributesExtractor {
                         "authenticationEntryPointFactory",
                         AuthenticationEntryPointFactory::class
                 ))
+                .usersEnvPrefix(annotationMetadataResolver.getRequiredAttributeValue(
+                        "usersEnvPrefix", String::class
+                ))
                 .users(annotationMetadataResolver.getRequiredAttributeValue(
                         "users", Array<String>::class
                 ))

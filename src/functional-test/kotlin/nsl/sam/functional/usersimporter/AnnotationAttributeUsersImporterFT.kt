@@ -5,6 +5,7 @@ import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.controller.CustomAuthorizationTestController
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
 import nsl.sam.method.basicauth.usersimporter.impl.AnnotationAttributeUsersImporter
+import nsl.sam.utils.UsersTriplesComparator
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -50,17 +51,6 @@ class AnnotationAttributeUsersImporterFT {
                         Triple("hardcoded-user2", "{noop}test", arrayOf("USER", "ADMIN"))
                 )
         )
-    }
-}
-
-class UsersTriplesComparator: Comparator<Triple<String, String, Array<String>>> {
-    override fun compare(o1: Triple<String, String, Array<String>>,
-                         o2: Triple<String, String, Array<String>>): Int {
-        if(o1.first != o2.first) return o1.first.compareTo(o2.first)
-        if(o1.second != o2.second) return o1.second.compareTo(o2.second)
-        if (o1.third.size != o2.third.size) return o1.third.size.compareTo(o2.third.size)
-        if(o1.third.contentDeepEquals(o2.third)) return 0
-        return 1
     }
 }
 

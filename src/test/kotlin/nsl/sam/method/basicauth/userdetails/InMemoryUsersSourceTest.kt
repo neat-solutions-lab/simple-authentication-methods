@@ -1,7 +1,7 @@
 package nsl.sam.method.basicauth.userdetails
 
 import nsl.sam.method.basicauth.usersimporter.impl.LocalFileUsersImporter
-import nsl.sam.method.basicauth.usersimporter.parser.UserLineParser
+import nsl.sam.method.basicauth.usersimporter.parser.BasicUserLineParser
 import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.*
@@ -16,7 +16,6 @@ internal class InMemoryUsersSourceTest {
     fun userWithNoRoles() {
         val localFileUsersImporter = LocalFileUsersImporter("src/test/config/passwords-no-roles.conf")
         val usersSource = InMemoryUsersSource(localFileUsersImporter)
-        //assertEquals(1, usersSource.usersNumber())
         assertEquals(true, usersSource.hasItems())
     }
 
@@ -24,7 +23,6 @@ internal class InMemoryUsersSourceTest {
     fun testEmptyFile() {
         val localFileUsersImporter = LocalFileUsersImporter("src/test/config/passwords-empty.conf")
         val usersSource = InMemoryUsersSource(localFileUsersImporter)
-        //assertEquals(0, usersSource.usersNumber())
         assertEquals(false, usersSource.hasItems())
     }
 
@@ -32,7 +30,6 @@ internal class InMemoryUsersSourceTest {
     fun testBlankFilePath() {
         val localFileUsersImporter = LocalFileUsersImporter("")
         val usersSource = InMemoryUsersSource(localFileUsersImporter)
-        //assertEquals(0, usersSource.usersNumber())
         assertEquals(false, usersSource.hasItems())
     }
 
@@ -47,7 +44,7 @@ internal class InMemoryUsersSourceTest {
         }
 
         assertEquals(
-                String.format(UserLineParser.SYNTAX_ERROR_MESSAGE, path),
+                String.format(BasicUserLineParser.SYNTAX_ERROR_MESSAGE, path),
                 exception.message
         )
     }

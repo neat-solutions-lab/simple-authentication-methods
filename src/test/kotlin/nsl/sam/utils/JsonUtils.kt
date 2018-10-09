@@ -1,4 +1,4 @@
-package nsl.sam.auxiliary
+package nsl.sam.utils
 
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
