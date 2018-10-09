@@ -1,6 +1,9 @@
 package nsl.sam.core.annotation
 
-import nsl.sam.core.config.*
+import nsl.sam.core.config.DynamicImportBeanDefinitionRegistrar
+import nsl.sam.core.config.EnableWebSecurityInDebugMode
+import nsl.sam.core.config.EnableWebSecurityInDefaultMode
+import nsl.sam.core.config.GeneralConfiguration
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import org.springframework.context.annotation.Import
 import kotlin.reflect.KClass
@@ -23,12 +26,12 @@ const val ENABLE_ANNOTATION_AUTHORIZATIONS_ATTRIBUTE_NAME = "authorizations"
 @Target(AnnotationTarget.CLASS)
 //@Conditional(SimpleNoMethodValueIsAbsent::class)
 @Import(value =
-    [
-        DynamicImportBeanDefinitionRegistrar::class,
-        GeneralConfiguration::class,
-        EnableWebSecurityInDebugMode::class,
-        EnableWebSecurityInDefaultMode::class
-    ])
+[
+    DynamicImportBeanDefinitionRegistrar::class,
+    GeneralConfiguration::class,
+    EnableWebSecurityInDebugMode::class,
+    EnableWebSecurityInDefaultMode::class
+])
 annotation class EnableSimpleAuthenticationMethods(
 
         val methods: Array<AuthenticationMethod> =

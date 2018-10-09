@@ -3,17 +3,15 @@ package nsl.sam.annotation.inject
 import nsl.sam.annotation.AnnotationMetadataResolver
 import org.springframework.core.env.Environment
 import org.springframework.util.Assert
-import java.util.concurrent.ConcurrentHashMap
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
 object FactoryRetriever {
 
-    private val createdFactories: MutableMap<KClass<*>, Factory<out Any>> = mutableMapOf()
-    //private val createdFactories: MutableMap<KClass<*>, Factory<out Any>> = ConcurrentHashMap()
+    private val createdFactories: MutableMap<KClass<*>, Factory<Any>> = mutableMapOf()
 
     @Synchronized
-    fun <T:Any> getFactory(
+    fun <T : Any> getFactory(
             factoryType: KClass<out Factory<T>>,
             attributeName: String,
             annotationMetadataResolver: AnnotationMetadataResolver,
@@ -24,7 +22,7 @@ object FactoryRetriever {
         /*
          * try to obtain factory basing on explicitly defined, annotation attributes
          */
-        val factoryClasses = annotationMetadataResolver?.getAttributeValueAsArray(
+        val factoryClasses = annotationMetadataResolver.getAttributeValueAsArray(
                 attributeName, factoryType
         )
 
@@ -32,7 +30,7 @@ object FactoryRetriever {
                 "There can be only one ${factoryType::class.qualifiedName} provided" +
                         "by $attributeName attribute.")
 
-        if(null != factoryClasses && factoryClasses.isNotEmpty()) {
+        if (null != factoryClasses && factoryClasses.isNotEmpty()) {
             val factoryClass = factoryClasses[0]
             return getCachedOrCreate(factoryClass)
         }
@@ -47,15 +45,17 @@ object FactoryRetriever {
             else -> environment.getProperty(defaultFactoryPropertyName)
         }
 
+        @Suppress("UNCHECKED_CAST")
         val factoryClass = Class.forName(factoryClassName).kotlin as KClass<out Factory<T>>
 
         return getCachedOrCreate(factoryClass)
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun <T> getCachedOrCreate(factoryClass: KClass<out Factory<T>>): Factory<T> {
 
-        val factory  = createdFactories.getOrPut(factoryClass) {
-            SingletonObjectFactoryWrapper(factoryClass.createInstance()) as Factory<out Any>
+        val factory = createdFactories.getOrPut(factoryClass) {
+            SingletonObjectFactoryWrapper(factoryClass.createInstance()) as Factory<Any>
         }
         return factory as Factory<T>
     }

@@ -1,9 +1,9 @@
 package nsl.sam.integration.basicauth
 
 import nsl.sam.IntegrationTestConstants
-import nsl.sam.logger.logger
 import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.logger.logger
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -21,12 +21,10 @@ import org.springframework.http.ResponseEntity
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
-//@RunWith(SpringRunner::class)
 @ExtendWith(SpringExtension::class)
 @SpringBootApplication
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = [TestConfiguration::class])
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = [
     "sam.passwords-file=src/integration-test/config/passwords.conf",
     "sam.tokens-file=src/integration-test/config/tokens.conf"])
@@ -45,7 +43,7 @@ class BasicAuthIT {
         val response: ResponseEntity<String> = testRestTemplate.withBasicAuth(
                 IntegrationTestConstants.EXISTING_BASIC_AUTH_USER_NAME,
                 IntegrationTestConstants.EXISTING_BASIC_AUTH_USER_CORRECT_PASSWORD
-            ).getForEntity<String>(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT)
+        ).getForEntity<String>(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT)
 
         // ASSERT
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)

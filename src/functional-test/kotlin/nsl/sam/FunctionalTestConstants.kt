@@ -24,5 +24,4 @@ object FunctionalTestConstants {
     const val TOKEN_AUTH_HEADER_NOT_AUTHORIZED_VALUE = "Bearer 54321"
 
     const val MOCK_MVC_USER_INFO_ENDPOINT = "/user-info"
-
 }

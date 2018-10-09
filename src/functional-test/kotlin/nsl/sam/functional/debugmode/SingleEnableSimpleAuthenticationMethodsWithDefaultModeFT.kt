@@ -5,7 +5,6 @@ import nsl.sam.core.config.EnableWebSecurityInDebugMode
 import nsl.sam.core.config.EnableWebSecurityInDefaultMode
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.assertj.core.api.Assertions as Assertj
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.NoSuchBeanDefinitionException
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.util.ReflectionTestUtils
 import kotlin.test.assertEquals
+import org.assertj.core.api.Assertions as Assertj
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -26,7 +26,6 @@ class SingleEnableSimpleAuthenticationMethodsWithDefaultModeFT {
 
     @Autowired
     lateinit var applicationContext: ConfigurableApplicationContext
-
 
     @Test
     fun enableWebSecurityInDebugModeBeanNotPresentInContext() {
@@ -61,9 +60,7 @@ class SingleEnableSimpleAuthenticationMethodsWithDefaultModeFT {
         Assertj.assertThat(filteredBeanNames).isEmpty()
     }
 
-
     @Configuration
     @EnableSimpleAuthenticationMethods
     class EnableDefaultModeConfiguration
-
 }

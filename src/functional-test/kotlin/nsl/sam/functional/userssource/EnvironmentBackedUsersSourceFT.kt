@@ -6,7 +6,9 @@ import nsl.sam.envvar.SteeredEnvironmentVariablesAccessor
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -102,5 +104,5 @@ class EnvironmentBackedUsersSourceFT {
 
 @Configuration
 @EnableSimpleAuthenticationMethods
-@SimpleBasicAuthentication(usersEnvPrefix="TestAppUsers" )
-class EnvironmentBackedUsersSourceFTConfiguration: FakeControllerConfiguration()
+@SimpleBasicAuthentication(usersEnvPrefix = "TestAppUsers")
+class EnvironmentBackedUsersSourceFTConfiguration : FakeControllerConfiguration()

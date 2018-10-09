@@ -1,6 +1,6 @@
 package nsl.sam.annotation.inject
 
-class ItJokesDispenser: ImaginaryJokesDispenser {
+class ItJokesDispenser : ImaginaryJokesDispenser {
 
     private val jokesList = listOf(
             "Q: What is the biggest lie in the universe? A: I have read and agree to the Terms & Conditions",
@@ -14,6 +14,6 @@ class ItJokesDispenser: ImaginaryJokesDispenser {
     )
 
     override fun getJokes(amount: Int): List<String> {
-        return jokesList.subList(0, amount-1)
+        return jokesList.subList(0, amount - 1)
     }
 }

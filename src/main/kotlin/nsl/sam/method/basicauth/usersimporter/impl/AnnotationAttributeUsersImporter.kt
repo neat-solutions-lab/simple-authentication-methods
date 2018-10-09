@@ -9,7 +9,7 @@ import nsl.sam.method.basicauth.usersimporter.parser.BasicUserLineParser
  * Imports users provided explicitly with `users` attribute of the
  * [nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication] annotation.
  */
-class AnnotationAttributeUsersImporter(val attributes: EnableAnnotationAttributes): UsersImporter {
+class AnnotationAttributeUsersImporter(val attributes: EnableAnnotationAttributes) : UsersImporter {
 
     private var currentIndex = 0
     private var usersArray: Array<String>

@@ -6,19 +6,21 @@ import javax.annotation.PostConstruct
 
 class LocalTokensSource {
 
-    companion object { val log by logger() }
+    companion object {
+        val log by logger()
+    }
 
     @Value("\${sam.tokens-file:}")
     lateinit var tokensFilePath: String
 
-    val tokensMap:MutableMap<String, LocalToken> = mutableMapOf()
+    val tokensMap: MutableMap<String, LocalToken> = mutableMapOf()
 
-    fun get(tokenAsString:String) : LocalToken? {
+    fun get(tokenAsString: String): LocalToken? {
         return tokensMap.get(tokenAsString)
     }
 
     @PostConstruct
-    fun init() {
+    fun initialize() {
         if (tokensFilePath.isNotBlank()) importTokensFromFile()
     } // init()
 
@@ -27,7 +29,7 @@ class LocalTokensSource {
 
             log.debug("Importing tokens from file")
 
-            for(token in tokensImporter) {
+            for (token in tokensImporter) {
                 log.debug("Token from parser: ${token}")
                 tokensMap.put(token.tokenValue, token)
             }

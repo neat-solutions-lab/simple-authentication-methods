@@ -19,7 +19,7 @@ class SimpleBasicAuthenticationAttributes private constructor(
         fun default() = SimpleBasicAuthenticationAttributes()
     }
 
-    private constructor (builder: Builder):this(
+    private constructor (builder: Builder) : this(
             builder.passwordFilePathProperty, builder.passwordFilePath,
             builder.users, builder.usersEnvPrefix, builder.authenticationEntryPointFactory
     )
@@ -44,7 +44,7 @@ class SimpleBasicAuthenticationAttributes private constructor(
         fun passwordFilePath(value: String) =
                 apply { this.passwordFilePath = value }
 
-        fun users(value: Array<String>) = apply { this.users = value}
+        fun users(value: Array<String>) = apply { this.users = value }
 
         fun usersEnvPrefix(value: String) =
                 apply { this.usersEnvPrefix = value }

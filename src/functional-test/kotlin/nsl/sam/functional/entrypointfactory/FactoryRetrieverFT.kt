@@ -15,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.*
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Import
+import org.springframework.context.annotation.ImportBeanDefinitionRegistrar
 import org.springframework.core.env.Environment
 import org.springframework.core.type.AnnotationMetadata
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -24,7 +27,7 @@ import org.springframework.test.util.ReflectionTestUtils
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = [FactoryRetrievalTestConfiguration::class])
 @AutoConfigureMockMvc(secure = false)
-class FactoryRetrieverFT{
+class FactoryRetrieverFT {
 
     companion object {
         var importingClassMetadata: AnnotationMetadata? = null
@@ -97,7 +100,7 @@ class FactoryRetrieverFT{
     }
 }
 
-class TestingFactoryRetrievalImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar {
+class TestingFactoryRetrievalImportBeanDefinitionRegistrar : ImportBeanDefinitionRegistrar {
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
         FactoryRetrieverFT.importingClassMetadata = importingClassMetadata
     }

@@ -1,13 +1,12 @@
 package nsl.sam.core.config
 
-import nsl.sam.annotation.AnnotationMetadataResolver
 import nsl.sam.configurer.ConfigurersFactories
-import nsl.sam.instrumentation.InstrumentedClassProvider
-import nsl.sam.logger.logger
-import nsl.sam.core.annotation.*
+import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.config.ordering.OrderingHelper
 import nsl.sam.core.config.ordering.ReservedNumbersFinder
 import nsl.sam.core.config.sequencer.SimpleSequencer
+import nsl.sam.instrumentation.InstrumentedClassProvider
+import nsl.sam.logger.logger
 import org.springframework.beans.factory.BeanFactory
 import org.springframework.beans.factory.BeanFactoryAware
 import org.springframework.beans.factory.ListableBeanFactory
@@ -40,7 +39,7 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
         //)
         //val value = annotationMetadataResolver.getAttributeValue("debug", Boolean::class)
 
-        val annotationAttributes = EnableAnnotationAttributesExtractor.extrectAttributes(importingClassMetadata)
+        val annotationAttributes = EnableAnnotationAttributesExtractor.extractAttributes(importingClassMetadata)
         log.debug("annotation attributes for ${importingClassMetadata.className}: $annotationAttributes")
 
 //        if(annotationAttributes.methods.contains(AuthenticationMethod.SIMPLE_NO_METHOD)) {
@@ -72,6 +71,7 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
          * bean definition with supplier to provide instance of the above generated class which
          * extends WebSecurityConfigurerAdapter
          */
+        @Suppress("UNCHECKED_CAST")
         val bd = BeanDefinitionBuilder.genericBeanDefinition(dynamicConfigurerClass as Class<WebSecurityConfigurerAdapter>){
             /*
              * supplier logic

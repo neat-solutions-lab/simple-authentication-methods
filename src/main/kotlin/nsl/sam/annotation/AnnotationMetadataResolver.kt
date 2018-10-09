@@ -23,7 +23,7 @@ class AnnotationMetadataResolver private constructor(
         return null != attributes
     }
 
-    fun <T:Any> getAttributeValue(name: String, type: KClass<T>): T? {
+    fun <T : Any> getAttributeValue(name: String, type: KClass<T>): T? {
 
         val attributes = AnnotationAttributes.fromMap(
                 annotationMetadata.getAnnotationAttributes(
@@ -36,11 +36,11 @@ class AnnotationMetadataResolver private constructor(
         return type.cast(attributeValue)
     }
 
-    fun <T:Any> getRequiredAttributeValue(name: String, type: KClass<T>): T {
+    fun <T : Any> getRequiredAttributeValue(name: String, type: KClass<T>): T {
         return getAttributeValue(name, type)!!
     }
 
-    fun <T:Any> getAttributeValueAsArray(name: String, type: KClass<T>): Array<KClass<T>>? {
+    fun <T : Any> getAttributeValueAsArray(name: String, type: KClass<T>): Array<KClass<T>>? {
 
         val attributes = AnnotationAttributes.fromMap(
                 annotationMetadata.getAnnotationAttributes(
@@ -48,21 +48,21 @@ class AnnotationMetadataResolver private constructor(
                 )
         )
 
-        var attributeValue: Array<Class<T>>? = attributes?.get(name) as Array<Class<T>>?
+        @Suppress("UNCHECKED_CAST")
+        val attributeValue: Array<Class<T>>? = attributes?.get(name) as Array<Class<T>>?
         if (attributeValue == null || attributeValue.isEmpty()) {
-            if(null != parent) return parent.getAttributeValueAsArray(name, type)
+            if (null != parent) return parent.getAttributeValueAsArray(name, type)
         }
 
-        val kotlinClasses = attributeValue?.map {it.kotlin}?.toTypedArray()
-        return kotlinClasses
+        return attributeValue?.map { it.kotlin }?.toTypedArray()
     }
 
-    fun <T:Any> getRequiredAttributeValueAsArray(name: String, type: KClass<T>): Array<KClass<T>> {
+    fun <T : Any> getRequiredAttributeValueAsArray(name: String, type: KClass<T>): Array<KClass<T>> {
         return getAttributeValueAsArray(name, type)!!
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    fun <T: KClass<*>> getRequiredAttributeAsKClassArray(name: String, type: T): Array<T> {
+    @Suppress("UNUSED_PARAMETER", "UNCHECKED_CAST")
+    fun <T : KClass<*>> getRequiredAttributeAsKClassArray(name: String, type: T): Array<T> {
 
         val attributes = AnnotationAttributes.fromMap(
                 annotationMetadata.getAnnotationAttributes(
@@ -87,19 +87,19 @@ class AnnotationMetadataResolver private constructor(
 
             var beingBuildObject: AnnotationMetadataResolver? = null
 
-            if(null == annotationTypes) {
+            if (null == annotationTypes) {
                 throw IllegalStateException(
                         "annotationTypes() has to be called before build()"
                 )
             }
 
-            if(null == annotationMetadata) {
+            if (null == annotationMetadata) {
                 throw IllegalStateException(
                         "annotationMetadata() has to be called before build()"
                 )
             }
 
-            for(annotationType in annotationTypes!!) {
+            for (annotationType in annotationTypes!!) {
                 beingBuildObject = AnnotationMetadataResolver(annotationMetadata!!, annotationType, beingBuildObject)
             }
 

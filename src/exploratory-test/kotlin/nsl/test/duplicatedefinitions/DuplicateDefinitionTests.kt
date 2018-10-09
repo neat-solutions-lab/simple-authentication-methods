@@ -18,12 +18,12 @@ class DuplicateDefinitionTests {
 
     @Test
     fun printBeansNames() {
-        appCtx.beanDefinitionNames.forEach (::println)
+        appCtx.beanDefinitionNames.forEach(::println)
     }
 
     @Test
     fun printDynamicBeans() {
-        appCtx.beanDefinitionNames.filter { it == "dynamicBean" }.forEach (::println)
+        appCtx.beanDefinitionNames.filter { it == "dynamicBean" }.forEach(::println)
     }
 
     @Test
@@ -47,5 +47,4 @@ class TestConfiguration {
     fun registryPostprocessor(): BeanDefinitionRegistryPostProcessor {
         return RegistryPostprocessor()
     }
-
 }

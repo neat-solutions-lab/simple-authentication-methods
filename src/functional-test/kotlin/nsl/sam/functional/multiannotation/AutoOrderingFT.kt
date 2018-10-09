@@ -1,9 +1,9 @@
 package nsl.sam.functional.multiannotation
 
 import nsl.sam.FunctionalTestConstants
-import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
 import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -44,6 +44,5 @@ class AutoOrderingFT {
             match = FunctionalTestConstants.ZONE_TWO_MATCH)
     @SimpleBasicAuthentication(passwordsFilePropertyName = "sam.zone-two-passwords")
     class ZoneTwoConfiguration
-
 }
 

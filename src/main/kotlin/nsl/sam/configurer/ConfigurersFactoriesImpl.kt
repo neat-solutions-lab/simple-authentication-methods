@@ -2,7 +2,7 @@ package nsl.sam.configurer
 
 import nsl.sam.core.annotation.AuthenticationMethod
 
-class ConfigurersFactoriesImpl: ConfigurersFactories {
+class ConfigurersFactoriesImpl : ConfigurersFactories {
 
     val factoriesMap: MutableMap<AuthenticationMethod, MutableList<AuthMethodInternalConfigurerFactory>> = mutableMapOf()
 
@@ -17,7 +17,7 @@ class ConfigurersFactoriesImpl: ConfigurersFactories {
     override fun addFactory(factory: AuthMethodInternalConfigurerFactory) {
 
         val authenticationMethod = factory.getSupportedMethod()
-        val listOfFactories = factoriesMap.getOrPut(authenticationMethod) {mutableListOf()}
+        val listOfFactories = factoriesMap.getOrPut(authenticationMethod) { mutableListOf() }
         listOfFactories.add(factory)
 
     }

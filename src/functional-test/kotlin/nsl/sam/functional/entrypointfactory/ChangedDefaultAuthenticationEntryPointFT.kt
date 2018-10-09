@@ -23,7 +23,6 @@ class ChangedDefaultAuthenticationEntryPointFT {
     @Autowired
     private lateinit var mvc: MockMvc
 
-
     @Test
     fun responseFromChangedDefaultAuthenticationEntryPointWhenRequestWithNoCredentialsToProtectedUrl() {
         val response: MockHttpServletResponse = mvc
@@ -37,7 +36,6 @@ class ChangedDefaultAuthenticationEntryPointFT {
         // ASSERT
         Assertions.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
         Assertions.assertThat(response.contentAsString).isEqualTo("Response from ${FirstTestTimeEntryPoint::class.qualifiedName}")
-
     }
 
     @Configuration
@@ -46,6 +44,4 @@ class ChangedDefaultAuthenticationEntryPointFT {
         @Bean
         fun customAuthorizationTestController() = CustomAuthorizationTestController()
     }
-
-
 }

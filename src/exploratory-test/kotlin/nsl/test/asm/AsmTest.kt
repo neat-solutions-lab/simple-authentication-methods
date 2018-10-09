@@ -32,7 +32,6 @@ class AsmTest {
         println("superclass: ${testClass.superclass}")
     }
 
-
     @Test
     fun exampleBasedOnChapterTransformingClassesFromOfficialGuide() {
 
@@ -50,7 +49,5 @@ class AsmTest {
         )
 
         println("testClass: $testClass")
-
     }
-
 }

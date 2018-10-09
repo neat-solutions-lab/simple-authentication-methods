@@ -1,13 +1,11 @@
 package nsl.test.dynamicbean.annotation
 
 import nsl.test.dynamicbean.beans.DynamicBean
+import org.springframework.beans.MutablePropertyValues
 import org.springframework.beans.factory.support.BeanDefinitionBuilder
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar
 import org.springframework.core.type.AnnotationMetadata
-import org.springframework.beans.MutablePropertyValues
-
-
 
 class DynamicBeansRegistar: ImportBeanDefinitionRegistrar {
 
@@ -24,11 +22,8 @@ class DynamicBeansRegistar: ImportBeanDefinitionRegistrar {
 
         val beanDefinitionTwo = BeanDefinitionBuilder.genericBeanDefinition(DynamicBean::class.java).beanDefinition
         beanDefinitionTwo.propertyValues.add("configurationString", "flying bee")
-        //beanDefinitionTwo.
         registry.registerBeanDefinition(
                 "myBeanTwo",
                 beanDefinitionTwo)
-
     }
-
 }

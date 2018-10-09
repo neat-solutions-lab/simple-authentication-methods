@@ -1,9 +1,8 @@
 package nsl.sam.core.config.ordering
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 
 internal class OrderingHelperTest {
 
@@ -18,7 +17,7 @@ internal class OrderingHelperTest {
     @Test
     fun getNextNumber() {
         val orderingManager = OrderingHelper()
-        for(i in 1..100) {
+        for (i in 1..100) {
             orderingManager.getNextNumber()
         }
         val value = orderingManager.getNextNumber()

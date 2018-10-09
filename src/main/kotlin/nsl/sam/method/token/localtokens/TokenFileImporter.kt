@@ -9,27 +9,29 @@ import java.io.FileReader
 
 class TokenFileImporter(val path: String) : Closeable, Iterator<LocalToken> {
 
-    companion object { val log by logger() }
+    companion object {
+        val log by logger()
+    }
 
-    private var currentLine : String? = null
+    private var currentLine: String? = null
 
-    private val file : File by lazy {
+    private val file: File by lazy {
         log.debug("File initialization")
         File(this.path)
     }
 
-    private val bufferedReader : BufferedReader by lazy {
+    private val bufferedReader: BufferedReader by lazy {
         log.debug("BufferedReader initialization")
         BufferedReader(FileReader(this.file))
     }
 
-    override  fun next() : LocalToken {
+    override fun next(): LocalToken {
 
-        log.debug("next(); currentLine: ${currentLine?.let { it.takeIf{it.length>2}?.substring(0, 2) }}")
+        log.debug("next(); currentLine: ${currentLine?.let { it.takeIf { it.length > 2 }?.substring(0, 2) }}")
 
         if (currentLine == null) throw IllegalStateException("next() method used on null currentLine")
 
-        val lineParts: List<String>  = currentLine!!.trim().split(Regex("\\s+"))
+        val lineParts: List<String> = currentLine!!.trim().split(Regex("\\s+"))
         if (lineParts.size < 2) throw RuntimeException("Wrong format of tokens file.")
 
         log.debug("lineParts size: ${lineParts.size}")
@@ -37,8 +39,7 @@ class TokenFileImporter(val path: String) : Closeable, Iterator<LocalToken> {
         val tokenValue = lineParts[0]
         val userName = lineParts[1]
 
-        //val roles = if (lineParts.size > 2) lineParts.subList(2, lineParts.lastIndex+1) else listOf("USER")
-        val roles = if (lineParts.size > 2) lineParts.subList(2, lineParts.lastIndex+1) else emptyList()
+        val roles = if (lineParts.size > 2) lineParts.subList(2, lineParts.lastIndex + 1) else emptyList()
 
         return LocalToken(tokenValue, UserAndRoles(userName, roles.map { "ROLE_${it}" }.toTypedArray()))
     }
@@ -47,11 +48,11 @@ class TokenFileImporter(val path: String) : Closeable, Iterator<LocalToken> {
 
         log.debug("hasNext()")
 
-        var line : String?
+        var line: String?
 
         do {
             line = bufferedReader.readLine()
-        } while(line != null && line.trim().startsWith("#"))
+        } while (line != null && line.trim().startsWith("#"))
 
         if (line == null) {
             bufferedReader.close()
@@ -63,9 +64,7 @@ class TokenFileImporter(val path: String) : Closeable, Iterator<LocalToken> {
         return true
     }
 
-
     override fun close() {
         bufferedReader.close()
     }
-
 }

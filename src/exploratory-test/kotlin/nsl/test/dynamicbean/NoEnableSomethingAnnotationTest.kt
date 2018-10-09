@@ -18,7 +18,7 @@ class NoEnableSomethingAnnotationTest {
     @Test
     fun printBeanDefinitions() {
         println("List of registered bean definitions:")
-        appCtx.beanDefinitionNames.forEach (::println)
+        appCtx.beanDefinitionNames.forEach(::println)
 
         println("\nNumber of bean definitions: ${appCtx.beanDefinitionCount}")
     }

@@ -1,7 +1,7 @@
 package nsl.sam.method.basicauth
 
-import nsl.sam.logger.logger
 import nsl.sam.configurer.AuthMethodInternalConfigurer
+import nsl.sam.logger.logger
 import nsl.sam.method.basicauth.userdetails.AvailabilityAwareUserDetailsService
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -12,10 +12,12 @@ class BasicAuthMethodInternalConfigurer(
         private val simpleAuthenticationEntryPoint: AuthenticationEntryPoint)
     : AuthMethodInternalConfigurer {
 
-    companion object { val log by logger() }
+    companion object {
+        val log by logger()
+    }
 
-    override fun configure(authBuilder: AuthenticationManagerBuilder) {
-        authBuilder.userDetailsService(localUsersDetailsService)
+    override fun configure(auth: AuthenticationManagerBuilder) {
+        auth.userDetailsService(localUsersDetailsService)
     }
 
     override fun hasItems(): Boolean {

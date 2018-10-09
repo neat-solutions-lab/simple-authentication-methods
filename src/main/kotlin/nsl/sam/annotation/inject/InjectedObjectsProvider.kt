@@ -6,7 +6,7 @@ import org.springframework.core.type.AnnotationMetadata
 import org.springframework.util.Assert
 import kotlin.reflect.KClass
 
-class InjectedObjectsProvider<T:Any> private constructor(
+class InjectedObjectsProvider<T : Any> private constructor(
         private val attributeName: String,
         private val defaultFactoryPropertyName: String,
         private val involvedAnnotationTypes: List<KClass<out Annotation>>,
@@ -26,7 +26,7 @@ class InjectedObjectsProvider<T:Any> private constructor(
         return FactoryRetriever.getFactory(
                 factoryType,
                 attributeName,
-                annotationMetadataResolver!!,
+                annotationMetadataResolver,
                 environment,
                 defaultFactoryPropertyName,
                 defaultFactory
@@ -38,7 +38,7 @@ class InjectedObjectsProvider<T:Any> private constructor(
         return factory.create()
     }
 
-    class Builder<T:Any>(private val factoryType: KClass<out Factory<T>>) {
+    class Builder<T : Any>(private val factoryType: KClass<out Factory<T>>) {
         private var attributeName: String = ""
         private var defaultFactoryPropertyName: String = ""
         private var involvedAnnotationTypes: List<KClass<out Annotation>> = emptyList()
@@ -61,7 +61,7 @@ class InjectedObjectsProvider<T:Any> private constructor(
             Assert.notEmpty(involvedAnnotationTypes, "involvedAnnotationTypes has to be defined before build() is called")
             Assert.notNull(annotationMetadata, "annotationMetadata has to be defined before build() is called")
 
-            return InjectedObjectsProvider<T>(
+            return InjectedObjectsProvider(
                     attributeName,
                     defaultFactoryPropertyName,
                     involvedAnnotationTypes,
@@ -72,5 +72,4 @@ class InjectedObjectsProvider<T:Any> private constructor(
             )
         }
     }
-
 }

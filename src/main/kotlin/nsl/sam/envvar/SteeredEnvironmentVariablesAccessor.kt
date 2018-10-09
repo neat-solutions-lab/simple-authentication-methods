@@ -4,8 +4,7 @@ import java.util.function.Supplier
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
-class SteeredEnvironmentVariablesAccessor: EnvironmentVariablesAccessor {
-
+class SteeredEnvironmentVariablesAccessor : EnvironmentVariablesAccessor {
 
     companion object {
         const val SUPPLIER_PROPERTY_NAME = "nsl.sam.env-vars-supplier"
@@ -13,7 +12,7 @@ class SteeredEnvironmentVariablesAccessor: EnvironmentVariablesAccessor {
 
     override fun getVarsMap(): Map<String, String> {
         val supplierFqName = System.getProperty(SUPPLIER_PROPERTY_NAME)
-        return if(null == supplierFqName) {
+        return if (null == supplierFqName) {
             getVarsMapFromSystem()
         } else {
             getVarsMapFromDynamicSupplier(supplierFqName)
@@ -26,6 +25,7 @@ class SteeredEnvironmentVariablesAccessor: EnvironmentVariablesAccessor {
 
     private fun getVarsMapFromDynamicSupplier(supplierFqName: String): Map<String, String> {
 
+        @Suppress("UNCHECKED_CAST")
         val supplierClass: KClass<Supplier<Map<String, String>>> =
                 Class.forName(supplierFqName).kotlin as KClass<Supplier<Map<String, String>>>
 

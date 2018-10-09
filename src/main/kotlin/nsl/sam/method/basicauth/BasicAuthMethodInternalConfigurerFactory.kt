@@ -1,28 +1,22 @@
 package nsl.sam.method.basicauth
 
-import nsl.sam.annotation.AnnotationMetadataResolver
+import nsl.sam.annotation.inject.InjectedObjectsProvider
 import nsl.sam.configurer.AuthMethodInternalConfigurer
 import nsl.sam.configurer.AuthMethodInternalConfigurerFactory
-import nsl.sam.logger.logger
-import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
-import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributes
-import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
-import nsl.sam.method.basicauth.userdetails.impl.DefaultUserDetailsService
 import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import nsl.sam.core.entrypoint.factory.DefaultAuthenticationEntryPointFactory
-import nsl.sam.annotation.inject.InjectedObjectsProvider
+import nsl.sam.logger.logger
+import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
 import nsl.sam.method.basicauth.userdetails.AvailabilityAwareUserDetailsService
+import nsl.sam.method.basicauth.userdetails.impl.DefaultUserDetailsService
 import nsl.sam.method.basicauth.userssource.UsersSource
-import nsl.sam.method.basicauth.usersimporter.impl.LocalFileUsersImporter
-import nsl.sam.method.basicauth.usersimporter.UsersImporter
 import nsl.sam.method.basicauth.userssource.UsersSourceFactory
 import nsl.sam.method.basicauth.userssource.factory.InMemoryUsersSourceFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
-import org.springframework.core.type.AnnotationMetadata
 import org.springframework.security.web.AuthenticationEntryPoint
 
 class BasicAuthMethodInternalConfigurerFactory(override val name: String) : AuthMethodInternalConfigurerFactory {

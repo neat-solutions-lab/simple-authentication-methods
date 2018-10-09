@@ -19,17 +19,19 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import java.io.Serializable
 
-@SpringBootApplication
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-class SecureApp
-
 fun main(args: Array<String>) {
     SpringApplication.run(SecureApp::class.java, *args)
 }
 
+
+@SpringBootApplication
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+class SecureApp
+
+@Suppress("DEPRECATION")
 @Configuration
 @Order(90)
-class SecurityConfiguration: WebSecurityConfigurerAdapter() {
+class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     @Autowired
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
@@ -99,10 +101,10 @@ class ProtectedController {
 }
 
 @Component
-class CustomPermissionEvaluator:PermissionEvaluator {
+class CustomPermissionEvaluator : PermissionEvaluator {
 
     override fun hasPermission(authentication: Authentication?, targetDomainObject: Any?, permission: Any?): Boolean {
-        if(targetDomainObject == "public")
+        if (targetDomainObject == "public")
             return true
         return false
     }

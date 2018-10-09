@@ -1,7 +1,7 @@
 package nsl.sam.method.basicauth.userdetails
 
 import nsl.sam.method.basicauth.usersimporter.impl.LocalFileUsersImporter
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 
@@ -12,7 +12,7 @@ internal class LocalFileUsersImporterTest {
         val importer = LocalFileUsersImporter("src/test/config/passwords-one-user.conf")
         importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
-        for((user, password, roles) in importer) {
+        for ((user, password, roles) in importer) {
             resultAccumulator.add(Triple(user, password, roles))
             println("User details read from file: user: $user, password: $password, roles: $roles")
         }
@@ -24,7 +24,7 @@ internal class LocalFileUsersImporterTest {
         val importer = LocalFileUsersImporter("src/test/config/passwords-one-user-with-empty-line-at-top.conf")
         importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
-        for((user, password, roles) in importer) {
+        for ((user, password, roles) in importer) {
             resultAccumulator.add(Triple(user, password, roles))
             println("User details read from file: user: $user, password: $password, roles: $roles")
         }
@@ -36,7 +36,7 @@ internal class LocalFileUsersImporterTest {
         val importer = LocalFileUsersImporter("src/test/config/passwords-one-user-with-empty-line-at-bottom.conf")
         importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
-        for((user, password, roles) in importer) {
+        for ((user, password, roles) in importer) {
             resultAccumulator.add(Triple(user, password, roles))
             println("User details read from file: user: $user, password: $password, roles: $roles")
         }
@@ -48,7 +48,7 @@ internal class LocalFileUsersImporterTest {
         val importer = LocalFileUsersImporter("src/test/config/passwords-empty.conf")
         importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
-        for((user, password, roles) in importer) {
+        for ((user, password, roles) in importer) {
             resultAccumulator.add(Triple(user, password, roles))
             println("User details read from file: user: $user, password: $password, roles: $roles")
         }
@@ -60,7 +60,7 @@ internal class LocalFileUsersImporterTest {
         val importer = LocalFileUsersImporter("src/test/config/passwords-comments-and-blank-lines.conf")
         importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
-        for((user, password, roles) in importer) {
+        for ((user, password, roles) in importer) {
             resultAccumulator.add(Triple(user, password, roles))
             println("User details read from file: user: $user, password: $password, roles: $roles")
         }
@@ -72,7 +72,7 @@ internal class LocalFileUsersImporterTest {
         val importer = LocalFileUsersImporter("src/test/config/passwords-mixed.conf")
         importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
-        for((user, password, roles) in importer) {
+        for ((user, password, roles) in importer) {
             resultAccumulator.add(Triple(user, password, roles))
             println("User details read from file: user: $user, password: $password, roles: $roles")
         }

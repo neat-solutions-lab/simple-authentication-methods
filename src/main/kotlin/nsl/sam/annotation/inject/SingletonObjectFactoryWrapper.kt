@@ -1,6 +1,6 @@
 package nsl.sam.annotation.inject
 
-class SingletonObjectFactoryWrapper<T>(private val wrappedFactory: Factory<T>): Factory<T> {
+class SingletonObjectFactoryWrapper<T>(private val wrappedFactory: Factory<T>) : Factory<T> {
 
     private var createdInstance: T? = null
 

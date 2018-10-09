@@ -14,5 +14,5 @@ interface TokenToUserMapper {
      * @throws javax.naming.AuthenticationException  Exception being thrown when given [token] doesn't map
      *         to any existing user.
      */
-    fun mapToUser(token:String): UserAndRoles
+    fun mapToUser(token: String): UserAndRoles
 }

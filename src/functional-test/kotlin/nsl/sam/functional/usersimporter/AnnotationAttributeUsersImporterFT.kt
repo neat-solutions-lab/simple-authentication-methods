@@ -32,14 +32,14 @@ class AnnotationAttributeUsersImporterFT {
 
     @Test
     fun annotationAttributeUsersImporterPicksUpUsersFromAnnotationAttribute() {
-        val enableAnnotationAttributes = EnableAnnotationAttributesExtractor.extrectAttributes(importingClassMetadata!!)
+        val enableAnnotationAttributes = EnableAnnotationAttributesExtractor.extractAttributes(importingClassMetadata!!)
         val annotationAttributeUsersImporter = AnnotationAttributeUsersImporter(enableAnnotationAttributes)
 
         val resultTriples = mutableListOf<Triple<String, String, Array<String>>>()
 
         annotationAttributeUsersImporter.reset()
         annotationAttributeUsersImporter.use { importer ->
-            for(triple in importer) {
+            for (triple in importer) {
                 resultTriples.add(triple)
             }
         }
@@ -54,7 +54,7 @@ class AnnotationAttributeUsersImporterFT {
     }
 }
 
-class AnnotationMetadataCatcher: ImportBeanDefinitionRegistrar {
+class AnnotationMetadataCatcher : ImportBeanDefinitionRegistrar {
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
         AnnotationAttributeUsersImporterFT.importingClassMetadata = importingClassMetadata
     }
@@ -62,7 +62,7 @@ class AnnotationMetadataCatcher: ImportBeanDefinitionRegistrar {
 
 @Configuration
 @EnableSimpleAuthenticationMethods
-@SimpleBasicAuthentication(users=
+@SimpleBasicAuthentication(users =
 [
     "hardcoded-user1:{noop}test USER ADMIN",
     "hardcoded-user2:{noop}test USER ADMIN"

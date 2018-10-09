@@ -17,8 +17,7 @@ class LocalFileTokensToUserMapper : TokenToUserMapper {
     lateinit var localTokensSource: LocalTokensSource
 
     override fun mapToUser(token: String): UserAndRoles {
-        val localToken : LocalToken = localTokensSource.get(token)
-                //?: throw AuthenticationException("No token ${token} in local file")
+        val localToken: LocalToken = localTokensSource.get(token)
                 ?: throw BadCredentialsException("No token ${token} in local file")
         return localToken.userAndRole
     }

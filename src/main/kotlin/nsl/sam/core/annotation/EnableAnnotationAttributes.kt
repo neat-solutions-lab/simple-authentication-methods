@@ -6,7 +6,7 @@ import org.springframework.util.Assert
 /**
  * Represents attributes of [@EnableSimpleAuthentication] methods annotation
  */
-class EnableAnnotationAttributes private constructor (
+class EnableAnnotationAttributes private constructor(
         val enableAnnotationMetadata: AnnotationMetadata,
         val methods: Array<AuthenticationMethod>,
         val match: String,
@@ -26,10 +26,10 @@ class EnableAnnotationAttributes private constructor (
         var authorizations = ""
 
         fun enableAnnotationMetadata(enableAnnotationMetadata: AnnotationMetadata) =
-                apply {this.enableAnnotationMetadata = enableAnnotationMetadata}
+                apply { this.enableAnnotationMetadata = enableAnnotationMetadata }
 
         fun methods(methods: Array<AuthenticationMethod>) =
-                apply { this.methods = methods}
+                apply { this.methods = methods }
 
         fun match(match: String) =
                 apply { this.match = match }
@@ -46,12 +46,12 @@ class EnableAnnotationAttributes private constructor (
         fun authorizations(authorizations: String) =
                 apply { this.authorizations = authorizations }
 
-        fun build():EnableAnnotationAttributes {
+        fun build(): EnableAnnotationAttributes {
             Assert.notNull(this.enableAnnotationMetadata, "enableAnnotationMetadata cannot be null")
             return EnableAnnotationAttributes(
-                this.enableAnnotationMetadata!!,
-                this.methods, this.match, this.debug, this.order, this.anonymousFallback,
-                this.authorizations)
+                    this.enableAnnotationMetadata!!,
+                    this.methods, this.match, this.debug, this.order, this.anonymousFallback,
+                    this.authorizations)
         }
     }
 }

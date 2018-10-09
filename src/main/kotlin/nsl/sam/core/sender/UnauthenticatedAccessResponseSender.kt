@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 import javax.servlet.http.HttpServletResponse
 
-class UnauthenticatedAccessResponseSender: ResponseSender {
+class UnauthenticatedAccessResponseSender : ResponseSender {
 
     private val objectMapper: ObjectMapper = Jackson2ObjectMapperBuilder.json().build()
 

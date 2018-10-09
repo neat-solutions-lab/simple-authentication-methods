@@ -10,8 +10,7 @@
 
     <name>simple-authentication-methods</name>
     <description>
-        Spring Security 5 based, simple implementation of authentication methods.
-        It is implemented in Kotlin (1.2.51), but usage form Java language is straightforward.
+        Spring Security 5 based, simple implementation of basic authentication methods.
     </description>
     <url>https://github.com/neat-solutions-lab/simple-authentication-methods</url>
 
@@ -64,10 +63,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>core-boot-starter-cache</artifactId>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -92,7 +87,6 @@
             <artifactId>spring-context</artifactId>
             <version>${springframework.version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
@@ -108,12 +102,6 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${springframework.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework</groupId>-->
-            <!--<artifactId>core-test</artifactId>-->
-            <!--<version>${springframework.version}</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>

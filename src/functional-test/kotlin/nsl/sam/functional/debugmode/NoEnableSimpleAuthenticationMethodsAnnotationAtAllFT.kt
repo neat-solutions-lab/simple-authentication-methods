@@ -20,7 +20,6 @@ class NoEnableSimpleAuthenticationMethodsAnnotationAtAllFT {
     @Autowired
     lateinit var applicationContext: ApplicationContext
 
-
     //TODO: After introduction of instrumentation configurators this test shuld pass
     @Disabled
     @Test
@@ -29,8 +28,6 @@ class NoEnableSimpleAuthenticationMethodsAnnotationAtAllFT {
         Assertions.assertThat(beanNames).isEmpty()
     }
 
-
     @Configuration
     class EmptyConfiguration
-
 }

@@ -6,6 +6,6 @@ interface ConfigurersFactories {
 
     fun addFactory(factory: AuthMethodInternalConfigurerFactory)
     fun getFactoryForMethod(authenticationMethod: AuthenticationMethod): AuthMethodInternalConfigurerFactory?
-    fun getAllFactories():Collection<AuthMethodInternalConfigurerFactory>
+    fun getAllFactories(): Collection<AuthMethodInternalConfigurerFactory>
 
 }

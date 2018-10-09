@@ -6,7 +6,7 @@ import org.springframework.core.type.AnnotationMetadata
 
 object EnableAnnotationAttributesExtractor {
 
-    fun extrectAttributes(importingClassMetadata: AnnotationMetadata): EnableAnnotationAttributes {
+    fun extractAttributes(importingClassMetadata: AnnotationMetadata): EnableAnnotationAttributes {
         val annotationResolver = AnnotationMetadataResolver.Builder()
                 .annotationMetadata(importingClassMetadata)
                 .annotationTypes(EnableSimpleAuthenticationMethods::class)
@@ -33,13 +33,13 @@ object EnableAnnotationAttributesExtractor {
                 .build()
     }
 
-    private fun calculateOrderValue(annotationResolver: AnnotationMetadataResolver):Int {
+    private fun calculateOrderValue(annotationResolver: AnnotationMetadataResolver): Int {
         val value = annotationResolver.getRequiredAttributeValue(
                 ENABLE_ANNOTATION_ORDER_ATTRIBUTE_NAME,
                 Int::class
         )
 
-        return when(value == -1) {
+        return when (value == -1) {
             true -> OrderingHelper.getSingleton().getNextNumber()
             else -> value
         }
