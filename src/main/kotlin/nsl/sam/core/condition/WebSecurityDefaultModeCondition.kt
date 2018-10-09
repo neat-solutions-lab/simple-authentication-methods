@@ -1,16 +1,16 @@
 package nsl.sam.core.condition
 
-import nsl.sam.logger.logger
 import nsl.sam.annotation.AnnotationAttributeDefinition
 import nsl.sam.annotation.AnnotationProcessor
 import nsl.sam.annotation.AnnotationProcessorContext
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.logger.logger
 import org.springframework.context.annotation.Condition
 import org.springframework.context.annotation.ConditionContext
 import org.springframework.core.type.AnnotatedTypeMetadata
 import org.springframework.util.Assert
 
-class WebSecurityDefaultModeCondition: Condition {
+class WebSecurityDefaultModeCondition : Condition {
 
     companion object {
         val log by logger()

@@ -24,7 +24,7 @@ class MultiEnabledAnnotationFT {
     @Test
     fun twoBeansAnnotatedWithEnableSimpleAuthenticationMethods() {
         val beanTypes = applicationContext.getBeanNamesForAnnotation(
-                        EnableSimpleAuthenticationMethods::class.java).map {
+                EnableSimpleAuthenticationMethods::class.java).map {
             ClassUtils.getUserClass(applicationContext.getType(it!!)!!)
         }
         assertThat(beanTypes).containsExactlyInAnyOrder(

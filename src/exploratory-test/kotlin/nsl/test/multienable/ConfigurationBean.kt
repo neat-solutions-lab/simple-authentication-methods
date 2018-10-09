@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration
 class ConfigurationBean {
 
     @Bean
-    fun anyBean():String {
+    fun anyBean(): String {
         return "any string"
     }
 

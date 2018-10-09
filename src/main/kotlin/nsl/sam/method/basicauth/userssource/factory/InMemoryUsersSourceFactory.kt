@@ -14,7 +14,7 @@ import org.springframework.core.env.Environment
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
-class InMemoryUsersSourceFactory: UsersSourceFactory {
+class InMemoryUsersSourceFactory : UsersSourceFactory {
 
     companion object {
         val log by logger()
@@ -38,7 +38,7 @@ class InMemoryUsersSourceFactory: UsersSourceFactory {
         factoriesClassesArray.forEach {
             val factory = it.createInstance()
             val usersImporter = factory.create(attributes, environment)
-            if(usersImporter.hasItems()) {
+            if (usersImporter.hasItems()) {
                 log.info("Selected UsersImporter is $usersImporter")
                 return usersImporter
             }

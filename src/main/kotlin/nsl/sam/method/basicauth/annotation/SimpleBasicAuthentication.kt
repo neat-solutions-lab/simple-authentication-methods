@@ -4,7 +4,7 @@ import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import kotlin.reflect.KClass
 
 @Target(AnnotationTarget.CLASS)
-annotation class SimpleBasicAuthentication (
+annotation class SimpleBasicAuthentication(
         val passwordsFilePropertyName: String = "",
         val passwordsFilePath: String = "",
         val users: Array<String> = [],

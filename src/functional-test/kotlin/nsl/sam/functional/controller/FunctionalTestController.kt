@@ -2,10 +2,9 @@ package nsl.sam.functional.controller
 
 import nsl.sam.FunctionalTestConstants
 import nsl.sam.FunctionalTestConstants.FAKE_CONTROLLER_RESPONSE_BODY
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
-import java.security.Principal
-import org.springframework.security.core.context.SecurityContextHolder
 
 @RestController
 class FunctionalTestController {

@@ -1,16 +1,14 @@
 package nsl.sam.functional.basicauth
 
 import nsl.sam.FunctionalTestConstants
+import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
-import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
-import org.assertj.core.api.Assertions as Assertj
 import org.hamcrest.Matchers.equalTo
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-//import org.junit.rules.ExpectedException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -29,6 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import org.assertj.core.api.Assertions as Assertj
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -173,5 +172,4 @@ class DefaultConfBasicAuthFT {
     @Configuration
     @EnableSimpleAuthenticationMethods
     class TestConfiguration : FakeControllerConfiguration()
-
 }

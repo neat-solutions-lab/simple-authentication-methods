@@ -3,10 +3,10 @@ package nsl.test.asm
 import nsl.sam.instrumentation.InstrumentedClassLoader
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
+import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.commons.ClassRemapper
 import org.objectweb.asm.commons.SimpleRemapper
-import org.objectweb.asm.ClassReader
 
 @Tag("exploratory")
 class ClassRemapperTest {
@@ -34,5 +34,4 @@ class ClassRemapperTest {
         val castedObj = changedObj as DummyInterface
         castedObj.dummyFunction()
     }
-
 }

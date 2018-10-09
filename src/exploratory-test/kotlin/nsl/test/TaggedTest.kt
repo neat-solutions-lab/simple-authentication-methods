@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test
 @Tag("exploratory")
 class TaggedTest {
 
-
     @Test
     fun test() {
         println("Someone has called me.")

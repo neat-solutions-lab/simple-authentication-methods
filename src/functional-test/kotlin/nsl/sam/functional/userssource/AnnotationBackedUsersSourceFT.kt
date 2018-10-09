@@ -3,7 +3,6 @@ package nsl.sam.functional.userssource
 import nsl.sam.FunctionalTestConstants
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.configuration.FakeControllerConfiguration
-import nsl.sam.functional.controller.CustomAuthorizationTestController
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
@@ -105,9 +104,9 @@ class AnnotationBackedUsersSourceFT {
 
 @Configuration
 @EnableSimpleAuthenticationMethods
-@SimpleBasicAuthentication(users=
+@SimpleBasicAuthentication(users =
 [
     "hardcoded-user1:{noop}test USER ADMIN",
     "hardcoded-user2:{noop}test USER ADMIN"
 ])
-class AnnotationBasedUsersSourceFTConfiguration: FakeControllerConfiguration()
+class AnnotationBasedUsersSourceFTConfiguration : FakeControllerConfiguration()

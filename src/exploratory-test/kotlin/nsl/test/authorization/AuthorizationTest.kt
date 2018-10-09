@@ -19,13 +19,12 @@ class AuthorizationTest {
     @Autowired
     lateinit var webApplicationContext: WebApplicationContext
 
-
     @Test
     fun test() {
         try {
             webApplicationContext.getBean("roleVoter")
             println("roleVoter FOUND")
-        } catch (e:Exception) {
+        } catch (e: Exception) {
             println("roleVoter NOT FOUND")
         }
 
@@ -33,10 +32,9 @@ class AuthorizationTest {
         try {
             webApplicationContext.getBean(RoleVoter::class.java)
             println("${RoleVoter::class.qualifiedName} FOUND")
-        } catch (e:Exception){
+        } catch (e: Exception) {
             println("${RoleVoter::class.qualifiedName} NOT FOUND")
         }
-
 
 
     }
@@ -44,7 +42,7 @@ class AuthorizationTest {
 }
 
 @Configuration
-class Configurator: WebSecurityConfigurerAdapter() {
+class Configurator : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests().anyRequest().permitAll()

@@ -1,10 +1,10 @@
 package nsl.sam.integration.token
 
 import nsl.sam.IntegrationTestConstants
-import nsl.sam.integration.basicauth.IntegrationTestController
-import nsl.sam.logger.logger
 import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.integration.basicauth.IntegrationTestController
+import nsl.sam.logger.logger
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

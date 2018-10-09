@@ -1,4 +1,3 @@
 package nsl.sam.functional.basicauth
 
-class OnlyCommentsInPasswordFileFT {
-}
+class OnlyCommentsInPasswordFileFT

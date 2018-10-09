@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.Authentication
@@ -21,21 +20,19 @@ import javax.servlet.http.HttpServletRequest
 
 @SpringBootApplication
 @EnableWebSecurity(debug = true)
-class BasicAuthExample {
-}
+class BasicAuthExample
 
 fun main(args: Array<String>) {
 
     SpringApplication.run(BasicAuthExample::class.java, *args)
-
 }
 
 @Configuration
-class SecurityConfigurer: WebSecurityConfigurerAdapter() {
+class SecurityConfigurer : WebSecurityConfigurerAdapter() {
 
     @Bean
     @Suppress("DEPRECATION")
-    fun users():UserDetailsService {
+    fun users(): UserDetailsService {
         val users = User.withDefaultPasswordEncoder()
         val manager = InMemoryUserDetailsManager()
         manager.createUser(users.username("user").password("user").roles("USER").build())
@@ -52,14 +49,9 @@ class SecurityConfigurer: WebSecurityConfigurerAdapter() {
                 .antMatchers("/protected/role-user/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/protected/role-admin/**").hasRole("ADMIN")
                 .anyRequest().denyAll()
-                    .and()
+                .and()
                 .httpBasic()
     }
-
-    override fun configure(web: WebSecurity) {
-        super.configure(web)
-    }
-
 }
 
 @RestController
@@ -90,8 +82,6 @@ class ProtectedController {
                 "PARAM_AUTHENTICATION: $authentication\n" +
                 "CONTEXT_AUTHENTICATION:${SecurityContextHolder.getContext().authentication}"
     }
-
-
 }
 
 @RestController
@@ -99,7 +89,5 @@ class ExampleController {
 
     @GetMapping(path = ["/open"])
     fun open() = "EXAMPLE CONTROLLER RESPONSE FROM /open"
-
-
 }
 

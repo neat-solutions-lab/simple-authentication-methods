@@ -5,7 +5,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import javax.servlet.http.HttpServletRequest
 
-data class UnauthenticatedResponseDto private constructor (
+data class UnauthenticatedResponseDto private constructor(
         val success: Boolean,
         val method: String,
         val timestamp: String,
@@ -23,7 +23,7 @@ data class UnauthenticatedResponseDto private constructor (
             private set
 
         var method: String = httpServletRequest.method
-        private set
+            private set
 
         var timestamp: String = DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(ZonedDateTime.now())
             private set
@@ -42,11 +42,11 @@ data class UnauthenticatedResponseDto private constructor (
 
         fun success(success: Boolean) = apply { this.success = success }
         fun status(method: String) = apply { this.method = method }
-        fun timestamp(timestamp: String) = apply{ this.timestamp = timestamp }
-        fun status(status: Int) = apply{ this.status = status }
-        fun error(error: String) = apply{ this.error = error }
-        fun message(message: String) = apply{ this.message = message }
-        fun path(path: String) = apply{ this.path = path }
+        fun timestamp(timestamp: String) = apply { this.timestamp = timestamp }
+        fun status(status: Int) = apply { this.status = status }
+        fun error(error: String) = apply { this.error = error }
+        fun message(message: String) = apply { this.message = message }
+        fun path(path: String) = apply { this.path = path }
 
         fun build() = UnauthenticatedResponseDto(this)
 

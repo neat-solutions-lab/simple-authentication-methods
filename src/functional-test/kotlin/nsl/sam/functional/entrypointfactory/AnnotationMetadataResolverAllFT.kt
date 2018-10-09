@@ -45,7 +45,7 @@ class AnnotationMetadataResolverAllFT {
     }
 }
 
-class TestingAllImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar {
+class TestingAllImportBeanDefinitionRegistrar : ImportBeanDefinitionRegistrar {
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
         AnnotationMetadataResolverAllFT.importingClassMetadata = importingClassMetadata
     }

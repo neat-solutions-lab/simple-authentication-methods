@@ -40,12 +40,8 @@ class BeanDefinitionExaminationTest {
             bigBeanDefinition.attributeNames().forEach {
                 println(it)
             }
-
         }
-
     }
-
-
 }
 
 class SmallBeanOne {
@@ -92,6 +88,5 @@ class TestContextConfiguration {
     fun smallThree(): SmallBeanThree {
         return SmallBeanThree()
     }
-
 
 }

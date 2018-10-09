@@ -11,7 +11,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.context.ApplicationContext
 import kotlin.reflect.full.cast
 
-class RegistryPostprocessor: BeanDefinitionRegistryPostProcessor, BeanFactoryAware {
+class RegistryPostprocessor : BeanDefinitionRegistryPostProcessor, BeanFactoryAware {
 
     lateinit var beanFactoryInstance: BeanFactory
 
@@ -48,6 +48,5 @@ class RegistryPostprocessor: BeanDefinitionRegistryPostProcessor, BeanFactoryAwa
             AnotherDynamicBean("bla")
         }
         registry.registerBeanDefinition("three", beanDefinitionThree.beanDefinition)
-
     }
 }

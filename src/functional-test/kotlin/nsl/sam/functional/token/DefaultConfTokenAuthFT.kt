@@ -1,32 +1,32 @@
 package nsl.sam.functional.token
 
 import nsl.sam.FunctionalTestConstants
+import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
-import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
-import org.assertj.core.api.Assertions as Assertj
+import org.hamcrest.Matchers.equalTo
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.test.context.TestPropertySource
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import org.hamcrest.Matchers.equalTo
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.context.annotation.Configuration
-import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.assertj.core.api.Assertions as Assertj
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -36,7 +36,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
     "sam.tokens-file=src/functional-test/config/tokens.conf"])
 class DefaultConfTokenAuthFT {
 
-    companion object { val log by logger() }
+    companion object {
+        val log by logger()
+    }
 
     @Autowired
     private lateinit var mvc: MockMvc
@@ -101,7 +103,7 @@ class DefaultConfTokenAuthFT {
                         .header(
                                 FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME,
                                 FunctionalTestConstants.TOKEN_AUTH_HEADER_AUTHORIZED_VALUE
-                )
+                        )
         ).andExpect(MockMvcResultMatchers.jsonPath("$.username", equalTo("tester")))
     }
 
@@ -150,6 +152,5 @@ class DefaultConfTokenAuthFT {
 
     @Configuration
     @EnableSimpleAuthenticationMethods
-    class TestConfiguration: FakeControllerConfiguration()
-
+    class TestConfiguration : FakeControllerConfiguration()
 }

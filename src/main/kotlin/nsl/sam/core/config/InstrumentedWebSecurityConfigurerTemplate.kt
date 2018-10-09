@@ -1,15 +1,15 @@
 package nsl.sam.core.config
 
+import nsl.sam.annotation.inject.InjectedObjectsProvider
 import nsl.sam.configurer.AuthMethodInternalConfigurer
 import nsl.sam.configurer.ConfigurersFactories
-import nsl.sam.logger.logger
 import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.config.spel.AuthorizationRulesProcessor
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import nsl.sam.core.entrypoint.factory.DefaultAuthenticationEntryPointFactory
-import nsl.sam.annotation.inject.InjectedObjectsProvider
+import nsl.sam.logger.logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.Ordered
@@ -72,11 +72,11 @@ open class InstrumentedWebSecurityConfigurerTemplate(
          * steps will be delegated
          */
         enableAnnotationAttributes.methods
-                .filter{ it != AuthenticationMethod.SIMPLE_NO_METHOD }
+                .filter { it != AuthenticationMethod.SIMPLE_NO_METHOD }
                 .forEach {
                     val factory = configurersFactories.getFactoryForMethod(it)
-                    Assert.notNull(factory,"There is no AuthMethodInternalConfigurerFactory registered " +
-                        "for ${it.name} authorization method")
+                    Assert.notNull(factory, "There is no AuthMethodInternalConfigurerFactory registered " +
+                            "for ${it.name} authorization method")
                     this.authMethodInternalConfigurers.add(factory!!.create(enableAnnotationAttributes))
                 }
     }
@@ -88,13 +88,13 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
     override fun configure(http: HttpSecurity) {
 
-        if(this.enableAnnotationAttributes.match != "") {
+        if (this.enableAnnotationAttributes.match != "") {
             log.info("Configuring security for path: ${this.enableAnnotationAttributes.match}")
             http.antMatcher(this.enableAnnotationAttributes.match)
         }
 
         log.info("${this::class.simpleName} configuration entry point called [configure(HttpSecurity)].")
-        if(areActivationConditionsMet()) {
+        if (areActivationConditionsMet()) {
             log.info("Enabling authorization mechanisms")
             activateAuthenticationMechanisms(http)
         } else {
@@ -106,7 +106,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
     }
 
     override fun configure(authBuilder: AuthenticationManagerBuilder) {
-        for(registar in this.authMethodInternalConfigurers) {
+        for (registar in this.authMethodInternalConfigurers) {
             registar.configure(authBuilder)
         }
     }
@@ -124,7 +124,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
          * on localhost interface fallback to mode in which anonymous access
          * is allowed to all resources
          */
-        if(areLocalAnonymousAccessConditionsMet()) return false
+        if (areLocalAnonymousAccessConditionsMet()) return false
 
 
         /*
@@ -145,7 +145,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
      * checks if the server listens only on localhost/127.0.0.1
      */
     private fun isItOnlyLocalService(): Boolean {
-        if(this.serverAddressAttr in arrayOf("localhost", "127.0.0.1")) return true
+        if (this.serverAddressAttr in arrayOf("localhost", "127.0.0.1")) return true
         return false
     }
 
@@ -157,13 +157,13 @@ open class InstrumentedWebSecurityConfigurerTemplate(
         return this.anonymousFallbackAttr
     }
 
-    private fun isAtLeastOneAuthMechanismAvailable() : Boolean {
+    private fun isAtLeastOneAuthMechanismAvailable(): Boolean {
         authMethodInternalConfigurers.asSequence().find {
             log.info("Checking if authorization method ${it.methodName()} is available.")
             val isAvailable = it.hasItems()
             log.info("Check result for authorization method ${it.methodName()}: $isAvailable")
             isAvailable
-        }?.let{
+        }?.let {
             return true
         }
         return false

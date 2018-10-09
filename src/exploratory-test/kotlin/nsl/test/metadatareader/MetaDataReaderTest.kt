@@ -3,12 +3,11 @@ package nsl.test.metadatareader
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.springframework.context.annotation.Configuration
-import org.springframework.core.type.classreading.SimpleMetadataReaderFactory
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig
 
 @Tag("exploratory")
 @SpringJUnitConfig(classes =
-    [TestConfigurationOne::class, TestConfigurationTwo::class, TestConfigurationThree::class])
+[TestConfigurationOne::class, TestConfigurationTwo::class, TestConfigurationThree::class])
 class MetaDataReaderTest {
 
     @Test
@@ -20,7 +19,6 @@ class MetaDataReaderTest {
     }
 
 }
-
 
 @Configuration
 @EnableNothing

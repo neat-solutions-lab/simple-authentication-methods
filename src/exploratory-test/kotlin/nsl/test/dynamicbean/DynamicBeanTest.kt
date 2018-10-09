@@ -20,19 +20,18 @@ class DynamicBeanTest {
     @Test
     fun printBeanDefinitions() {
         println("List of registered bean definitions:")
-        appCtx.beanDefinitionNames.forEach (::println)
+        appCtx.beanDefinitionNames.forEach(::println)
 
         println("\nNumber of bean definitions: ${appCtx.beanDefinitionCount}")
     }
 
     @Test
     fun gelAllBeansOfTypeDynamicBean() {
-        val beansMap =appCtx.getBeansOfType(DynamicBean::class.java)
-        for( (name, bean) in beansMap) {
+        val beansMap = appCtx.getBeansOfType(DynamicBean::class.java)
+        for ((name, bean) in beansMap) {
             println("Bean of name $name: $bean, configurationString: ${DynamicBean::class.cast(bean).configurationString}")
         }
     }
-
 }
 
 @Configuration

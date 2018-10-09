@@ -45,7 +45,7 @@ class AnnotationMetadataResolverDuplicateFT {
     }
 }
 
-class TestingDuplicateImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar {
+class TestingDuplicateImportBeanDefinitionRegistrar : ImportBeanDefinitionRegistrar {
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
         AnnotationMetadataResolverDuplicateFT.importingClassMetadata = importingClassMetadata
     }

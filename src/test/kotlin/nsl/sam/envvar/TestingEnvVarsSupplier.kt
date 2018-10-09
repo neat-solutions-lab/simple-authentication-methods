@@ -2,7 +2,7 @@ package nsl.sam.envvar
 
 import java.util.function.Supplier
 
-class TestingEnvVarsSupplier: Supplier<Map<String, String>> {
+class TestingEnvVarsSupplier : Supplier<Map<String, String>> {
 
     override fun get(): Map<String, String> {
         return mapOf(

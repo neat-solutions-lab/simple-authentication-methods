@@ -12,12 +12,13 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.Authentication
-import org.springframework.security.crypto.password.*
+import org.springframework.security.crypto.password.NoOpPasswordEncoder
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import java.io.Serializable
+
 fun main(args: Array<String>) {
     SpringApplication.run(SecureApp::class.java, *args)
 }
@@ -30,7 +31,7 @@ class SecureApp
 @Suppress("DEPRECATION")
 @Configuration
 @Order(90)
-class SecurityConfiguration: WebSecurityConfigurerAdapter() {
+class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     @Autowired
     fun configureGlobal(auth: AuthenticationManagerBuilder) {
@@ -100,10 +101,10 @@ class ProtectedController {
 }
 
 @Component
-class CustomPermissionEvaluator:PermissionEvaluator {
+class CustomPermissionEvaluator : PermissionEvaluator {
 
     override fun hasPermission(authentication: Authentication?, targetDomainObject: Any?, permission: Any?): Boolean {
-        if(targetDomainObject == "public")
+        if (targetDomainObject == "public")
             return true
         return false
     }

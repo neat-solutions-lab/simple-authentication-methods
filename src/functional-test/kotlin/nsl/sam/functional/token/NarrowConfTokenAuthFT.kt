@@ -1,38 +1,34 @@
 package nsl.sam.functional.token
 
 import nsl.sam.FunctionalTestConstants
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.TestPropertySource
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import nsl.sam.FunctionalTestConstants.FAKE_CONTROLLER_RESPONSE_BODY
 import nsl.sam.FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT
+import nsl.sam.core.annotation.AuthenticationMethod
+import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
-import nsl.sam.core.annotation.AuthenticationMethod
-import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
-import org.springframework.mock.web.MockHttpServletResponse
-
+import nsl.sam.utils.JsonUtils
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import nsl.sam.utils.JsonUtils
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
+import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -46,7 +42,9 @@ import kotlin.test.assertNull
 ])
 class NarrowConfTokenAuthFT {
 
-    companion object { val log by logger() }
+    companion object {
+        val log by logger()
+    }
 
     @Autowired
     lateinit var ctx: ApplicationContext
@@ -116,13 +114,13 @@ class NarrowConfTokenAuthFT {
     fun successAuthenticationWithTokenAuth() {
         // ACT
         val response: MockHttpServletResponse = mvc
-            .perform(
-                get(MOCK_MVC_TEST_ENDPOINT).header(
-                        FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME,
-                        FunctionalTestConstants.TOKEN_AUTH_HEADER_AUTHORIZED_VALUE
+                .perform(
+                        get(MOCK_MVC_TEST_ENDPOINT).header(
+                                FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME,
+                                FunctionalTestConstants.TOKEN_AUTH_HEADER_AUTHORIZED_VALUE
+                        )
                 )
-            )
-            .andReturn().response
+                .andReturn().response
 
         // ASSERT
         assertThat(response.status).isEqualTo(HttpStatus.OK.value())
@@ -135,10 +133,10 @@ class NarrowConfTokenAuthFT {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
-                    get(MOCK_MVC_TEST_ENDPOINT).header(
-                            FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME,
-                            FunctionalTestConstants.TOKEN_AUTH_HEADER_NOT_AUTHORIZED_VALUE
-                    )
+                        get(MOCK_MVC_TEST_ENDPOINT).header(
+                                FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME,
+                                FunctionalTestConstants.TOKEN_AUTH_HEADER_NOT_AUTHORIZED_VALUE
+                        )
                 )
                 .andReturn().response
 
@@ -179,6 +177,5 @@ class NarrowConfTokenAuthFT {
 
     @Configuration
     @EnableSimpleAuthenticationMethods([AuthenticationMethod.SIMPLE_TOKEN])
-    class TestConfiguration: FakeControllerConfiguration()
-
+    class TestConfiguration : FakeControllerConfiguration()
 }

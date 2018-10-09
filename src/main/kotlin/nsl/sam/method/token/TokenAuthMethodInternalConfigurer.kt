@@ -1,11 +1,10 @@
 package nsl.sam.method.token
 
+import nsl.sam.configurer.AuthMethodInternalConfigurer
+import nsl.sam.logger.logger
+import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
 import nsl.sam.method.token.localtokens.TokenFileImporter
-import nsl.sam.method.token.filter.TokenAuthenticationFilter
-import nsl.sam.logger.logger
-import nsl.sam.configurer.AuthMethodInternalConfigurer
-import nsl.sam.core.sender.ResponseSender
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.AuthenticationEntryPoint
@@ -13,15 +12,16 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 class TokenAuthMethodInternalConfigurer(
         private val tokensFilePath: String,
-        private val tokenAuthenticator : TokenToUserMapper,
-        //private val unauthenticatedResponseSender: ResponseSender,
+        private val tokenAuthenticator: TokenToUserMapper,
         private val authenticationEntryPoint: AuthenticationEntryPoint) : AuthMethodInternalConfigurer {
 
     override fun configure(auth: AuthenticationManagerBuilder) {
         // empty, the TokenAuthenticationFiler doesn't use AunthenticationManager
     }
 
-    companion object { val log by logger() }
+    companion object {
+        val log by logger()
+    }
 
     private var isActiveVariableCalculated = false
 
@@ -39,7 +39,7 @@ class TokenAuthMethodInternalConfigurer(
         //log.info("serverAddress: $serverAddress")
         log.info("tokensNumber: $tokensNumber")
 
-        if(tokensNumber == 0L) return false
+        if (tokensNumber == 0L) return false
 
         //if(serverAddress in arrayOf("localhost", "127.0.0.1") && tokensNumber == 0L) return false
         return true
@@ -57,7 +57,7 @@ class TokenAuthMethodInternalConfigurer(
         log.info("Registering ${TokenAuthenticationFilter::class.qualifiedName} filter.")
         return http.addFilterBefore(
                 //TokenAuthenticationFilter(tokenAuthenticator, unauthenticatedResponseSender, authenticationEntryPoint),
-                TokenAuthenticationFilter(tokenAuthenticator,  authenticationEntryPoint),
+                TokenAuthenticationFilter(tokenAuthenticator, authenticationEntryPoint),
                 BasicAuthenticationFilter::class.java)
     }
 
@@ -65,12 +65,12 @@ class TokenAuthMethodInternalConfigurer(
         return "Local Token Method"
     }
 
-    private fun tokensNumber() : Long {
+    private fun tokensNumber(): Long {
         val tokenFileImporter = TokenFileImporter(tokensFilePath)
 
         var tokensCounter = 0L
 
-        while(tokenFileImporter.hasNext()) {
+        while (tokenFileImporter.hasNext()) {
             tokensCounter++
             tokenFileImporter.next()
         }

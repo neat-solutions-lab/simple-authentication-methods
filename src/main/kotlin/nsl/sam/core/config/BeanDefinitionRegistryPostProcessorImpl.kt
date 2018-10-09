@@ -6,7 +6,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor
 import org.springframework.boot.autoconfigure.security.servlet.SpringBootWebSecurityConfiguration
 
-class BeanDefinitionRegistryPostProcessorImpl: BeanDefinitionRegistryPostProcessor {
+class BeanDefinitionRegistryPostProcessorImpl : BeanDefinitionRegistryPostProcessor {
 
     companion object {
         val log by logger()
@@ -21,7 +21,7 @@ class BeanDefinitionRegistryPostProcessorImpl: BeanDefinitionRegistryPostProcess
 
         registry.beanDefinitionNames.filter {
             it.startsWith(SpringBootWebSecurityConfiguration::class.qualifiedName!!)
-        }.forEach{
+        }.forEach {
             log.info("Removing $it bean definition.")
             registry.removeBeanDefinition(it)
         }

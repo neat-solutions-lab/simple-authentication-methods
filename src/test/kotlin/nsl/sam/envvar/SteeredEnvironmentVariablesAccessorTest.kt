@@ -15,7 +15,7 @@ internal class SteeredEnvironmentVariablesAccessorTest {
 
         val envVarsAccessor = SteeredEnvironmentVariablesAccessor()
         val retrievedMap = envVarsAccessor.getVarsMap()
-        for( (key, value) in retrievedMap) {
+        for ((key, value) in retrievedMap) {
             println("key: $key, value: $value")
         }
 

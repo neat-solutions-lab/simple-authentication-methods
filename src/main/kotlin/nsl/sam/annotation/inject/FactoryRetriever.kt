@@ -11,7 +11,7 @@ object FactoryRetriever {
     private val createdFactories: MutableMap<KClass<*>, Factory<Any>> = mutableMapOf()
 
     @Synchronized
-    fun <T:Any> getFactory(
+    fun <T : Any> getFactory(
             factoryType: KClass<out Factory<T>>,
             attributeName: String,
             annotationMetadataResolver: AnnotationMetadataResolver,
@@ -30,7 +30,7 @@ object FactoryRetriever {
                 "There can be only one ${factoryType::class.qualifiedName} provided" +
                         "by $attributeName attribute.")
 
-        if(null != factoryClasses && factoryClasses.isNotEmpty()) {
+        if (null != factoryClasses && factoryClasses.isNotEmpty()) {
             val factoryClass = factoryClasses[0]
             return getCachedOrCreate(factoryClass)
         }
@@ -54,7 +54,7 @@ object FactoryRetriever {
     @Suppress("UNCHECKED_CAST")
     private fun <T> getCachedOrCreate(factoryClass: KClass<out Factory<T>>): Factory<T> {
 
-        val factory  = createdFactories.getOrPut(factoryClass) {
+        val factory = createdFactories.getOrPut(factoryClass) {
             SingletonObjectFactoryWrapper(factoryClass.createInstance()) as Factory<Any>
         }
         return factory as Factory<T>

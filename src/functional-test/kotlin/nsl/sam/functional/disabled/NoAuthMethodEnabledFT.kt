@@ -1,12 +1,12 @@
 package nsl.sam.functional.disabled
 
 import nsl.sam.FunctionalTestConstants
+import nsl.sam.core.annotation.AuthenticationMethod
+import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import nsl.sam.logger.logger
 import nsl.sam.method.token.filter.TokenAuthenticationFilter
 import nsl.sam.method.token.filter.TokenToUserMapper
-import nsl.sam.core.annotation.AuthenticationMethod
-import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -19,7 +19,7 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Configuration
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.test.context.TestPropertySource
@@ -33,7 +33,7 @@ import kotlin.test.assertNull
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestPropertySource(properties =
-    ["nsl.sam.anonymous-fallback=true", "server.address=localhost"])
+["nsl.sam.anonymous-fallback=true", "server.address=localhost"])
 class NoAuthMethodEnabledFT {
 
     companion object {
@@ -140,7 +140,6 @@ class NoAuthMethodEnabledFT {
 
     @Configuration
     @EnableSimpleAuthenticationMethods([AuthenticationMethod.SIMPLE_NO_METHOD])
-    class TestConfiguration: FakeControllerConfiguration()
-
+    class TestConfiguration : FakeControllerConfiguration()
 }
 

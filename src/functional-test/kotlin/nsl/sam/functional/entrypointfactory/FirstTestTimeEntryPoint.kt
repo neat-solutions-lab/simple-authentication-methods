@@ -6,7 +6,7 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class FirstTestTimeEntryPoint: AuthenticationEntryPoint {
+class FirstTestTimeEntryPoint : AuthenticationEntryPoint {
     override fun commence(request: HttpServletRequest, response: HttpServletResponse, authException: AuthenticationException) {
         response.status = HttpStatus.UNAUTHORIZED.value()
         response.writer.print("Response from ${this::class.qualifiedName}")

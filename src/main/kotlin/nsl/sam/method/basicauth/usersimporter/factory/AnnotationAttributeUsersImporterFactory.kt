@@ -6,7 +6,7 @@ import nsl.sam.method.basicauth.usersimporter.UsersImporterFactory
 import nsl.sam.method.basicauth.usersimporter.impl.AnnotationAttributeUsersImporter
 import org.springframework.core.env.Environment
 
-class AnnotationAttributeUsersImporterFactory: UsersImporterFactory {
+class AnnotationAttributeUsersImporterFactory : UsersImporterFactory {
     override fun create(attributes: EnableAnnotationAttributes, environment: Environment): UsersImporter {
         return AnnotationAttributeUsersImporter(attributes)
     }

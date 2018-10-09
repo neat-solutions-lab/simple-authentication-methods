@@ -20,11 +20,9 @@ class PasswordEncodersTest {
                 "{bcrypt}\$2a\$10\$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG")
         println("matching result: $matchingResult1")
 
-
         val matchingResult2 = passwordEncoder.matches("password",
                 "{bcrypt}\$2a\$10\$ugr6SreVsz/WjiFuUvHmr.TAWNjzvAM3jKLEhz2jjl8jqhPFNyet2")
         println("matching result: $matchingResult2")
-
     }
 
 }

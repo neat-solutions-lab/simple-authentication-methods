@@ -2,7 +2,7 @@ package nsl.test.asm
 
 import org.springframework.asm.*
 
-class RenamingClassVisitor(private val newName: String, flags: Int, visitor: ClassVisitor): ClassVisitor(flags, visitor) {
+class RenamingClassVisitor(private val newName: String, flags: Int, visitor: ClassVisitor) : ClassVisitor(flags, visitor) {
 
     override fun visit(version: Int, access: Int, name: String?, signature: String?, superName: String?, interfaces: Array<out String>?) {
         println(">>> visit()")
@@ -12,7 +12,6 @@ class RenamingClassVisitor(private val newName: String, flags: Int, visitor: Cla
         super.visit(version, access, newName.replace('.', '/'), signature, superName, interfaces)
 
     }
-
 
     override fun visitTypeAnnotation(typeRef: Int, typePath: TypePath?, desc: String?, visible: Boolean): AnnotationVisitor {
 
@@ -31,7 +30,6 @@ class RenamingClassVisitor(private val newName: String, flags: Int, visitor: Cla
         return super.visitAnnotation(desc, visible)
     }
 
-
     override fun visitAttribute(attr: Attribute?) {
         println(">>> visitAttribute()")
         super.visitAttribute(attr)
@@ -41,5 +39,4 @@ class RenamingClassVisitor(private val newName: String, flags: Int, visitor: Cla
         println(">>> visitField(access: $access, name: $name, desc: $desc, signature: $signature, value: $value)")
         return super.visitField(access, name, desc, signature, value)
     }
-
 }

@@ -1,7 +1,7 @@
 package nsl.sam.functional.authorization
 
-import nsl.sam.functional.controller.CustomAuthorizationTestController
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.functional.controller.CustomAuthorizationTestController
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -121,7 +121,7 @@ class CustomChainedAuthorizationFT {
     @Configuration
     @EnableSimpleAuthenticationMethods(
             authorizations = "antMatchers('/user-area/**').hasRole('USER')" +
-                             ".antMatchers('/admin-area/**').hasRole('ADMIN')")
+                    ".antMatchers('/admin-area/**').hasRole('ADMIN')")
     class TestConfiguration {
         @Bean
         fun customAuthorizationTestController() = CustomAuthorizationTestController()

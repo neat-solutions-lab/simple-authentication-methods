@@ -12,6 +12,5 @@
 
     <!-- Definition for textEditor bean -->
     <bean id="bigBean" class="nsl.test.beandefinition.BigBean"></bean>
-
-
+    
 </beans>

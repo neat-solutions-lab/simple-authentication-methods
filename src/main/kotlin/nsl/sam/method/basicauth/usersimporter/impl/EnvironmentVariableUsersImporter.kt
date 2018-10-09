@@ -20,7 +20,7 @@ class EnvironmentVariableUsersImporter(
 
         val envVariablePrefix = simpleBasicAuthenticationAttributes.usersEnvPrefix
 
-        if(envVariablePrefix.isNotBlank()) {
+        if (envVariablePrefix.isNotBlank()) {
             val allEnvVars = envVarsAccessor.getVarsMap()
             val filteredEnvVars = allEnvVars.filter { it.key.startsWith(envVariablePrefix) }
             usersArray = filteredEnvVars.values.toTypedArray()

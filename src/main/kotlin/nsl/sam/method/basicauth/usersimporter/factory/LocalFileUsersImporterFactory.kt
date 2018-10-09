@@ -8,7 +8,7 @@ import nsl.sam.method.basicauth.usersimporter.UsersImporterFactory
 import nsl.sam.method.basicauth.usersimporter.impl.LocalFileUsersImporter
 import org.springframework.core.env.Environment
 
-class LocalFileUsersImporterFactory: UsersImporterFactory {
+class LocalFileUsersImporterFactory : UsersImporterFactory {
 
     override fun create(attributes: EnableAnnotationAttributes, environment: Environment): UsersImporter {
         val passwordsFilePath = getPasswordsFilePath(attributes, environment)
@@ -26,13 +26,13 @@ class LocalFileUsersImporterFactory: UsersImporterFactory {
             environment: Environment
     ): String {
 
-        if(simpleBasicAuthenticationAttributes.passwordsFilePath.isNotBlank())
+        if (simpleBasicAuthenticationAttributes.passwordsFilePath.isNotBlank())
             return simpleBasicAuthenticationAttributes.passwordsFilePath
 
-        if(simpleBasicAuthenticationAttributes.passwordsFilePathProperty.isNotBlank())
+        if (simpleBasicAuthenticationAttributes.passwordsFilePathProperty.isNotBlank())
             return environment.getProperty(simpleBasicAuthenticationAttributes.passwordsFilePathProperty, "")
 
-        if(environment.containsProperty("sam.passwords-file"))
+        if (environment.containsProperty("sam.passwords-file"))
             return environment.getProperty("sam.passwords-file", "")
 
         return ""

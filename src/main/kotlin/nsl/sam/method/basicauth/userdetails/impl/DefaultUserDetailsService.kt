@@ -16,7 +16,9 @@ class DefaultUserDetailsService(private val usersSource: UsersSource) : Availabi
         return usersSource.hasItems()
     }
 
-    companion object { val log by logger() }
+    companion object {
+        val log by logger()
+    }
 
     override fun loadUserByUsername(username: String): UserDetails {
         log.debug("Loading $username user")

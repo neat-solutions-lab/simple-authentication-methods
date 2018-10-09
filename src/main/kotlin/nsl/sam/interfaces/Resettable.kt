@@ -1,5 +1,5 @@
 package nsl.sam.interfaces
 
-interface Resetable {
+interface Resettable {
     fun reset()
 }

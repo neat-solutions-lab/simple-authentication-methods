@@ -41,15 +41,12 @@ fun main(args: Array<String>) {
 @Order
 class SecurityConfigurationOne: WebSecurityConfigurerAdapter() {
 
-
     @Suppress("DEPRECATION")
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance())
                 .withUser("user-one").password("password").roles("USER").and()
                 .withUser("admin").password("password").roles("USER", "ADMIN")
     }
-
-
 
     override fun configure(http: HttpSecurity) {
         http
@@ -62,7 +59,6 @@ class SecurityConfigurationOne: WebSecurityConfigurerAdapter() {
                     .and()
                 .httpBasic()
     }
-
 }
 
 @Configuration
@@ -75,7 +71,6 @@ class SecurityConfigurationTwo: WebSecurityConfigurerAdapter() {
                 .withUser("user-two").password("password").roles("USER").and()
                 .withUser("admin").password("password").roles("USER", "ADMIN")
     }
-
 
     override fun configure(web: WebSecurity) {
 
@@ -92,7 +87,6 @@ class SecurityConfigurationTwo: WebSecurityConfigurerAdapter() {
                     .and()
                 .httpBasic()
     }
-
 }
 
 @RestController

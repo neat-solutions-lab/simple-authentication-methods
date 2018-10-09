@@ -8,8 +8,6 @@ import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
 import nsl.sam.method.basicauth.usersimporter.impl.EnvironmentVariableUsersImporter
 import nsl.sam.utils.UsersTriplesComparator
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
@@ -36,11 +34,11 @@ class EnvironmentVariableUsersImporterFT {
     @Test
     fun readEnvironmentVariableTest() {
         val enableAnnotationAttributes =
-                EnableAnnotationAttributesExtractor.extrectAttributes(importingClassMetadata!!)
+                EnableAnnotationAttributesExtractor.extractAttributes(importingClassMetadata!!)
 
         val environmentVariableUsersImporter = EnvironmentVariableUsersImporter(
                 enableAnnotationAttributes,
-                object: EnvironmentVariablesAccessor {
+                object : EnvironmentVariablesAccessor {
                     override fun getVarsMap(): Map<String, String> {
                         return mapOf(
                                 "TestAppUsers.1" to "environment-user1:{noop}test USER ADMIN",
@@ -54,7 +52,7 @@ class EnvironmentVariableUsersImporterFT {
 
         environmentVariableUsersImporter.reset()
         environmentVariableUsersImporter.use { importer ->
-            for(triple in importer) {
+            for (triple in importer) {
                 resultTriples.add(triple)
             }
         }
@@ -70,7 +68,7 @@ class EnvironmentVariableUsersImporterFT {
     }
 }
 
-class EnvironmentVariableUsersImporterFTConfigurationAnnotationMetadataCatcher: ImportBeanDefinitionRegistrar {
+class EnvironmentVariableUsersImporterFTConfigurationAnnotationMetadataCatcher : ImportBeanDefinitionRegistrar {
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
         EnvironmentVariableUsersImporterFT.importingClassMetadata = importingClassMetadata
     }
@@ -79,7 +77,7 @@ class EnvironmentVariableUsersImporterFTConfigurationAnnotationMetadataCatcher: 
 
 @Configuration
 @EnableSimpleAuthenticationMethods
-@SimpleBasicAuthentication(usersEnvPrefix="TestAppUsers" )
+@SimpleBasicAuthentication(usersEnvPrefix = "TestAppUsers")
 @Import(EnvironmentVariableUsersImporterFTConfigurationAnnotationMetadataCatcher::class)
 class EnvironmentVariableUsersImporterFTConfiguration {
     @Bean

@@ -17,7 +17,7 @@ class MultiEnableTest {
 
     @Test
     fun printBeanNames() {
-        applicationContext.beanDefinitionNames.forEach (::println)
+        applicationContext.beanDefinitionNames.forEach(::println)
     }
 
     @Test
@@ -27,7 +27,6 @@ class MultiEnableTest {
     }
 
 }
-
 
 @Configuration
 @EnableAnnotation

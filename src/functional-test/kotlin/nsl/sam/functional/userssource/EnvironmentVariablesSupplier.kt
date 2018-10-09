@@ -2,7 +2,7 @@ package nsl.sam.functional.userssource
 
 import java.util.function.Supplier
 
-class EnvironmentVariablesSupplier: Supplier<Map<String, String>> {
+class EnvironmentVariablesSupplier : Supplier<Map<String, String>> {
 
     override fun get(): Map<String, String> {
         return mapOf(

@@ -23,7 +23,7 @@ class GeneralConfiguration {
     }
 
     @Bean
-    fun localTokensStore() : LocalTokensSource {
+    fun localTokensStore(): LocalTokensSource {
         return LocalTokensSource()
     }
 
