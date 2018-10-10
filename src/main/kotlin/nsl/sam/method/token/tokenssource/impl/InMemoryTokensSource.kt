@@ -3,10 +3,13 @@ package nsl.sam.method.token.tokenssource.impl
 import nsl.sam.logger.logger
 import nsl.sam.method.token.token.ResolvedToken
 import nsl.sam.method.token.tokensimporter.TokenFileImporter
+import nsl.sam.method.token.tokenssource.TokensSource
+import nsl.sam.utils.prune
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.authentication.BadCredentialsException
 import javax.annotation.PostConstruct
 
-class InMemoryTokensSource {
+class InMemoryTokensSource: TokensSource {
 
     companion object {
         val log by logger()
@@ -17,8 +20,12 @@ class InMemoryTokensSource {
 
     private val tokensMap: MutableMap<String, ResolvedToken> = mutableMapOf()
 
-    fun getResolvedToken(tokenAsString: String): ResolvedToken? {
-        return tokensMap[tokenAsString]
+    fun getResolvedToken(tokenAsString: String): ResolvedToken {
+
+        if (tokensMap.containsKey(tokenAsString))
+            return tokensMap[tokenAsString]!!
+
+        throw BadCredentialsException("No token ${tokenAsString.prune(5)} in local file")
     }
 
     @PostConstruct
