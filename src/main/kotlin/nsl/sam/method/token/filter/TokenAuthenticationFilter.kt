@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse
 const val AUTHORIZATION_HEADER = "Authorization"
 
 class TokenAuthenticationFilter(
-        private val tokenAuthenticator: TokenDetailsService,
+        private val tokenDetailsService: TokenDetailsService,
         private val authenticationEntryPoint: AuthenticationEntryPoint) : OncePerRequestFilter() {
 
     companion object {
@@ -25,11 +25,11 @@ class TokenAuthenticationFilter(
 
     override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain) {
 
-        log.debug("TokenAuthenticationFilter >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        log.debug("entering: TokenAuthenticationFilter")
 
         val authorizationHeader = request.getHeader(AUTHORIZATION_HEADER)
         if (null == authorizationHeader) {
-            log.debug("No ($AUTHORIZATION_HEADER) header found in request")
+            log.debug("No $AUTHORIZATION_HEADER header found in request")
             chain.doFilter(request, response)
             return
         }
@@ -56,7 +56,7 @@ class TokenAuthenticationFilter(
 
         chain.doFilter(request, response)
 
-        log.debug("TokenAuthenticationFilter <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        log.debug("leaving: TokenAuthenticationFilter")
     }
 
     private fun isBearerToken(header: String): Boolean {
@@ -76,12 +76,15 @@ class TokenAuthenticationFilter(
 
         try {
 
-            val localUser = tokenAuthenticator.loadUserByToken(authToken)
+            val userDetails = tokenDetailsService.loadUserByToken(authToken)
 
-            log.debug("user: ${localUser}")
+            //log.debug("user: ${localUser}")
 
-            val userDetails =
-                    User.builder().username(localUser.name).password("").authorities(*localUser.roles).build()
+            //val userDetails = User.builder()
+            //        .username(localUser.name)
+            //        .password("")
+            //        .authorities(*localUser.roles)
+            //        .build()
 
             SecurityContextHolder.getContext().authentication =
                     UsernamePasswordAuthenticationToken(

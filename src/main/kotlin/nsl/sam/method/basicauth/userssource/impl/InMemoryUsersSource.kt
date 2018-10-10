@@ -23,7 +23,7 @@ class InMemoryUsersSource(private val usersImporter: UsersImporter) : UsersSourc
 
     override fun getUserPasswordAndRoles(username: String): Pair<String, Array<String>> {
         return usersPasswordsAndRolesMap[username]
-                ?: throw UsernameNotFoundException("Failed to find ${username} username")
+                ?: throw UsernameNotFoundException("Failed to find $username username")
     }
 
     private fun importUsersFromImporter() {

@@ -1,6 +1,7 @@
 package nsl.sam.method.token.tokendetails
 
 import nsl.sam.method.token.token.UserAndRoles
+import org.springframework.security.core.userdetails.UserDetails
 
 /**
  * To be implemented by class which will map token (probably acquired from HTTP header) to
@@ -16,5 +17,6 @@ interface TokenDetailsService {
      * @throws javax.naming.AuthenticationException  Exception being thrown when given [token] doesn't map
      *         to any existing user.
      */
-    fun loadUserByToken(token: String): UserAndRoles
+    //fun loadUserByToken(token: String): UserAndRoles
+    fun loadUserByToken(token: String): UserDetails
 }

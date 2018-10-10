@@ -5,9 +5,9 @@ import nsl.sam.configurer.ConfigurersFactories
 import nsl.sam.configurer.ConfigurersFactoriesImpl
 import nsl.sam.method.basicauth.BasicAuthMethodInternalConfigurerFactory
 import nsl.sam.method.token.TokenAuthMethodInternalConfigurerFactory
-import nsl.sam.method.token.tokendetails.TokenDetailsService
+import nsl.sam.method.token.tokendetails.AvailabilityAwareTokenDetailsService
 import nsl.sam.method.token.tokendetails.impl.DefaultTokenDetailsService
-import nsl.sam.method.token.tokenssource.impl.InMemoryTokensSource
+import nsl.sam.method.token.tokensresolver.impl.InMemoryTokensResolver
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -22,15 +22,15 @@ class GeneralConfiguration {
         return BeanDefinitionRegistryPostProcessorImpl()
     }
 
-    @Bean
-    fun localTokensStore(): InMemoryTokensSource {
-        return InMemoryTokensSource()
-    }
+    //@Bean
+    //fun localTokensStore(): InMemoryTokensResolver {
+    //    return InMemoryTokensResolver()
+    //}
 
-    @Bean
-    fun tokenToUserMapper(): TokenDetailsService {
-        return DefaultTokenDetailsService()
-    }
+    //@Bean
+    //fun tokenToUserMapper(): AvailabilityAwareTokenDetailsService {
+    //    return DefaultTokenDetailsService(localTokensStore())
+    //}
 
     @Bean
     fun configurersFactories(): ConfigurersFactories {

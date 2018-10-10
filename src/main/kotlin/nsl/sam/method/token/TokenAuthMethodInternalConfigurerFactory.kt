@@ -9,19 +9,19 @@ import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import nsl.sam.core.entrypoint.factory.DefaultAuthenticationEntryPointFactory
 import nsl.sam.method.token.annotation.SimpleTokenAuthentication
-import nsl.sam.method.token.tokendetails.TokenDetailsService
+import nsl.sam.method.token.tokendetails.AvailabilityAwareTokenDetailsService
+import nsl.sam.method.token.tokendetails.impl.DefaultTokenDetailsService
+import nsl.sam.method.token.tokensimporter.impl.TokenFileImporter
+import nsl.sam.method.token.tokensresolver.TokensResolver
+import nsl.sam.method.token.tokensresolver.TokensResolverFactory
+import nsl.sam.method.token.tokensresolver.factory.InMemoryTokensResolverFactory
+import nsl.sam.method.token.tokensresolver.impl.InMemoryTokensResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.env.Environment
+import org.springframework.security.web.AuthenticationEntryPoint
 
 class TokenAuthMethodInternalConfigurerFactory(override val name: String) : AuthMethodInternalConfigurerFactory {
-
-
-    @Value("\${sam.tokens-file:}")
-    lateinit var tokensFilePath: String
-
-    @Autowired
-    lateinit var tokenAuthenticator: TokenDetailsService
 
     @Autowired
     lateinit var environment: Environment
@@ -32,7 +32,14 @@ class TokenAuthMethodInternalConfigurerFactory(override val name: String) : Auth
 
     override fun create(attributes: EnableAnnotationAttributes): AuthMethodInternalConfigurer {
 
-        val authenticatedEntryPoint = InjectedObjectsProvider.Builder(AuthenticationEntryPointFactory::class)
+        return TokenAuthMethodInternalConfigurer(
+                getTokenDetailsService(attributes),//tokenDetailsService,
+                getAuthenticationEntryPoint(attributes)//authenticationEntryPoint
+        )
+    }
+
+    private fun getAuthenticationEntryPoint(attributes: EnableAnnotationAttributes): AuthenticationEntryPoint {
+        return InjectedObjectsProvider.Builder(AuthenticationEntryPointFactory::class)
                 .attributeName("authenticationEntryPointFactory")
                 .defaultFactoryPropertyName("nsl.sam.authentication-entry-point.factory")
                 .involvedAnnotationTypes(listOf(EnableSimpleAuthenticationMethods::class, SimpleTokenAuthentication::class))
@@ -40,11 +47,21 @@ class TokenAuthMethodInternalConfigurerFactory(override val name: String) : Auth
                 .environment(environment)
                 .defaultFactory(DefaultAuthenticationEntryPointFactory::class)
                 .build().getObject()
-
-        return TokenAuthMethodInternalConfigurer(
-                tokensFilePath,
-                tokenAuthenticator,
-                authenticatedEntryPoint
-        )
     }
+
+    private fun getTokenDetailsService(attributes: EnableAnnotationAttributes): AvailabilityAwareTokenDetailsService {
+        val tokensResolver = getTokensResolver(attributes)
+        return DefaultTokenDetailsService(tokensResolver)
+    }
+
+    private fun getTokensResolver(attributes: EnableAnnotationAttributes): TokensResolver {
+        val resolverFactory = getTokensResolverFactory(attributes)
+        return resolverFactory.create(attributes, environment)
+        //return InMemoryTokensResolver(TokenFileImporter(tokensFilePath))
+    }
+
+    private fun getTokensResolverFactory(attributes: EnableAnnotationAttributes): TokensResolverFactory {
+        return InMemoryTokensResolverFactory()
+    }
+
 }

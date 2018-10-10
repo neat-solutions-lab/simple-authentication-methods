@@ -1,4 +1,4 @@
 package nsl.sam.utils
 
-fun String.prune(length: Int) = "${this.substring(length)}..."
+fun String.prune(length: Int = 5) = "${this.substring(length)}..."
 

@@ -1,0 +1,5 @@
+package nsl.sam.method.token.tokendetails
+
+import nsl.sam.interfaces.ItemsAvailabilityAware
+
+interface AvailabilityAwareTokenDetailsService: TokenDetailsService, ItemsAvailabilityAware

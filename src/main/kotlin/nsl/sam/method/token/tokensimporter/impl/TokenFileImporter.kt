@@ -1,29 +1,36 @@
-package nsl.sam.method.token.tokensimporter
+package nsl.sam.method.token.tokensimporter.impl
 
 import nsl.sam.logger.logger
-import nsl.sam.method.token.token.UserAndRoles
 import nsl.sam.method.token.token.ResolvedToken
+import nsl.sam.method.token.token.UserAndRoles
+import nsl.sam.method.token.tokensimporter.TokensImporter
 import java.io.BufferedReader
-import java.io.Closeable
 import java.io.File
 import java.io.FileReader
 
-class TokenFileImporter(val path: String) : Closeable, Iterator<ResolvedToken> {
+class TokenFileImporter(val path: String) : TokensImporter {
 
     companion object {
         val log by logger()
     }
 
+    private var bufferedReader: BufferedReader? = null
+
     private var currentLine: String? = null
 
-    private val file: File by lazy {
-        log.debug("File initialization")
-        File(this.path)
+    override fun reset() {
+        if (!File(path).exists()) return
+        close()
+        bufferedReader = BufferedReader(FileReader(File(path)))
+        currentLine = null
     }
 
-    private val bufferedReader: BufferedReader by lazy {
-        log.debug("BufferedReader initialization")
-        BufferedReader(FileReader(this.file))
+    override fun hasItems(): Boolean {
+        if(!File(path).exists()) return false
+        reset()
+        val isItemAvailable = hasNext()
+        reset()
+        return isItemAvailable
     }
 
     override fun next(): ResolvedToken {
@@ -42,7 +49,7 @@ class TokenFileImporter(val path: String) : Closeable, Iterator<ResolvedToken> {
 
         val roles = if (lineParts.size > 2) lineParts.subList(2, lineParts.lastIndex + 1) else emptyList()
 
-        return ResolvedToken(tokenValue, UserAndRoles(userName, roles.map { "ROLE_${it}" }.toTypedArray()))
+        return ResolvedToken(tokenValue, UserAndRoles(userName, roles.map { "ROLE_$it" }.toTypedArray()))
     }
 
     override fun hasNext(): Boolean {
@@ -52,11 +59,11 @@ class TokenFileImporter(val path: String) : Closeable, Iterator<ResolvedToken> {
         var line: String?
 
         do {
-            line = bufferedReader.readLine()
+            line = bufferedReader?.readLine()
         } while (line != null && line.trim().startsWith("#"))
 
         if (line == null) {
-            bufferedReader.close()
+            bufferedReader?.close()
             this.currentLine = null
             return false
         }
@@ -66,6 +73,6 @@ class TokenFileImporter(val path: String) : Closeable, Iterator<ResolvedToken> {
     }
 
     override fun close() {
-        bufferedReader.close()
+        bufferedReader?.close()
     }
 }
