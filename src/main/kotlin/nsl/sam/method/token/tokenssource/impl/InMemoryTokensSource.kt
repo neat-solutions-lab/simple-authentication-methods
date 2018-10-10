@@ -1,4 +1,4 @@
-package nsl.sam.method.token.tokenssource
+package nsl.sam.method.token.tokenssource.impl
 
 import nsl.sam.logger.logger
 import nsl.sam.method.token.token.ResolvedToken
@@ -6,7 +6,7 @@ import nsl.sam.method.token.tokensimporter.TokenFileImporter
 import org.springframework.beans.factory.annotation.Value
 import javax.annotation.PostConstruct
 
-class LocalTokensSource {
+class InMemoryTokensSource {
 
     companion object {
         val log by logger()
@@ -15,10 +15,10 @@ class LocalTokensSource {
     @Value("\${sam.tokens-file:}")
     lateinit var tokensFilePath: String
 
-    val tokensMap: MutableMap<String, ResolvedToken> = mutableMapOf()
+    private val tokensMap: MutableMap<String, ResolvedToken> = mutableMapOf()
 
-    fun get(tokenAsString: String): ResolvedToken? {
-        return tokensMap.get(tokenAsString)
+    fun getResolvedToken(tokenAsString: String): ResolvedToken? {
+        return tokensMap[tokenAsString]
     }
 
     @PostConstruct

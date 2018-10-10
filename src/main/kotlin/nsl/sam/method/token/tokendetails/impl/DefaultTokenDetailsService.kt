@@ -3,7 +3,7 @@ package nsl.sam.method.token.tokendetails.impl
 import nsl.sam.method.token.tokendetails.TokenDetailsService
 import nsl.sam.method.token.token.UserAndRoles
 import nsl.sam.method.token.token.ResolvedToken
-import nsl.sam.method.token.tokenssource.LocalTokensSource
+import nsl.sam.method.token.tokenssource.impl.InMemoryTokensSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.BadCredentialsException
 
@@ -16,11 +16,11 @@ import org.springframework.security.authentication.BadCredentialsException
 class DefaultTokenDetailsService : TokenDetailsService {
 
     @Autowired
-    lateinit var localTokensSource: LocalTokensSource
+    lateinit var inMemoryTokensSource: InMemoryTokensSource
 
     override fun loadUserByToken(token: String): UserAndRoles {
-        val resolvedToken: ResolvedToken = localTokensSource.get(token)
-                ?: throw BadCredentialsException("No token ${token} in local file")
+        val resolvedToken: ResolvedToken = inMemoryTokensSource.getResolvedToken(token)
+                ?: throw BadCredentialsException("No token $token in local file")
         return resolvedToken.userAndRole
     }
 }

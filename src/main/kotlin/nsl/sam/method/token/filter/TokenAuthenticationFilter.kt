@@ -89,13 +89,12 @@ class TokenAuthenticationFilter(
                             userDetails.authorities)
         } catch (e: BadCredentialsException) {
             SecurityContextHolder.clearContext()
-            log.debug("BadCredentialsException while trying to authenticate with token ${authToken}")
+            log.debug("BadCredentialsException while trying to authenticate with token $authToken")
             throw e
         } catch (e: AuthenticationException) {
             SecurityContextHolder.clearContext()
-            log.error("AuthenticationException while trying to authenticate with token ${authToken}")
+            log.error("AuthenticationException while trying to authenticate with token $authToken")
             throw e
         }
     }
-
 }

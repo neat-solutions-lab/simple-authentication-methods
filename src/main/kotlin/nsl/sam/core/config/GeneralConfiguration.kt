@@ -7,7 +7,7 @@ import nsl.sam.method.basicauth.BasicAuthMethodInternalConfigurerFactory
 import nsl.sam.method.token.TokenAuthMethodInternalConfigurerFactory
 import nsl.sam.method.token.tokendetails.TokenDetailsService
 import nsl.sam.method.token.tokendetails.impl.DefaultTokenDetailsService
-import nsl.sam.method.token.tokenssource.LocalTokensSource
+import nsl.sam.method.token.tokenssource.impl.InMemoryTokensSource
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -23,8 +23,8 @@ class GeneralConfiguration {
     }
 
     @Bean
-    fun localTokensStore(): LocalTokensSource {
-        return LocalTokensSource()
+    fun localTokensStore(): InMemoryTokensSource {
+        return InMemoryTokensSource()
     }
 
     @Bean
