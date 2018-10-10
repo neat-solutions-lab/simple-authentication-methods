@@ -1,7 +1,6 @@
 package nsl.sam.method.token.tokensresolver.impl
 
-import nsl.sam.method.token.tokensimporter.impl.TokenFileImporter
-import org.junit.jupiter.api.Assertions.*
+import nsl.sam.method.token.tokensimporter.impl.FileTokensImporter
 import org.junit.jupiter.api.Test
 
 internal class InMemoryTokensResolverTest {
@@ -9,7 +8,7 @@ internal class InMemoryTokensResolverTest {
     @Test
     fun test() {
 
-        val fileTokenImporter = TokenFileImporter("src/test/config/tokens.conf")
+        val fileTokenImporter = FileTokensImporter("src/test/config/tokens.conf")
         val inMemoryTokensResolver = InMemoryTokensResolver(fileTokenImporter)
 
         val resolvedToken = inMemoryTokensResolver.getResolvedToken("12345")

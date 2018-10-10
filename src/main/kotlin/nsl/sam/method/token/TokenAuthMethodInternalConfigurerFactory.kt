@@ -11,13 +11,10 @@ import nsl.sam.core.entrypoint.factory.DefaultAuthenticationEntryPointFactory
 import nsl.sam.method.token.annotation.SimpleTokenAuthentication
 import nsl.sam.method.token.tokendetails.AvailabilityAwareTokenDetailsService
 import nsl.sam.method.token.tokendetails.impl.DefaultTokenDetailsService
-import nsl.sam.method.token.tokensimporter.impl.TokenFileImporter
 import nsl.sam.method.token.tokensresolver.TokensResolver
 import nsl.sam.method.token.tokensresolver.TokensResolverFactory
 import nsl.sam.method.token.tokensresolver.factory.InMemoryTokensResolverFactory
-import nsl.sam.method.token.tokensresolver.impl.InMemoryTokensResolver
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.env.Environment
 import org.springframework.security.web.AuthenticationEntryPoint
 
@@ -57,7 +54,7 @@ class TokenAuthMethodInternalConfigurerFactory(override val name: String) : Auth
     private fun getTokensResolver(attributes: EnableAnnotationAttributes): TokensResolver {
         val resolverFactory = getTokensResolverFactory(attributes)
         return resolverFactory.create(attributes, environment)
-        //return InMemoryTokensResolver(TokenFileImporter(tokensFilePath))
+        //return InMemoryTokensResolver(FileTokensImporter(tokensFilePath))
     }
 
     private fun getTokensResolverFactory(attributes: EnableAnnotationAttributes): TokensResolverFactory {

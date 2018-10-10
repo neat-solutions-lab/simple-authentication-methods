@@ -1,6 +1,6 @@
 package nsl.sam.method.basicauth.userdetails
 
-import nsl.sam.method.basicauth.usersimporter.impl.LocalFileUsersImporter
+import nsl.sam.method.basicauth.usersimporter.impl.FileUsersImporter
 import nsl.sam.method.basicauth.usersimporter.parser.BasicUserLineParser
 import nsl.sam.method.basicauth.usersimporter.parser.BasicUserLineParsingException
 import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
@@ -15,21 +15,21 @@ internal class InMemoryUsersSourceTest {
 
     @Test
     fun userWithNoRoles() {
-        val localFileUsersImporter = LocalFileUsersImporter("src/test/config/passwords-no-roles.conf")
+        val localFileUsersImporter = FileUsersImporter("src/test/config/passwords-no-roles.conf")
         val usersSource = InMemoryUsersSource(localFileUsersImporter)
         assertEquals(true, usersSource.hasItems())
     }
 
     @Test
     fun testEmptyFile() {
-        val localFileUsersImporter = LocalFileUsersImporter("src/test/config/passwords-empty.conf")
+        val localFileUsersImporter = FileUsersImporter("src/test/config/passwords-empty.conf")
         val usersSource = InMemoryUsersSource(localFileUsersImporter)
         assertEquals(false, usersSource.hasItems())
     }
 
     @Test
     fun testBlankFilePath() {
-        val localFileUsersImporter = LocalFileUsersImporter("")
+        val localFileUsersImporter = FileUsersImporter("")
         val usersSource = InMemoryUsersSource(localFileUsersImporter)
         assertEquals(false, usersSource.hasItems())
     }
@@ -38,7 +38,7 @@ internal class InMemoryUsersSourceTest {
     fun testWrongFileFormat() {
         val path = "src/test/config/passwords-wrong-format.conf"
 
-        val localFileUsersImporter = LocalFileUsersImporter(path)
+        val localFileUsersImporter = FileUsersImporter(path)
 
         val exception = assertThrows(BasicUserLineParsingException::class.java) {
             InMemoryUsersSource(localFileUsersImporter)
@@ -51,10 +51,10 @@ internal class InMemoryUsersSourceTest {
     }
 
     @Test
-    @Disabled("LocalFileUsersImporter has been refactored so that now it silently doesn't return users when source file cannot be found")
+    @Disabled("FileUsersImporter has been refactored so that now it silently doesn't return users when source file cannot be found")
     fun testWrongFilePath() {
 
-        val localFileUsersImporter = LocalFileUsersImporter("not/existing/path")
+        val localFileUsersImporter = FileUsersImporter("not/existing/path")
         assertThrows(FileNotFoundException::class.java) {
             InMemoryUsersSource(localFileUsersImporter)
         }
@@ -62,7 +62,7 @@ internal class InMemoryUsersSourceTest {
 
     @Test
     fun testMixed() {
-        val localFileUsersImporter = LocalFileUsersImporter("src/test/config/passwords-mixed.conf")
+        val localFileUsersImporter = FileUsersImporter("src/test/config/passwords-mixed.conf")
         val usersSource = InMemoryUsersSource(localFileUsersImporter)
         //assertEquals(8, usersSource.usersNumber())
         assertEquals(true, usersSource.hasItems())
@@ -70,7 +70,7 @@ internal class InMemoryUsersSourceTest {
 
     @Test
     fun testIndividualUsersAvailability() {
-        val localFileUsersImporter = LocalFileUsersImporter("src/test/config/passwords-mixed.conf")
+        val localFileUsersImporter = FileUsersImporter("src/test/config/passwords-mixed.conf")
         val usersSource = InMemoryUsersSource(localFileUsersImporter)
 
         val users = arrayOf("test1", "test2", "test3", "test5", "test6", "test8", "test9", "test10")

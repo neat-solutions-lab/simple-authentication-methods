@@ -58,9 +58,6 @@ class NarrowConfTokenAuthFT {
     @Autowired
     private lateinit var securityConfigurer: WebSecurityConfigurerAdapter
 
-    //@Autowired
-    //private lateinit var localFileTokensDetailsService: TokenDetailsService
-
     //
     // Main beans arrangement
     //
@@ -85,15 +82,6 @@ class NarrowConfTokenAuthFT {
         val filter = filterChain.getFilters("/").find { it::class == TokenAuthenticationFilter::class }
         assertNotNull(filter)
     }
-
-    //
-    // Users mappings
-    //
-    //@Test
-    //fun localFileTokensToUserMapperActiveWhenSimpleTokenMethodIsEnabled() {
-    //    val userDetails = localFileTokensDetailsService.loadUserByToken("12345")
-    //    assertEquals("tester", userDetails.username)
-    //}
 
     //
     // Request against MockMVC

@@ -2,19 +2,14 @@ package nsl.sam.functional.tokensimporter
 
 import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.functional.controller.CustomAuthorizationTestController
-import nsl.sam.functional.usersimporter.AnnotationAttributeUsersImporterFT
-import nsl.sam.functional.usersimporter.AnnotationAttributeUsersImporterFTConfiguration
 import nsl.sam.method.token.annotation.SimpleTokenAuthentication
-import nsl.sam.method.token.tokensimporter.factory.TokenFileImporterFactory
-import org.junit.jupiter.api.Assertions.*
+import nsl.sam.method.token.tokensimporter.factory.FileTokenImporterFactory
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar
@@ -27,7 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
         classes = [TokenFileImporterFTConfiguration::class])
 @AutoConfigureMockMvc(secure = false)
-internal class TokenFileImporterFT {
+internal class FileTokensImporterFT {
 
     @Autowired
     lateinit var environment: Environment
@@ -41,7 +36,7 @@ internal class TokenFileImporterFT {
 
         val enableAnnotationAttributes =
                 EnableAnnotationAttributesExtractor.extractAttributes(importingClassMetadata!!)
-        val factory = TokenFileImporterFactory()
+        val factory = FileTokenImporterFactory()
         val importer = factory.create(enableAnnotationAttributes, environment)
 
         importer.reset()
@@ -55,7 +50,7 @@ internal class TokenFileImporterFT {
 
 internal class TokenFileImporterFTImportBeanDefinitionRegistrar : ImportBeanDefinitionRegistrar {
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
-        TokenFileImporterFT.importingClassMetadata = importingClassMetadata
+        FileTokensImporterFT.importingClassMetadata = importingClassMetadata
     }
 }
 

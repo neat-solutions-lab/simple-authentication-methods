@@ -5,14 +5,14 @@ import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributes
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributesExtractor
 import nsl.sam.method.basicauth.usersimporter.UsersImporter
 import nsl.sam.method.basicauth.usersimporter.UsersImporterFactory
-import nsl.sam.method.basicauth.usersimporter.impl.LocalFileUsersImporter
+import nsl.sam.method.basicauth.usersimporter.impl.FileUsersImporter
 import org.springframework.core.env.Environment
 
-class LocalFileUsersImporterFactory : UsersImporterFactory {
+class FileUsersImporterFactory : UsersImporterFactory {
 
     override fun create(attributes: EnableAnnotationAttributes, environment: Environment): UsersImporter {
         val passwordsFilePath = getPasswordsFilePath(attributes, environment)
-        return LocalFileUsersImporter(passwordsFilePath)
+        return FileUsersImporter(passwordsFilePath)
     }
 
     private fun getPasswordsFilePath(attributes: EnableAnnotationAttributes, environment: Environment): String {

@@ -6,7 +6,7 @@ import nsl.sam.method.basicauth.usersimporter.UsersImporter
 import nsl.sam.method.basicauth.usersimporter.UsersImporterFactory
 import nsl.sam.method.basicauth.usersimporter.factory.AnnotationAttributeUsersImporterFactory
 import nsl.sam.method.basicauth.usersimporter.factory.EnvironmentVariableUsersImporterFactory
-import nsl.sam.method.basicauth.usersimporter.factory.LocalFileUsersImporterFactory
+import nsl.sam.method.basicauth.usersimporter.factory.FileUsersImporterFactory
 import nsl.sam.method.basicauth.userssource.UsersSource
 import nsl.sam.method.basicauth.userssource.UsersSourceFactory
 import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
@@ -28,7 +28,7 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
     private fun getUsersImporter(attributes: EnableAnnotationAttributes, environment: Environment): UsersImporter {
         /*
          * Decide which UsersImporter should be used:
-         * - LocalFileUsersImporter
+         * - FileUsersImporter
          * - EnvironmentVariableUsersImporter
          * - AnnotationAttributeUsersImporter
          */
@@ -47,14 +47,14 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
         /*
          * if up to now the UsersImporter could not be selected then return the default one
          */
-        val defaultUsersImporter = LocalFileUsersImporterFactory().create(attributes, environment)
+        val defaultUsersImporter = FileUsersImporterFactory().create(attributes, environment)
         log.info("Selected UsersImporter is the default one: $defaultUsersImporter")
         return defaultUsersImporter
     }
 
     private fun getUsersImportersFactories(): Array<KClass<out UsersImporterFactory>> {
         return arrayOf(
-                LocalFileUsersImporterFactory::class,
+                FileUsersImporterFactory::class,
                 EnvironmentVariableUsersImporterFactory::class,
                 AnnotationAttributeUsersImporterFactory::class
         )

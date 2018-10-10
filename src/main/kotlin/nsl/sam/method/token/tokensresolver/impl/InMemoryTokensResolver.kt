@@ -3,10 +3,8 @@ package nsl.sam.method.token.tokensresolver.impl
 import nsl.sam.logger.logger
 import nsl.sam.method.token.token.ResolvedToken
 import nsl.sam.method.token.tokensimporter.TokensImporter
-import nsl.sam.method.token.tokensimporter.impl.TokenFileImporter
 import nsl.sam.method.token.tokensresolver.TokensResolver
 import nsl.sam.utils.prune
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.BadCredentialsException
 import javax.annotation.PostConstruct
 

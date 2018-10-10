@@ -8,7 +8,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 
-class TokenFileImporter(val path: String) : TokensImporter {
+class FileTokensImporter(val path: String) : TokensImporter {
 
     companion object {
         val log by logger()

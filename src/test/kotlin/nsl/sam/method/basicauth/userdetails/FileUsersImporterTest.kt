@@ -1,15 +1,15 @@
 package nsl.sam.method.basicauth.userdetails
 
-import nsl.sam.method.basicauth.usersimporter.impl.LocalFileUsersImporter
+import nsl.sam.method.basicauth.usersimporter.impl.FileUsersImporter
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 
-internal class LocalFileUsersImporterTest {
+internal class FileUsersImporterTest {
 
     @Test
     fun oneUserWithNoAnyAdditionalLines() {
-        val importer = LocalFileUsersImporter("src/test/config/passwords-one-user.conf")
+        val importer = FileUsersImporter("src/test/config/passwords-one-user.conf")
         importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
         for ((user, password, roles) in importer) {
@@ -21,7 +21,7 @@ internal class LocalFileUsersImporterTest {
 
     @Test
     fun oneUserWithOneEmptyLineAtTop() {
-        val importer = LocalFileUsersImporter("src/test/config/passwords-one-user-with-empty-line-at-top.conf")
+        val importer = FileUsersImporter("src/test/config/passwords-one-user-with-empty-line-at-top.conf")
         importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
         for ((user, password, roles) in importer) {
@@ -33,7 +33,7 @@ internal class LocalFileUsersImporterTest {
 
     @Test
     fun oneUserWithOneEmptyLineAtBottom() {
-        val importer = LocalFileUsersImporter("src/test/config/passwords-one-user-with-empty-line-at-bottom.conf")
+        val importer = FileUsersImporter("src/test/config/passwords-one-user-with-empty-line-at-bottom.conf")
         importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
         for ((user, password, roles) in importer) {
@@ -45,7 +45,7 @@ internal class LocalFileUsersImporterTest {
 
     @Test
     fun emptyFileTest() {
-        val importer = LocalFileUsersImporter("src/test/config/passwords-empty.conf")
+        val importer = FileUsersImporter("src/test/config/passwords-empty.conf")
         importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
         for ((user, password, roles) in importer) {
@@ -57,7 +57,7 @@ internal class LocalFileUsersImporterTest {
 
     @Test
     fun onlyCommentsAndBlankLinesFileTest() {
-        val importer = LocalFileUsersImporter("src/test/config/passwords-comments-and-blank-lines.conf")
+        val importer = FileUsersImporter("src/test/config/passwords-comments-and-blank-lines.conf")
         importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
         for ((user, password, roles) in importer) {
@@ -69,7 +69,7 @@ internal class LocalFileUsersImporterTest {
 
     @Test
     fun mixedContentTest() {
-        val importer = LocalFileUsersImporter("src/test/config/passwords-mixed.conf")
+        val importer = FileUsersImporter("src/test/config/passwords-mixed.conf")
         importer.reset()
         val resultAccumulator = mutableListOf<Triple<String, String, Array<String>>>()
         for ((user, password, roles) in importer) {

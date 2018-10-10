@@ -6,7 +6,7 @@ import nsl.sam.method.basicauth.usersimporter.parser.BasicUserLineParser
 import java.io.File
 import java.util.*
 
-class LocalFileUsersImporter(val path: String) : UsersImporter {
+class FileUsersImporter(val path: String) : UsersImporter {
 
     override fun hasItems(): Boolean {
         if (!File(path).exists()) return false
