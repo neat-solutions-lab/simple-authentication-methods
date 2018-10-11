@@ -3,7 +3,6 @@ package nsl.sam.functional.tokensimporter
 import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.method.token.annotation.SimpleTokenAuthentication
-import nsl.sam.method.token.token.ResolvedToken
 import nsl.sam.method.token.tokensimporter.TokensImporter
 import nsl.sam.method.token.tokensimporter.factory.FileTokenImporterFactory
 import org.assertj.core.api.Assertions
@@ -24,9 +23,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-        classes = [TokenFileImporterFTConfiguration::class])
+        classes = [MultipleTokensFileTokensImporterFTConfiguration::class])
 @AutoConfigureMockMvc(secure = false)
-internal class FileTokensImporterFT {
+internal class MultipleTokensFileTokensImporterFT {
 
     companion object {
         var importingClassMetadata: AnnotationMetadata? = null
@@ -46,25 +45,29 @@ internal class FileTokensImporterFT {
     }
 
     @Test
-    fun importerProvidesOneWellKnownToken() {
+    fun loopOverBeingImportedTokensAndCountTokensAndUsers() {
 
-        var resolvedToken: ResolvedToken? = null
         var tokensNumber = 0
+        val usersSet: MutableSet<String> = mutableSetOf()
 
         importer.reset()
         importer.use {
             for(token in it) {
                 println("token: $token")
-                resolvedToken = token
                 tokensNumber++
+                usersSet.add(token.userAndRole.name)
             }
         }
 
-        Assertions.assertThat(tokensNumber).isEqualTo(1)
-        Assertions.assertThat(resolvedToken?.tokenValue).isEqualTo("12345")
-        Assertions.assertThat(resolvedToken?.userAndRole?.roles).hasSameElementsAs(
-                listOf("ROLE_USER", "ROLE_ADMIN", "ROLE_ROOT")
-        )
+        /*
+         * it should be 10 tokens
+         */
+        Assertions.assertThat(tokensNumber).isEqualTo(10)
+
+        /*
+         * it should be 6 distinct users (some tokens map to the same users)
+         */
+        Assertions.assertThat(usersSet.size).isEqualTo(6)
     }
 
     @Test
@@ -74,14 +77,14 @@ internal class FileTokensImporterFT {
 
 }
 
-internal class TokenFileImporterFTImportBeanDefinitionRegistrar : ImportBeanDefinitionRegistrar {
+class MultipleTokensFileTokensImporterFTImportBeanDefinitionRegistrar : ImportBeanDefinitionRegistrar {
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
-        FileTokensImporterFT.importingClassMetadata = importingClassMetadata
+        MultipleTokensFileTokensImporterFT.importingClassMetadata = importingClassMetadata
     }
 }
 
 @Configuration
 @EnableSimpleAuthenticationMethods
-@SimpleTokenAuthentication(tokensFilePath = "src/functional-test/config/tokens.conf")
-@Import(TokenFileImporterFTImportBeanDefinitionRegistrar::class)
-internal class TokenFileImporterFTConfiguration
+@SimpleTokenAuthentication(tokensFilePath = "src/functional-test/config/multiple-tokens.conf")
+@Import(MultipleTokensFileTokensImporterFTImportBeanDefinitionRegistrar::class)
+class MultipleTokensFileTokensImporterFTConfiguration

@@ -3,7 +3,6 @@ package nsl.sam.functional.tokensimporter
 import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.method.token.annotation.SimpleTokenAuthentication
-import nsl.sam.method.token.token.ResolvedToken
 import nsl.sam.method.token.tokensimporter.TokensImporter
 import nsl.sam.method.token.tokensimporter.factory.FileTokenImporterFactory
 import org.assertj.core.api.Assertions
@@ -21,12 +20,15 @@ import org.springframework.core.env.Environment
 import org.springframework.core.type.AnnotationMetadata
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
+/**
+ * tokens file pointed by the annotation configuration attribute does not exist
+ */
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-        classes = [TokenFileImporterFTConfiguration::class])
+        classes = [FileNotPresentFileTokensImporterFTConfiguration::class])
 @AutoConfigureMockMvc(secure = false)
-internal class FileTokensImporterFT {
+class FileNotPresentFileTokensImporterFT {
 
     companion object {
         var importingClassMetadata: AnnotationMetadata? = null
@@ -46,42 +48,34 @@ internal class FileTokensImporterFT {
     }
 
     @Test
-    fun importerProvidesOneWellKnownToken() {
-
-        var resolvedToken: ResolvedToken? = null
+    fun zeroTokensWhenTokensFileIsAbsent() {
         var tokensNumber = 0
 
         importer.reset()
         importer.use {
             for(token in it) {
                 println("token: $token")
-                resolvedToken = token
                 tokensNumber++
             }
         }
 
-        Assertions.assertThat(tokensNumber).isEqualTo(1)
-        Assertions.assertThat(resolvedToken?.tokenValue).isEqualTo("12345")
-        Assertions.assertThat(resolvedToken?.userAndRole?.roles).hasSameElementsAs(
-                listOf("ROLE_USER", "ROLE_ADMIN", "ROLE_ROOT")
-        )
+        Assertions.assertThat(tokensNumber).isEqualTo(0)
     }
 
     @Test
-    fun hasItemsReturnsTrue() {
-        Assertions.assertThat(importer.hasItems()).isEqualTo(true)
+    fun hasItemsReturnsFalseWhenTokensFileIsAbsent() {
+        Assertions.assertThat(importer.hasItems()).isEqualTo(false)
     }
-
 }
 
-internal class TokenFileImporterFTImportBeanDefinitionRegistrar : ImportBeanDefinitionRegistrar {
+class FileNotPresentFileTokensImporterFTImportBeanDefinitionRegistrar : ImportBeanDefinitionRegistrar {
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
-        FileTokensImporterFT.importingClassMetadata = importingClassMetadata
+        FileNotPresentFileTokensImporterFT.importingClassMetadata = importingClassMetadata
     }
 }
 
 @Configuration
 @EnableSimpleAuthenticationMethods
-@SimpleTokenAuthentication(tokensFilePath = "src/functional-test/config/tokens.conf")
-@Import(TokenFileImporterFTImportBeanDefinitionRegistrar::class)
-internal class TokenFileImporterFTConfiguration
+@SimpleTokenAuthentication(tokensFilePath = "src/functional-test/config/absent-file-tokens.conf")
+@Import(FileNotPresentFileTokensImporterFTImportBeanDefinitionRegistrar::class)
+class FileNotPresentFileTokensImporterFTConfiguration

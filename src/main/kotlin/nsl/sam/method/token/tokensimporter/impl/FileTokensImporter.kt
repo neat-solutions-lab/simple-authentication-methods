@@ -18,6 +18,16 @@ class FileTokensImporter(val path: String) : TokensImporter {
 
     private var currentLine: String? = null
 
+    init {
+        when {
+            path.isBlank() ->
+                log.info("File path provided to ${this::class.simpleName} is an empty string. Importer silently will provide zero tokens.")
+            !File(path).exists() ->
+                log.warn("File $path passed to ${this::class.simpleName} constructor does not exist. " +
+                        "Importer silently will provide zero tokens.")
+        }
+    }
+
     override fun reset() {
         if (!File(path).exists()) return
         close()
@@ -60,7 +70,7 @@ class FileTokensImporter(val path: String) : TokensImporter {
 
         do {
             line = bufferedReader?.readLine()
-        } while (line != null && line.trim().startsWith("#"))
+        } while (line != null && (line.trim().startsWith("#") || line.isBlank()))
 
         if (line == null) {
             bufferedReader?.close()

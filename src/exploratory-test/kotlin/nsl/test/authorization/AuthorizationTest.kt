@@ -20,7 +20,7 @@ class AuthorizationTest {
     lateinit var webApplicationContext: WebApplicationContext
 
     @Test
-    fun test() {
+    fun exploratoryCode() {
         try {
             webApplicationContext.getBean("roleVoter")
             println("roleVoter FOUND")
@@ -28,17 +28,13 @@ class AuthorizationTest {
             println("roleVoter NOT FOUND")
         }
 
-
         try {
             webApplicationContext.getBean(RoleVoter::class.java)
             println("${RoleVoter::class.qualifiedName} FOUND")
         } catch (e: Exception) {
             println("${RoleVoter::class.qualifiedName} NOT FOUND")
         }
-
-
     }
-
 }
 
 @Configuration
