@@ -30,7 +30,7 @@ class InMemoryUsersSource(private val usersImporter: UsersImporter) : UsersSourc
         usersImporter.reset()
         usersImporter.use { importer ->
             for ((user, pass, roles) in importer) {
-                log.debug("Adding to local map user: $user")
+                log.debug("Adding user to in-memory users map: $user")
                 usersPasswordsAndRolesMap[user] = Pair(pass, roles)
             }
         }

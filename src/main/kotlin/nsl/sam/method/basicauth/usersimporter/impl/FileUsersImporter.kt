@@ -3,10 +3,25 @@ package nsl.sam.method.basicauth.usersimporter.impl
 import nsl.sam.logger.logger
 import nsl.sam.method.basicauth.usersimporter.UsersImporter
 import nsl.sam.method.basicauth.usersimporter.parser.BasicUserLineParser
+import nsl.sam.method.token.tokensimporter.impl.FileTokensImporter
 import java.io.File
 import java.util.*
 
 class FileUsersImporter(val path: String) : UsersImporter {
+
+    companion object {
+        private val log by logger()
+    }
+
+    init {
+        when {
+            path.isNotBlank() ->
+                log.info("File path provided to ${this::class.simpleName} is an empty string. Importer will silently provide zero users.")
+            !File(path).exists() ->
+                log.warn("File $path passed to ${this::class.simpleName} constructor does not exist. " +
+                        "Importer silently will provide zero users.")
+        }
+    }
 
     override fun hasItems(): Boolean {
         if (!File(path).exists()) return false
@@ -22,10 +37,6 @@ class FileUsersImporter(val path: String) : UsersImporter {
         close()
         scanner = Scanner(File(path))
         currentLine = null
-    }
-
-    companion object {
-        private val log by logger()
     }
 
     private var currentLine: String? = null

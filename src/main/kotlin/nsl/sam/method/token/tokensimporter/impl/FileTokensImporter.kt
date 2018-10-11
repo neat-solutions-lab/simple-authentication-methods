@@ -21,7 +21,7 @@ class FileTokensImporter(val path: String) : TokensImporter {
     init {
         when {
             path.isBlank() ->
-                log.info("File path provided to ${this::class.simpleName} is an empty string. Importer silently will provide zero tokens.")
+                log.info("File path provided to ${this::class.simpleName} is an empty string. Importer will silently provide zero tokens.")
             !File(path).exists() ->
                 log.warn("File $path passed to ${this::class.simpleName} constructor does not exist. " +
                         "Importer silently will provide zero tokens.")

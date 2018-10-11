@@ -40,7 +40,7 @@ class InMemoryTokensResolver(private val tokensImporter: TokensImporter): Tokens
             log.debug("Importing tokens from file")
 
             for (token in tokensImporter) {
-                log.debug("Token from parser: $token")
+                log.debug("Adding token to in-memory tokens map: $token")
                 tokensMap[token.tokenValue] = token
             }
         }

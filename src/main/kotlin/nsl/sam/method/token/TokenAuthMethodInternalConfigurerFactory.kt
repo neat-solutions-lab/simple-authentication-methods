@@ -30,8 +30,8 @@ class TokenAuthMethodInternalConfigurerFactory(override val name: String) : Auth
     override fun create(attributes: EnableAnnotationAttributes): AuthMethodInternalConfigurer {
 
         return TokenAuthMethodInternalConfigurer(
-                getTokenDetailsService(attributes),//tokenDetailsService,
-                getAuthenticationEntryPoint(attributes)//authenticationEntryPoint
+                getTokenDetailsService(attributes),
+                getAuthenticationEntryPoint(attributes)
         )
     }
 
@@ -54,7 +54,6 @@ class TokenAuthMethodInternalConfigurerFactory(override val name: String) : Auth
     private fun getTokensResolver(attributes: EnableAnnotationAttributes): TokensResolver {
         val resolverFactory = getTokensResolverFactory(attributes)
         return resolverFactory.create(attributes, environment)
-        //return InMemoryTokensResolver(FileTokensImporter(tokensFilePath))
     }
 
     private fun getTokensResolverFactory(attributes: EnableAnnotationAttributes): TokensResolverFactory {
