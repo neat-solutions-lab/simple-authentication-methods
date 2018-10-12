@@ -4,7 +4,7 @@ import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.envvar.EnvironmentVariablesAccessor
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributesExtractor
 import nsl.sam.method.basicauth.usersimporter.UsersImporter
-import nsl.sam.method.basicauth.usersimporter.parser.BasicUserLineParser
+import nsl.sam.method.basicauth.usersimporter.parser.PasswordLineParser
 
 class EnvironmentVariableUsersImporter(
         attributes: EnableAnnotationAttributes,
@@ -45,6 +45,6 @@ class EnvironmentVariableUsersImporter(
 
     override fun next(): Triple<String, String, Array<String>> {
         val userDataAsRawString = usersArray[currentIndex++]
-        return BasicUserLineParser.parseToTriple(userDataAsRawString)
+        return PasswordLineParser.parseToTriple(userDataAsRawString)
     }
 }

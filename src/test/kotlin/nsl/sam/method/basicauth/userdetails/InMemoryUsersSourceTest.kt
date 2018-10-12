@@ -1,8 +1,8 @@
 package nsl.sam.method.basicauth.userdetails
 
 import nsl.sam.method.basicauth.usersimporter.impl.FileUsersImporter
-import nsl.sam.method.basicauth.usersimporter.parser.BasicUserLineParser
-import nsl.sam.method.basicauth.usersimporter.parser.BasicUserLineParsingException
+import nsl.sam.method.basicauth.usersimporter.parser.PasswordLineParser
+import nsl.sam.method.basicauth.usersimporter.parser.PasswordLineParsingException
 import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -40,12 +40,12 @@ internal class InMemoryUsersSourceTest {
 
         val localFileUsersImporter = FileUsersImporter(path)
 
-        val exception = assertThrows(BasicUserLineParsingException::class.java) {
+        val exception = assertThrows(PasswordLineParsingException::class.java) {
             InMemoryUsersSource(localFileUsersImporter)
         }
 
         assertEquals(
-                String.format(BasicUserLineParser.SYNTAX_ERROR_MESSAGE, path),
+                String.format(PasswordLineParser.SYNTAX_ERROR_MESSAGE, path),
                 exception.message
         )
     }

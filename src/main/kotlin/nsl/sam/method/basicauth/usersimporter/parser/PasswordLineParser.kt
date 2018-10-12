@@ -1,21 +1,21 @@
 package nsl.sam.method.basicauth.usersimporter.parser
 
-object BasicUserLineParser {
+object PasswordLineParser {
 
     const val SYNTAX_ERROR_MESSAGE = "User defining line syntax error. Could not parse passed string line into Triple with user, password and roles."
 
     fun parseToTriple(line: String): Triple<String, String, Array<String>> {
 
         if (line.isBlank())
-            throw BasicUserLineParsingException(SYNTAX_ERROR_MESSAGE)
+            throw PasswordLineParsingException(SYNTAX_ERROR_MESSAGE)
 
         val lineParts: List<String> = line.trim().split(Regex("\\s+"))
         if (lineParts.isEmpty())
-            throw BasicUserLineParsingException(SYNTAX_ERROR_MESSAGE)
+            throw PasswordLineParsingException(SYNTAX_ERROR_MESSAGE)
 
         val userAndPassword: List<String> = lineParts[0].split(":")
         if (userAndPassword.size != 2)
-            throw BasicUserLineParsingException(SYNTAX_ERROR_MESSAGE)
+            throw PasswordLineParsingException(SYNTAX_ERROR_MESSAGE)
 
         val user = userAndPassword[0].trim()
         val pass = userAndPassword[1].trim()

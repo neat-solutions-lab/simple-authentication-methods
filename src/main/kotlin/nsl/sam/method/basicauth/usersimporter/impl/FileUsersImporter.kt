@@ -2,8 +2,7 @@ package nsl.sam.method.basicauth.usersimporter.impl
 
 import nsl.sam.logger.logger
 import nsl.sam.method.basicauth.usersimporter.UsersImporter
-import nsl.sam.method.basicauth.usersimporter.parser.BasicUserLineParser
-import nsl.sam.method.token.tokensimporter.impl.FileTokensImporter
+import nsl.sam.method.basicauth.usersimporter.parser.PasswordLineParser
 import java.io.File
 import java.util.*
 
@@ -75,7 +74,7 @@ class FileUsersImporter(val path: String) : UsersImporter {
 
         if (currentLine == null) throw IllegalStateException("next() method used on null currentLine")
 
-        return BasicUserLineParser.parseToTriple(currentLine!!)
+        return PasswordLineParser.parseToTriple(currentLine!!)
 
     }
 }

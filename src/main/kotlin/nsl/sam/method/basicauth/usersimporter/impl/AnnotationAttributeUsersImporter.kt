@@ -3,7 +3,7 @@ package nsl.sam.method.basicauth.usersimporter.impl
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributesExtractor
 import nsl.sam.method.basicauth.usersimporter.UsersImporter
-import nsl.sam.method.basicauth.usersimporter.parser.BasicUserLineParser
+import nsl.sam.method.basicauth.usersimporter.parser.PasswordLineParser
 
 /**
  * Imports users provided explicitly with `users` attribute of the
@@ -38,6 +38,6 @@ class AnnotationAttributeUsersImporter(val attributes: EnableAnnotationAttribute
 
     override fun next(): Triple<String, String, Array<String>> {
         val userDataAsRawString = usersArray[currentIndex++]
-        return BasicUserLineParser.parseToTriple(userDataAsRawString)
+        return PasswordLineParser.parseToTriple(userDataAsRawString)
     }
 }
