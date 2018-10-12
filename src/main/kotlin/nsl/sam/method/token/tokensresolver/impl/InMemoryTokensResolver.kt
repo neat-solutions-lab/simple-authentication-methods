@@ -3,12 +3,13 @@ package nsl.sam.method.token.tokensresolver.impl
 import nsl.sam.logger.logger
 import nsl.sam.method.token.token.ResolvedToken
 import nsl.sam.method.token.tokensimporter.TokensImporter
+import nsl.sam.method.token.tokensimporter.experimental.TokenCredentialsImporter
 import nsl.sam.method.token.tokensresolver.TokensResolver
 import nsl.sam.utils.prune
 import org.springframework.security.authentication.BadCredentialsException
 import javax.annotation.PostConstruct
 
-class InMemoryTokensResolver(private val tokensImporter: TokensImporter): TokensResolver {
+class InMemoryTokensResolver(private val tokensImporter: TokenCredentialsImporter): TokensResolver {
 
     companion object {
         val log by logger()

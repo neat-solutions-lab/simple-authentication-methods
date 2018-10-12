@@ -2,6 +2,8 @@ package nsl.sam.method.token.tokensresolver.factory
 
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.method.token.tokensimporter.TokensImporter
+import nsl.sam.method.token.tokensimporter.experimental.TokenCredentialsImporter
+import nsl.sam.method.token.tokensimporter.experimental.reader.FileTokenCredentialsImporterFactory
 import nsl.sam.method.token.tokensimporter.factory.FileTokenImporterFactory
 import nsl.sam.method.token.tokensresolver.TokensResolver
 import nsl.sam.method.token.tokensresolver.TokensResolverFactory
@@ -15,8 +17,9 @@ class InMemoryTokensResolverFactory : TokensResolverFactory {
         return InMemoryTokensResolver(tokensImporter)
     }
 
-    private fun getTokensImporter(attributes: EnableAnnotationAttributes, environment: Environment): TokensImporter {
-        val factory = FileTokenImporterFactory()
+    private fun getTokensImporter(attributes: EnableAnnotationAttributes, environment: Environment): TokenCredentialsImporter {
+        //val factory = FileTokenImporterFactory()
+        val factory = FileTokenCredentialsImporterFactory()
         return factory.create(attributes, environment)
     }
 }
