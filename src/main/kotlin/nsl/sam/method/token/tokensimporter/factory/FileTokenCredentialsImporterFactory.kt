@@ -1,13 +1,15 @@
-package nsl.sam.method.token.tokensimporter.experimental.reader
+package nsl.sam.method.token.tokensimporter.factory
 
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.method.token.annotation.SimpleTokenAuthenticationAttibutesExtractor
 import nsl.sam.method.token.annotation.SimpleTokenAuthenticationAttributes
-import nsl.sam.method.token.tokensimporter.experimental.TokenCredentialsImporter
-import nsl.sam.method.token.tokensimporter.experimental.TokenCredentialsImporterFactory
+import nsl.sam.method.token.tokensimporter.TokenCredentialsImporter
+import nsl.sam.method.token.tokensimporter.TokenCredentialsImporterFactory
+import nsl.sam.method.token.tokensimporter.reader.FileTokensReader
 import org.springframework.core.env.Environment
 
 class FileTokenCredentialsImporterFactory : TokenCredentialsImporterFactory {
+
     override fun create(attributes: EnableAnnotationAttributes, environment: Environment): TokenCredentialsImporter {
 
         val path = getTokensFilePath(attributes, environment)
@@ -39,5 +41,4 @@ class FileTokenCredentialsImporterFactory : TokenCredentialsImporterFactory {
 
         return ""
     }
-
 }

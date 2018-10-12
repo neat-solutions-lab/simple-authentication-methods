@@ -1,4 +1,4 @@
-package nsl.sam.method.token.tokensimporter.experimental.reader
+package nsl.sam.method.token.tokensimporter.reader
 
 import nsl.sam.importer.CredentialsReader
 import nsl.sam.logger.logger
@@ -23,7 +23,6 @@ class FileTokensReader(val path: String) : CredentialsReader {
                         "Reader silently will provide zero tokens.")
         }
     }
-
 
     override fun readCredentials(): String? {
 

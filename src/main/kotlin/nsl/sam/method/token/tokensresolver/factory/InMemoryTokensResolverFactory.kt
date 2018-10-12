@@ -1,8 +1,8 @@
 package nsl.sam.method.token.tokensresolver.factory
 
 import nsl.sam.core.annotation.EnableAnnotationAttributes
-import nsl.sam.method.token.tokensimporter.experimental.TokenCredentialsImporter
-import nsl.sam.method.token.tokensimporter.experimental.reader.FileTokenCredentialsImporterFactory
+import nsl.sam.method.token.tokensimporter.TokenCredentialsImporter
+import nsl.sam.method.token.tokensimporter.factory.FileTokenCredentialsImporterFactory
 import nsl.sam.method.token.tokensresolver.TokensResolver
 import nsl.sam.method.token.tokensresolver.TokensResolverFactory
 import nsl.sam.method.token.tokensresolver.impl.InMemoryTokensResolver

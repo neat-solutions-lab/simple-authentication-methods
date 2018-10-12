@@ -2,8 +2,7 @@ package nsl.sam.method.token.tokensresolver.impl
 
 import nsl.sam.logger.logger
 import nsl.sam.method.token.token.ResolvedToken
-import nsl.sam.method.token.tokensimporter.TokensImporter
-import nsl.sam.method.token.tokensimporter.experimental.TokenCredentialsImporter
+import nsl.sam.method.token.tokensimporter.TokenCredentialsImporter
 import nsl.sam.method.token.tokensresolver.TokensResolver
 import nsl.sam.utils.prune
 import org.springframework.security.authentication.BadCredentialsException

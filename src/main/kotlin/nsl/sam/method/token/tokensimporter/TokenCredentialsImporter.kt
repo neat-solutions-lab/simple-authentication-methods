@@ -1,9 +1,9 @@
-package nsl.sam.method.token.tokensimporter.experimental
+package nsl.sam.method.token.tokensimporter
 
 import nsl.sam.importer.CredentialsImporter
 import nsl.sam.importer.CredentialsReader
 import nsl.sam.method.token.token.ResolvedToken
-import nsl.sam.method.token.tokensimporter.experimental.parser.TokensParser
+import nsl.sam.method.token.tokensimporter.parser.TokensParser
 
 class TokenCredentialsImporter(credentialsReader: CredentialsReader) : CredentialsImporter<ResolvedToken>(
         TokensParser(), credentialsReader

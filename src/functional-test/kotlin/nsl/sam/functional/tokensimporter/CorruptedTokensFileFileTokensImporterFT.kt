@@ -1,7 +1,7 @@
 package nsl.sam.functional.tokensimporter
 
-import nsl.sam.method.token.tokensimporter.experimental.TokenCredentialsImporter
-import nsl.sam.method.token.tokensimporter.experimental.reader.FileTokensReader
+import nsl.sam.method.token.tokensimporter.TokenCredentialsImporter
+import nsl.sam.method.token.tokensimporter.reader.FileTokensReader
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 

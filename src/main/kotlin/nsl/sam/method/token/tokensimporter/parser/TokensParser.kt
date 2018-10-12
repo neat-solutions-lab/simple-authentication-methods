@@ -1,4 +1,4 @@
-package nsl.sam.method.token.tokensimporter.experimental.parser
+package nsl.sam.method.token.tokensimporter.parser
 
 import nsl.sam.importer.CredentialsParser
 import nsl.sam.importer.CredentialsParsingException

@@ -1,7 +1,7 @@
 package nsl.sam.method.token.tokensresolver.impl
 
-import nsl.sam.method.token.tokensimporter.experimental.TokenCredentialsImporter
-import nsl.sam.method.token.tokensimporter.experimental.reader.FileTokensReader
+import nsl.sam.method.token.tokensimporter.TokenCredentialsImporter
+import nsl.sam.method.token.tokensimporter.reader.FileTokensReader
 import org.junit.jupiter.api.Test
 
 internal class InMemoryTokensResolverTest {
