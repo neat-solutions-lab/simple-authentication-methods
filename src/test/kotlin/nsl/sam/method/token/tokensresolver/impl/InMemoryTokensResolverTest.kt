@@ -1,7 +1,7 @@
 package nsl.sam.method.token.tokensresolver.impl
 
-import nsl.sam.method.token.tokensimporter.TokenCredentialsImporter
-import nsl.sam.method.token.tokensimporter.reader.FileTokensReader
+import nsl.sam.method.token.tokensimporter.TokensCredentialsImporter
+import nsl.sam.importer.reader.FileCredentialsReader
 import org.junit.jupiter.api.Test
 
 internal class InMemoryTokensResolverTest {
@@ -10,7 +10,7 @@ internal class InMemoryTokensResolverTest {
     fun test() {
 
         //val fileTokenImporter = FileTokensImporter("src/test/config/tokens.conf")
-        val fileTokenImporter = TokenCredentialsImporter(FileTokensReader("src/test/config/tokens.conf"))
+        val fileTokenImporter = TokensCredentialsImporter(FileCredentialsReader("src/test/config/tokens.conf"))
         val inMemoryTokensResolver = InMemoryTokensResolver(fileTokenImporter)
 
         val resolvedToken = inMemoryTokensResolver.getResolvedToken("12345")

@@ -6,7 +6,7 @@ import nsl.sam.logger.logger
 import nsl.sam.method.token.token.ResolvedToken
 import nsl.sam.method.token.token.UserAndRoles
 
-class TokensParser: CredentialsParser<ResolvedToken> {
+class TokensParser : CredentialsParser<ResolvedToken> {
 
     companion object {
         val log by logger()

@@ -3,7 +3,7 @@ package nsl.sam.functional.tokensimporter
 import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.method.token.annotation.SimpleTokenAuthentication
-import nsl.sam.method.token.tokensimporter.TokenCredentialsImporter
+import nsl.sam.method.token.tokensimporter.TokensCredentialsImporter
 import nsl.sam.method.token.tokensimporter.factory.FileTokenCredentialsImporterFactory
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -34,7 +34,7 @@ class OnlyCommentsFileTokensImporterFT {
     @Autowired
     lateinit var environment: Environment
 
-    lateinit var importer: TokenCredentialsImporter
+    lateinit var importer: TokensCredentialsImporter
 
     @BeforeEach
     fun createFileTokensImporter() {

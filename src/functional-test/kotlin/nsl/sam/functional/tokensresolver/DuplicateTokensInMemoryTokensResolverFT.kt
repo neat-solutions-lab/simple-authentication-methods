@@ -1,7 +1,7 @@
 package nsl.sam.functional.tokensresolver
 
-import nsl.sam.method.token.tokensimporter.TokenCredentialsImporter
-import nsl.sam.method.token.tokensimporter.reader.FileTokensReader
+import nsl.sam.method.token.tokensimporter.TokensCredentialsImporter
+import nsl.sam.importer.reader.FileCredentialsReader
 import nsl.sam.method.token.tokensresolver.impl.InMemoryTokensResolver
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
@@ -11,7 +11,7 @@ class DuplicateTokensInMemoryTokensResolverFT {
     @Test
     fun inCaseOfDuplicateTokensTheLastOneWins() {
         //val fileTokensImporter = FileTokensImporter("src/functional-test/config/duplicate-tokens.conf")
-        val fileTokensImporter = TokenCredentialsImporter(FileTokensReader("src/functional-test/config/duplicate-tokens.conf"))
+        val fileTokensImporter = TokensCredentialsImporter(FileCredentialsReader("src/functional-test/config/duplicate-tokens.conf"))
         val inMemoryTokensResolver = InMemoryTokensResolver(fileTokensImporter)
         val resolvedToken = inMemoryTokensResolver.getResolvedToken("1234567891")
 

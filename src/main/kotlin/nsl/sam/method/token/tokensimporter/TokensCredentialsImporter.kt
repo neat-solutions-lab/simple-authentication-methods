@@ -5,6 +5,6 @@ import nsl.sam.importer.CredentialsReader
 import nsl.sam.method.token.token.ResolvedToken
 import nsl.sam.method.token.tokensimporter.parser.TokensParser
 
-class TokenCredentialsImporter(credentialsReader: CredentialsReader) : CredentialsImporter<ResolvedToken>(
+class TokensCredentialsImporter(credentialsReader: CredentialsReader) : CredentialsImporter<ResolvedToken>(
         TokensParser(), credentialsReader
 )

@@ -1,4 +1,4 @@
-package nsl.sam.method.token.tokensimporter.reader
+package nsl.sam.importer.reader
 
 import nsl.sam.importer.CredentialsReader
 import nsl.sam.logger.logger
@@ -6,7 +6,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 
-class FileTokensReader(val path: String) : CredentialsReader {
+class FileCredentialsReader(val path: String) : CredentialsReader {
 
     companion object {
         val log by logger()
@@ -17,10 +17,10 @@ class FileTokensReader(val path: String) : CredentialsReader {
     init {
         when {
             path.isBlank() ->
-                log.info("File path provided to ${this::class.simpleName} is an empty string. Reader will silently provide zero tokens.")
+                log.info("File path provided to ${this::class.simpleName} is an empty string. Reader will silently provide zero credentials.")
             !File(path).exists() ->
                 log.warn("File $path passed to ${this::class.simpleName} constructor does not exist. " +
-                        "Reader silently will provide zero tokens.")
+                        "Reader will silently provide zero credentials.")
         }
     }
 

@@ -12,6 +12,10 @@ class FileUsersImporter(val path: String) : UsersImporter {
         private val log by logger()
     }
 
+    private var currentLine: String? = null
+
+    private var scanner: Scanner? = null
+
     init {
         when {
             path.isNotBlank() ->
@@ -37,10 +41,6 @@ class FileUsersImporter(val path: String) : UsersImporter {
         scanner = Scanner(File(path))
         currentLine = null
     }
-
-    private var currentLine: String? = null
-
-    private var scanner: Scanner? = null
 
     override fun close() {
         scanner?.close()
