@@ -1,21 +1,27 @@
 package nsl.sam.functional.tokensimporter
 
-import nsl.sam.method.token.tokensimporter.impl.FileTokensImporter
+import nsl.sam.method.token.tokensimporter.experimental.TokenCredentialsImporter
+import nsl.sam.method.token.tokensimporter.experimental.reader.FileTokensReader
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
 class CorruptedTokensFileFileTokensImporterFT {
 
     @Test
-    fun test() {
-        // TODO: Finish it after changes to TokensImporter(s)
-        val fileTokensImporter = FileTokensImporter("src/functional-test/config/corrupted-tokens.conf")
-        fileTokensImporter.reset()
-        //fileTokensImporter.use {
-        //    for (token in it) {
-        //        println("token: $token")
-        //    }
-        //}
+    fun noErrorsWhenFileWithCorruptedTokensIsProcessed() {
 
+        val fileTokensImporter = TokenCredentialsImporter(FileTokensReader("src/functional-test/config/corrupted-tokens.conf"))
+
+        var tokensCounter = 0
+
+        fileTokensImporter.reset()
+        fileTokensImporter.use {
+            for (token in it) {
+                println("token: $token")
+                tokensCounter++
+            }
+        }
+        Assertions.assertThat(tokensCounter).isEqualTo(3)
     }
 
 }

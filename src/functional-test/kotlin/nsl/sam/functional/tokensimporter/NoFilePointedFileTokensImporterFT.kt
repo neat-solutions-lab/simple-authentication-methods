@@ -2,8 +2,8 @@ package nsl.sam.functional.tokensimporter
 
 import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.method.token.tokensimporter.TokensImporter
-import nsl.sam.method.token.tokensimporter.factory.FileTokenImporterFactory
+import nsl.sam.method.token.tokensimporter.experimental.TokenCredentialsImporter
+import nsl.sam.method.token.tokensimporter.experimental.reader.FileTokenCredentialsImporterFactory
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -33,13 +33,13 @@ class NoFilePointedFileTokensImporterFT {
     @Autowired
     lateinit var environment: Environment
 
-    lateinit var importer: TokensImporter
+    lateinit var importer: TokenCredentialsImporter
 
     @BeforeEach
     fun createFileTokensImporter() {
         val enableAnnotationAttributes =
                 EnableAnnotationAttributesExtractor.extractAttributes(importingClassMetadata!!)
-        val factory = FileTokenImporterFactory()
+        val factory = FileTokenCredentialsImporterFactory()
         importer = factory.create(enableAnnotationAttributes, environment)
     }
 

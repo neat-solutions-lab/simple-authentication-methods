@@ -68,6 +68,7 @@ open class CredentialsImporter<T>(
     }
 
     override fun hasItems(): Boolean {
+        reset()
         return hasNext()
     }
 
