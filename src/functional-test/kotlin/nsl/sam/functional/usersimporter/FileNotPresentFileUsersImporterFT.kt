@@ -3,8 +3,8 @@ package nsl.sam.functional.usersimporter
 import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
-import nsl.sam.method.basicauth.usersimporter.UsersImporter
-import nsl.sam.method.basicauth.usersimporter.factory.FileUsersImporterFactory
+import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporter
+import nsl.sam.method.basicauth.usersimporter.interim.factory.FilePasswordCredentialsImporterFactory
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -33,13 +33,13 @@ class FileNotPresentFileUsersImporterFT {
     @Autowired
     lateinit var environment: Environment
 
-    lateinit var importer: UsersImporter
+    lateinit var importer: PasswordsCredentialsImporter
 
     @BeforeEach
     fun createFileTokensImporter() {
         val enableAnnotationAttributes =
                 EnableAnnotationAttributesExtractor.extractAttributes(importingClassMetadata!!)
-        val factory = FileUsersImporterFactory()
+        val factory = FilePasswordCredentialsImporterFactory()
         importer = factory.create(enableAnnotationAttributes, environment)
     }
 

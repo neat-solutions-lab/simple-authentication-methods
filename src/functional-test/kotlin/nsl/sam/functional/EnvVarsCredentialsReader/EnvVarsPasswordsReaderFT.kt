@@ -57,7 +57,7 @@ class EnvVarsPasswordsReaderFT {
         )
         println("enableAnnotationAttributes: $enableAnnotationAttributes")
 
-        val extractor = PasswordsArrayEnvVarExtractor()
+        val extractor = PasswordsArrayEnvVarExtractor(SteeredEnvironmentVariablesAccessor())
 
         val reader = EnvironmentCredentialsReader(enableAnnotationAttributes, extractor)
 

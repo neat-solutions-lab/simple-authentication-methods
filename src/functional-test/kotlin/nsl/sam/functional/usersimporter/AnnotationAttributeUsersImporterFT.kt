@@ -3,8 +3,10 @@ package nsl.sam.functional.usersimporter
 import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.controller.CustomAuthorizationTestController
+import nsl.sam.importer.reader.impl.AnnotationCredentialsReader
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
-import nsl.sam.method.basicauth.usersimporter.impl.AnnotationAttributeUsersImporter
+import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporter
+import nsl.sam.method.basicauth.usersimporter.interim.extractor.PasswordsArrayAnnotationExtractor
 import nsl.sam.utils.UsersTriplesComparator
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
@@ -32,8 +34,12 @@ class AnnotationAttributeUsersImporterFT {
 
     @Test
     fun annotationAttributeUsersImporterPicksUpUsersFromAnnotationAttribute() {
+
         val enableAnnotationAttributes = EnableAnnotationAttributesExtractor.extractAttributes(importingClassMetadata!!)
-        val annotationAttributeUsersImporter = AnnotationAttributeUsersImporter(enableAnnotationAttributes)
+        val annotationCredentialsReader = AnnotationCredentialsReader(
+                enableAnnotationAttributes, PasswordsArrayAnnotationExtractor())
+
+        val annotationAttributeUsersImporter = PasswordsCredentialsImporter(annotationCredentialsReader)
 
         val resultTriples = mutableListOf<Triple<String, String, Array<String>>>()
 

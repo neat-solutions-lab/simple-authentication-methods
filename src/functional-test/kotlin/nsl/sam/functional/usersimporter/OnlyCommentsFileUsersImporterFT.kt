@@ -1,18 +1,18 @@
 package nsl.sam.functional.usersimporter
 
-import nsl.sam.method.basicauth.usersimporter.UsersImporter
-import nsl.sam.method.basicauth.usersimporter.impl.FileUsersImporter
+import nsl.sam.importer.reader.impl.FileCredentialsReader
+import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporter
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class OnlyCommentsFileUsersImporterFT {
 
-    lateinit var usersImporter: UsersImporter
+    lateinit var usersImporter: PasswordsCredentialsImporter
 
     @BeforeEach
     fun createFileUsersImporter() {
-        usersImporter = FileUsersImporter("src/functional-test/config/only-comments-passwords.conf")
+        usersImporter = PasswordsCredentialsImporter(FileCredentialsReader("src/functional-test/config/only-comments-passwords.conf"))
     }
 
     @Test

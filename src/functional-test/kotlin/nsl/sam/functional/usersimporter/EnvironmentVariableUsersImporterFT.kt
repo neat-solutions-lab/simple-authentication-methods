@@ -4,8 +4,10 @@ import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.envvar.EnvironmentVariablesAccessor
 import nsl.sam.functional.controller.CustomAuthorizationTestController
+import nsl.sam.importer.reader.impl.EnvironmentCredentialsReader
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
-import nsl.sam.method.basicauth.usersimporter.impl.EnvironmentVariableUsersImporter
+import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporter
+import nsl.sam.method.basicauth.usersimporter.interim.extractor.PasswordsArrayEnvVarExtractor
 import nsl.sam.utils.UsersTriplesComparator
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
@@ -36,8 +38,8 @@ class EnvironmentVariableUsersImporterFT {
         val enableAnnotationAttributes =
                 EnableAnnotationAttributesExtractor.extractAttributes(importingClassMetadata!!)
 
-        val environmentVariableUsersImporter = EnvironmentVariableUsersImporter(
-                enableAnnotationAttributes,
+        val environmentCredentialsReader = EnvironmentCredentialsReader(
+                enableAnnotationAttributes, PasswordsArrayEnvVarExtractor(
                 object : EnvironmentVariablesAccessor {
                     override fun getVarsMap(): Map<String, String> {
                         return mapOf(
@@ -46,12 +48,16 @@ class EnvironmentVariableUsersImporterFT {
                                 "TestAppUsers.3" to "environment-user3:{noop}test USER ADMIN"
                         )
                     }
-                })
+
+                }
+        ))
+
+        val environmentAttributeUsersImporter = PasswordsCredentialsImporter(environmentCredentialsReader)
 
         val resultTriples: MutableList<Triple<String, String, Array<String>>> = mutableListOf()
 
-        environmentVariableUsersImporter.reset()
-        environmentVariableUsersImporter.use { importer ->
+        environmentAttributeUsersImporter.reset()
+        environmentAttributeUsersImporter.use { importer ->
             for (triple in importer) {
                 resultTriples.add(triple)
             }

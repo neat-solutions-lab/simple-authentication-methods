@@ -1,22 +1,26 @@
 package nsl.sam.functional.usersimporter
-
-import nsl.sam.method.basicauth.usersimporter.impl.FileUsersImporter
+import nsl.sam.importer.reader.impl.FileCredentialsReader
+import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporter
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
 class CorruptedPasswordsFileFileUsersImporterFT {
 
     @Test
-    fun test() {
+    fun corruptedLinesOmittedWhenProcessingCorruptedPasswordsFile() {
 
-        //TODO: finish it after changes to UsersImporter(s)
-        val fileUsersImporter = FileUsersImporter("src/functional-test/config/corrupted-passwords.conf")
-        fileUsersImporter.reset()
-        //fileUsersImporter.use {
-        //    for(user in it) {
-        //        println("user: $user")
-        //    }
-        //}
+        var usersImporter = PasswordsCredentialsImporter(FileCredentialsReader("src/functional-test/config/corrupted-passwords.conf"))
 
+        var credentialsCounter = 0
+
+        usersImporter.reset()
+        usersImporter.use {
+            for(user in it) {
+                println("user: $user")
+                credentialsCounter++
+            }
+        }
+        Assertions.assertThat(credentialsCounter).isEqualTo(2)
     }
 
 }

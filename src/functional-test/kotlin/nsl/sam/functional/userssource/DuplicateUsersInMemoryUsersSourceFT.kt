@@ -1,7 +1,8 @@
 package nsl.sam.functional.userssource
 
-import nsl.sam.method.basicauth.usersimporter.impl.FileUsersImporter
-import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
+import nsl.sam.importer.reader.impl.FileCredentialsReader
+import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporter
+import nsl.sam.method.basicauth.userssource.interim.impl.InMemoryUsersSource
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -10,9 +11,8 @@ class DuplicateUsersInMemoryUsersSourceFT {
     @Test
     fun inCaseOfDuplicateUsersTheLastOneWins() {
 
-        val fileUsersImporter = FileUsersImporter("src/functional-test/config/duplicate-passwords.conf")
-        val inMemoryUsersSource = InMemoryUsersSource(fileUsersImporter)
-
+        val fileCredentialsReader = FileCredentialsReader("src/functional-test/config/duplicate-passwords.conf")
+        val inMemoryUsersSource = InMemoryUsersSource(PasswordsCredentialsImporter(fileCredentialsReader))
         val passwordAndRoles = inMemoryUsersSource.getUserPasswordAndRoles("test")
 
         /*
