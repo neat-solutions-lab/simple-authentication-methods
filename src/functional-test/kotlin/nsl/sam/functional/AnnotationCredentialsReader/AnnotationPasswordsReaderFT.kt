@@ -2,9 +2,9 @@ package nsl.sam.functional.AnnotationCredentialsReader
 
 import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.importer.reader.AnnotationCredentialsReader
+import nsl.sam.importer.reader.impl.AnnotationCredentialsReader
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
-import nsl.sam.method.basicauth.usersimporter.interim.extractor.PasswordsAnnotationCredentialsExtractor
+import nsl.sam.method.basicauth.usersimporter.interim.extractor.PasswordsArrayAnnotationExtractor
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -39,7 +39,7 @@ class EnvVarsPasswordsReaderFT {
         )
         println("enableAnnotationAttributes: $enableAnnotationAttributes")
 
-        val extractor = PasswordsAnnotationCredentialsExtractor()
+        val extractor = PasswordsArrayAnnotationExtractor()
 
         val reader = AnnotationCredentialsReader(enableAnnotationAttributes, extractor)
 

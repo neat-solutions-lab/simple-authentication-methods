@@ -1,5 +1,7 @@
 package nsl.sam.importer
 
+import nsl.sam.importer.parser.CredentialsParser
+import nsl.sam.importer.reader.CredentialsReader
 import nsl.sam.interfaces.ItemsAvailabilityAware
 import nsl.sam.interfaces.Resettable
 import nsl.sam.logger.logger

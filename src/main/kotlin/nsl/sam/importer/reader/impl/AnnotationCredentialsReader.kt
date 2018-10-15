@@ -1,18 +1,18 @@
-package nsl.sam.importer.reader
+package nsl.sam.importer.reader.impl
 
 import nsl.sam.core.annotation.EnableAnnotationAttributes
-import nsl.sam.importer.AnnotationCredentialsExtractor
-import nsl.sam.importer.CredentialsReader
+import nsl.sam.importer.extractor.AnnotationArrayExtractor
+import nsl.sam.importer.reader.CredentialsReader
 
 class AnnotationCredentialsReader (
         attributes: EnableAnnotationAttributes,
-        annotationCredentialsExtractor: AnnotationCredentialsExtractor
+        annotationArrayExtractor: AnnotationArrayExtractor
 ) : CredentialsReader {
 
     private val delegatedArrayReader: ArrayCredentialsReader
 
     init {
-        val usersArray = annotationCredentialsExtractor.getCredentialsFromAnnotation(attributes)
+        val usersArray = annotationArrayExtractor.getArrayFromAnnotation(attributes)
         delegatedArrayReader = ArrayCredentialsReader(usersArray)
     }
 

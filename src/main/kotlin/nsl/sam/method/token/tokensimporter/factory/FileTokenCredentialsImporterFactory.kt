@@ -5,7 +5,7 @@ import nsl.sam.method.token.annotation.SimpleTokenAuthenticationAttibutesExtract
 import nsl.sam.method.token.annotation.SimpleTokenAuthenticationAttributes
 import nsl.sam.method.token.tokensimporter.TokensCredentialsImporter
 import nsl.sam.method.token.tokensimporter.TokenCredentialsImporterFactory
-import nsl.sam.importer.reader.FileCredentialsReader
+import nsl.sam.importer.reader.impl.FileCredentialsReader
 import org.springframework.core.env.Environment
 
 class FileTokenCredentialsImporterFactory : TokenCredentialsImporterFactory {

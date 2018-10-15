@@ -1,4 +1,4 @@
-package nsl.sam.importer
+package nsl.sam.importer.reader
 
 import nsl.sam.interfaces.Resettable
 import java.io.Closeable

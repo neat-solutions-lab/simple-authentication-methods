@@ -1,6 +1,6 @@
-package nsl.sam.importer.reader
+package nsl.sam.importer.reader.impl
 
-import nsl.sam.importer.CredentialsReader
+import nsl.sam.importer.reader.CredentialsReader
 
 open class ArrayCredentialsReader(private val credentialsArray: Array<String>) : CredentialsReader {
 

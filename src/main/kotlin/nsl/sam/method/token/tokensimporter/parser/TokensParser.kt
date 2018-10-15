@@ -1,7 +1,7 @@
 package nsl.sam.method.token.tokensimporter.parser
 
-import nsl.sam.importer.CredentialsParser
-import nsl.sam.importer.CredentialsParsingException
+import nsl.sam.importer.parser.CredentialsParser
+import nsl.sam.importer.extractor.CredentialsParsingException
 import nsl.sam.logger.logger
 import nsl.sam.method.token.token.ResolvedToken
 import nsl.sam.method.token.token.UserAndRoles

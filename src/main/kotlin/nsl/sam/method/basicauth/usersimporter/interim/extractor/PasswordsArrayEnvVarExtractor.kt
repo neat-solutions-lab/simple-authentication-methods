@@ -2,12 +2,12 @@ package nsl.sam.method.basicauth.usersimporter.interim.extractor
 
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.envvar.SteeredEnvironmentVariablesAccessor
-import nsl.sam.importer.AnnotationEnvPrefixExtractor
+import nsl.sam.importer.extractor.EnvironmentArrayExtractor
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributesExtractor
 
-class PasswordsEnvPrefixAnnotationExtractor : AnnotationEnvPrefixExtractor {
+class PasswordsArrayEnvVarExtractor : EnvironmentArrayExtractor {
 
-    override fun getCredentialsEnvironmentVariablePrefix(attributes: EnableAnnotationAttributes): Array<String> {
+    override fun getArrayFromEnvVars(attributes: EnableAnnotationAttributes): Array<String> {
 
         val simpleBasicAuthenticationAttributes = SimpleBasicAuthenticationAttributesExtractor.extractAttributes(
                 attributes.enableAnnotationMetadata

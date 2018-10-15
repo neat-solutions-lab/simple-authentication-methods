@@ -1,5 +1,6 @@
 package nsl.sam.importer.reader
 
+import nsl.sam.importer.reader.impl.ArrayCredentialsReader
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 

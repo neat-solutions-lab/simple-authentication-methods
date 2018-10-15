@@ -7,6 +7,8 @@ import nsl.sam.method.basicauth.usersimporter.UsersImporterFactory
 import nsl.sam.method.basicauth.usersimporter.factory.AnnotationAttributeUsersImporterFactory
 import nsl.sam.method.basicauth.usersimporter.factory.EnvironmentVariableUsersImporterFactory
 import nsl.sam.method.basicauth.usersimporter.factory.FileUsersImporterFactory
+import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporterFactory
+import nsl.sam.method.basicauth.usersimporter.interim.factory.FilePasswordCredentialsImporterFactory
 import nsl.sam.method.basicauth.userssource.UsersSource
 import nsl.sam.method.basicauth.userssource.UsersSourceFactory
 import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
@@ -59,4 +61,5 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
                 AnnotationAttributeUsersImporterFactory::class
         )
     }
+
 }

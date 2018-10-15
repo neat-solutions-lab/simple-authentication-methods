@@ -40,7 +40,7 @@ class DefaultTokenDetailsService(private val tokensSource: TokensResolver) : Ava
                     .authorities(*resolvedToken.userAndRole.roles)
                     .build()
 
-        } catch ( ex: BadCredentialsException) {
+        } catch (ex: BadCredentialsException) {
 
             log.debug("The ${token.prune(5)} token could not be found by underlying TokensResolver")
             throw ex

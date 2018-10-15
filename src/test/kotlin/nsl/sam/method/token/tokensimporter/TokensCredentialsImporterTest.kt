@@ -1,6 +1,6 @@
 package nsl.sam.method.token.tokensimporter
 
-import nsl.sam.importer.reader.FileCredentialsReader
+import nsl.sam.importer.reader.impl.FileCredentialsReader
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 

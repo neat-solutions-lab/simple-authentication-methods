@@ -1,9 +1,9 @@
 package nsl.sam.method.basicauth.usersimporter.interim.parser
 
-import nsl.sam.importer.CredentialsParser
-import nsl.sam.importer.CredentialsParsingException
+import nsl.sam.importer.parser.CredentialsParser
+import nsl.sam.importer.extractor.CredentialsParsingException
 
-class PasswordsParser : CredentialsParser<Triple<String, String, Array<String>>>  {
+class PasswordsParser : CredentialsParser<Triple<String, String, Array<String>>> {
 
     companion object {
         const val SYNTAX_ERROR_MESSAGE =

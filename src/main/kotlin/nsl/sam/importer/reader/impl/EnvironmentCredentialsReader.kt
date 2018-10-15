@@ -1,18 +1,18 @@
-package nsl.sam.importer.reader
+package nsl.sam.importer.reader.impl
 
 import nsl.sam.core.annotation.EnableAnnotationAttributes
-import nsl.sam.importer.AnnotationEnvPrefixExtractor
-import nsl.sam.importer.CredentialsReader
+import nsl.sam.importer.extractor.EnvironmentArrayExtractor
+import nsl.sam.importer.reader.CredentialsReader
 
 class EnvironmentCredentialsReader(
         attributes: EnableAnnotationAttributes,
-        annotationEnvPrefixExtractor: AnnotationEnvPrefixExtractor
+        environmentArrayExtractor: EnvironmentArrayExtractor
 ) : CredentialsReader {
 
     private val delegatedArrayReader: ArrayCredentialsReader
 
     init {
-        val environmentUsers = annotationEnvPrefixExtractor.getCredentialsEnvironmentVariablePrefix(
+        val environmentUsers = environmentArrayExtractor.getArrayFromEnvVars(
                 attributes
         )
         delegatedArrayReader = ArrayCredentialsReader(environmentUsers)

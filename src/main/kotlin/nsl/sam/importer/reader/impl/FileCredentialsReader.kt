@@ -1,6 +1,6 @@
-package nsl.sam.importer.reader
+package nsl.sam.importer.reader.impl
 
-import nsl.sam.importer.CredentialsReader
+import nsl.sam.importer.reader.CredentialsReader
 import nsl.sam.logger.logger
 import java.io.BufferedReader
 import java.io.File
