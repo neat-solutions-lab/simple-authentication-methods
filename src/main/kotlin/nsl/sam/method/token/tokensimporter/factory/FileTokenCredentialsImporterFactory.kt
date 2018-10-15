@@ -10,17 +10,22 @@ import org.springframework.core.env.Environment
 
 class FileTokenCredentialsImporterFactory : TokenCredentialsImporterFactory {
 
-    override fun create(attributes: EnableAnnotationAttributes, environment: Environment): TokensCredentialsImporter {
+    override fun create(
+            attributes: EnableAnnotationAttributes, environment: Environment)
+            : TokensCredentialsImporter {
 
         val path = getTokensFilePath(attributes, environment)
         return TokensCredentialsImporter(FileCredentialsReader(path))
     }
 
-    private fun getTokensFilePath(attributes: EnableAnnotationAttributes, environment: Environment): String {
+    private fun getTokensFilePath(
+            attributes: EnableAnnotationAttributes,
+            environment: Environment): String {
 
-        val simpleTokenAuthenticationAttributes = SimpleTokenAuthenticationAttibutesExtractor.extractAttributes(
-                attributes.enableAnnotationMetadata
-        )
+        val simpleTokenAuthenticationAttributes =
+                SimpleTokenAuthenticationAttibutesExtractor.extractAttributes(
+                    attributes.enableAnnotationMetadata
+                )
 
         return decideOnTokensFilePath(simpleTokenAuthenticationAttributes, environment)
     }
