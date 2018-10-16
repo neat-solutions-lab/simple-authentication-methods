@@ -1,12 +1,11 @@
-package nsl.sam.method.basicauth.usersimporter.interim.extractor
+package nsl.sam.method.basicauth.usersimporter.extractor
 
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.envvar.EnvironmentVariablesAccessor
-import nsl.sam.envvar.SteeredEnvironmentVariablesAccessor
 import nsl.sam.importer.extractor.EnvironmentArrayExtractor
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributesExtractor
 
-class PasswordsArrayEnvVarExtractor(val envVarsAccessor: EnvironmentVariablesAccessor) : EnvironmentArrayExtractor {
+class PasswordsArrayEnvVarExtractor(private val envVarsAccessor: EnvironmentVariablesAccessor) : EnvironmentArrayExtractor {
 
     override fun getArrayFromEnvVars(attributes: EnableAnnotationAttributes): Array<String> {
 
@@ -15,7 +14,6 @@ class PasswordsArrayEnvVarExtractor(val envVarsAccessor: EnvironmentVariablesAcc
         )
 
         val envVariablePrefix = simpleBasicAuthenticationAttributes.usersEnvPrefix
-        //val envVarsAccessor = SteeredEnvironmentVariablesAccessor()
         return if (envVariablePrefix.isNotBlank()) {
             val allEnvVars = envVarsAccessor.getVarsMap()
             val filteredEnvVars = allEnvVars.filter { it.key.startsWith(envVariablePrefix) }

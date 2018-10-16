@@ -1,7 +1,7 @@
-package nsl.sam.method.basicauth.userssource.interim.impl
+package nsl.sam.method.basicauth.userssource.impl
 
 import nsl.sam.logger.logger
-import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporter
+import nsl.sam.method.basicauth.usersimporter.PasswordsCredentialsImporter
 import nsl.sam.method.basicauth.userssource.UsersSource
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 

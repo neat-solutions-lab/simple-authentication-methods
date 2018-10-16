@@ -1,8 +1,7 @@
-package nsl.sam.method.basicauth.userssource.interim.factory
+package nsl.sam.method.basicauth.userssource.factory
 
 import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.functional.EnvVarsCredentialsReader.EnvVarsPasswordsReaderFT
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

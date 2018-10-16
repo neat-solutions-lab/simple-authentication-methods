@@ -6,8 +6,8 @@ import nsl.sam.envvar.EnvironmentVariablesAccessor
 import nsl.sam.functional.controller.CustomAuthorizationTestController
 import nsl.sam.importer.reader.impl.EnvironmentCredentialsReader
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
-import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporter
-import nsl.sam.method.basicauth.usersimporter.interim.extractor.PasswordsArrayEnvVarExtractor
+import nsl.sam.method.basicauth.usersimporter.PasswordsCredentialsImporter
+import nsl.sam.method.basicauth.usersimporter.extractor.PasswordsArrayEnvVarExtractor
 import nsl.sam.utils.UsersTriplesComparator
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test

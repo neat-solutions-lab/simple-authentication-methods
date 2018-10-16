@@ -1,4 +1,4 @@
-package nsl.sam.method.basicauth.usersimporter.interim
+package nsl.sam.method.basicauth.usersimporter
 
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import org.springframework.core.env.Environment

@@ -1,4 +1,4 @@
-package nsl.sam.method.basicauth.usersimporter.interim.parser
+package nsl.sam.method.basicauth.usersimporter.parser
 
 import nsl.sam.importer.parser.CredentialsParser
 import nsl.sam.importer.extractor.CredentialsParsingException

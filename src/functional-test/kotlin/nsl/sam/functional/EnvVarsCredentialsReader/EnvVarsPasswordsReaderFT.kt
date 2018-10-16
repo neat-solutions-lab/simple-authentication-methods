@@ -5,7 +5,7 @@ import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.envvar.SteeredEnvironmentVariablesAccessor
 import nsl.sam.importer.reader.impl.EnvironmentCredentialsReader
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
-import nsl.sam.method.basicauth.usersimporter.interim.extractor.PasswordsArrayEnvVarExtractor
+import nsl.sam.method.basicauth.usersimporter.extractor.PasswordsArrayEnvVarExtractor
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll

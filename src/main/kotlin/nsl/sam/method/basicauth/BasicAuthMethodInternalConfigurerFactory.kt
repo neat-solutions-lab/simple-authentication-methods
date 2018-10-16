@@ -14,7 +14,7 @@ import nsl.sam.method.basicauth.userdetails.AvailabilityAwareUserDetailsService
 import nsl.sam.method.basicauth.userdetails.impl.DefaultUserDetailsService
 import nsl.sam.method.basicauth.userssource.UsersSource
 import nsl.sam.method.basicauth.userssource.UsersSourceFactory
-import nsl.sam.method.basicauth.userssource.interim.factory.InMemoryUsersSourceFactory
+import nsl.sam.method.basicauth.userssource.factory.InMemoryUsersSourceFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.security.web.AuthenticationEntryPoint

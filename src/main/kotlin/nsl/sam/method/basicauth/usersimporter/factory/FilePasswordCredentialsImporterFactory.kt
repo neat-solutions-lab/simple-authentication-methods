@@ -1,11 +1,11 @@
-package nsl.sam.method.basicauth.usersimporter.interim.factory
+package nsl.sam.method.basicauth.usersimporter.factory
 
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.importer.reader.impl.FileCredentialsReader
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributes
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributesExtractor
-import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporter
-import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporterFactory
+import nsl.sam.method.basicauth.usersimporter.PasswordsCredentialsImporter
+import nsl.sam.method.basicauth.usersimporter.PasswordsCredentialsImporterFactory
 import org.springframework.core.env.Environment
 
 class FilePasswordCredentialsImporterFactory : PasswordsCredentialsImporterFactory {

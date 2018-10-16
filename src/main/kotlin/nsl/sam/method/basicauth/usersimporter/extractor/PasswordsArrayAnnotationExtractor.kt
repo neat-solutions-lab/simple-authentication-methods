@@ -1,4 +1,4 @@
-package nsl.sam.method.basicauth.usersimporter.interim.extractor
+package nsl.sam.method.basicauth.usersimporter.extractor
 
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.importer.extractor.AnnotationArrayExtractor

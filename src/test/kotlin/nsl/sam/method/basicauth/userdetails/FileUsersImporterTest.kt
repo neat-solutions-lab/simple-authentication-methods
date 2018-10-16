@@ -1,7 +1,7 @@
 package nsl.sam.method.basicauth.userdetails
 
 import nsl.sam.importer.reader.impl.FileCredentialsReader
-import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporter
+import nsl.sam.method.basicauth.usersimporter.PasswordsCredentialsImporter
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

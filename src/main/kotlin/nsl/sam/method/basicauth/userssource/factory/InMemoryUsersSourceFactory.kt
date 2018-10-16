@@ -1,15 +1,15 @@
-package nsl.sam.method.basicauth.userssource.interim.factory
+package nsl.sam.method.basicauth.userssource.factory
 
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.logger.logger
-import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporter
-import nsl.sam.method.basicauth.usersimporter.interim.PasswordsCredentialsImporterFactory
-import nsl.sam.method.basicauth.usersimporter.interim.factory.AnnotationPasswordsCredentialsImporterFactory
-import nsl.sam.method.basicauth.usersimporter.interim.factory.EnvironmentPasswordsCredentialsImporterFactory
-import nsl.sam.method.basicauth.usersimporter.interim.factory.FilePasswordCredentialsImporterFactory
+import nsl.sam.method.basicauth.usersimporter.PasswordsCredentialsImporter
+import nsl.sam.method.basicauth.usersimporter.PasswordsCredentialsImporterFactory
+import nsl.sam.method.basicauth.usersimporter.factory.AnnotationPasswordsCredentialsImporterFactory
+import nsl.sam.method.basicauth.usersimporter.factory.EnvironmentPasswordsCredentialsImporterFactory
+import nsl.sam.method.basicauth.usersimporter.factory.FilePasswordCredentialsImporterFactory
 import nsl.sam.method.basicauth.userssource.UsersSource
 import nsl.sam.method.basicauth.userssource.UsersSourceFactory
-import nsl.sam.method.basicauth.userssource.interim.impl.InMemoryUsersSource
+import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
 import org.springframework.core.env.Environment
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
