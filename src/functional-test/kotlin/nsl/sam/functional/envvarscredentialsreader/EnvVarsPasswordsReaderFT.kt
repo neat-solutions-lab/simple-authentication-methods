@@ -1,4 +1,4 @@
-package nsl.sam.functional.EnvVarsCredentialsReader
+package nsl.sam.functional.envvarscredentialsreader
 
 import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods

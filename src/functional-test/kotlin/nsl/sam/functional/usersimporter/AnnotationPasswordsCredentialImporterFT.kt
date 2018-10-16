@@ -26,7 +26,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
         classes = [AnnotationAttributeUsersImporterFTConfiguration::class])
 @AutoConfigureMockMvc(secure = false)
-class AnnotationAttributeUsersImporterFT {
+class AnnotationPasswordsCredentialImporterFT {
 
     companion object {
         var importingClassMetadata: AnnotationMetadata? = null
@@ -62,7 +62,7 @@ class AnnotationAttributeUsersImporterFT {
 
 class AnnotationMetadataCatcher : ImportBeanDefinitionRegistrar {
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
-        AnnotationAttributeUsersImporterFT.importingClassMetadata = importingClassMetadata
+        AnnotationPasswordsCredentialImporterFT.importingClassMetadata = importingClassMetadata
     }
 }
 

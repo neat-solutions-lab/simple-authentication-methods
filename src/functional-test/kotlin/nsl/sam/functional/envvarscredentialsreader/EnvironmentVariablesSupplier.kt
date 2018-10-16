@@ -1,4 +1,4 @@
-package nsl.sam.functional.EnvVarsCredentialsReader
+package nsl.sam.functional.envvarscredentialsreader
 
 import java.util.function.Supplier
 

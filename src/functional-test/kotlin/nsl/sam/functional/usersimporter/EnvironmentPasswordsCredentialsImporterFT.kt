@@ -27,7 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
         classes = [EnvironmentVariableUsersImporterFTConfiguration::class])
 @AutoConfigureMockMvc(secure = false)
-class EnvironmentVariableUsersImporterFT {
+class EnvironmentPasswordsCredentialsImporterFT {
 
     companion object {
         var importingClassMetadata: AnnotationMetadata? = null
@@ -76,7 +76,7 @@ class EnvironmentVariableUsersImporterFT {
 
 class EnvironmentVariableUsersImporterFTConfigurationAnnotationMetadataCatcher : ImportBeanDefinitionRegistrar {
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
-        EnvironmentVariableUsersImporterFT.importingClassMetadata = importingClassMetadata
+        EnvironmentPasswordsCredentialsImporterFT.importingClassMetadata = importingClassMetadata
     }
 
 }
