@@ -33,7 +33,7 @@ class AnnotationPasswordsIT {
     lateinit var testRestTemplate: TestRestTemplate
 
     @Test
-    fun successfulAuthenticationWhenProperUserFromAnnotationUsed() {
+    fun successfulAuthenticationWhenFirstProperUserFromAnnotationUsed() {
         // ACT
         val response: ResponseEntity<String> = testRestTemplate.withBasicAuth(
                 "annotation-tester001",
@@ -43,6 +43,77 @@ class AnnotationPasswordsIT {
         // ASSERT
         Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
         Assertions.assertThat(response.body).isEqualTo(IntegrationTestConstants.FAKE_CONTROLLER_RESPONSE_BODY)
+    }
+
+    @Test
+    fun successfulAuthenticationWhenSecondProperUserFromAnnotationUsed() {
+        // ACT
+        val response: ResponseEntity<String> = testRestTemplate.withBasicAuth(
+                "annotation-tester003",
+                "pass003"
+        ).getForEntity(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT)
+
+        // ASSERT
+        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+        Assertions.assertThat(response.body).isEqualTo(IntegrationTestConstants.FAKE_CONTROLLER_RESPONSE_BODY)
+    }
+
+    @Test
+    fun failedAuthenticationWhenCommentedUserFromAnnotationUsed() {
+        // ACT
+        val response: ResponseEntity<String> = testRestTemplate.withBasicAuth(
+                "annotation-tester002",
+                "pass002"
+        ).getForEntity(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT)
+
+        // ASSERT
+        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
+    }
+
+    @Test
+    fun failedAuthenticationWhenWrongPasswordUsed() {
+        // ACT
+        val response: ResponseEntity<String> = testRestTemplate.withBasicAuth(
+                "annotation-tester001",
+                "pass002"
+        ).getForEntity(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT)
+
+        // ASSERT
+        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
+    }
+
+    @Test
+    fun failedAuthenticationWhenNonExistingUserUsed() {
+        // ACT
+        val response: ResponseEntity<String> = testRestTemplate.withBasicAuth(
+                "ghost",
+                ""
+        ).getForEntity(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT)
+
+        // ASSERT
+        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
+    }
+
+    @Test
+    fun failedAuthenticationWhenEmptyCredentials() {
+        // ACT
+        val response: ResponseEntity<String> = testRestTemplate.withBasicAuth(
+                "",
+                ""
+        ).getForEntity(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT)
+
+        // ASSERT
+        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
+    }
+
+    @Test
+    fun failedAuthenticationWhenNoCredentials() {
+        // ACT
+        val response: ResponseEntity<String> =
+                testRestTemplate.getForEntity(IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT)
+
+        // ASSERT
+        Assertions.assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
     }
 }
 
