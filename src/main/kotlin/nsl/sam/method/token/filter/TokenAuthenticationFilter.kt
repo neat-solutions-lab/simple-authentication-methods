@@ -2,8 +2,10 @@ package nsl.sam.method.token.filter
 
 import nsl.sam.logger.logger
 import nsl.sam.method.token.tokendetails.TokenDetailsService
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
@@ -47,7 +49,6 @@ class TokenAuthenticationFilter(
         } catch (e: AuthenticationException) {
             SecurityContextHolder.clearContext()
             log.debug("Access denied by ${this::class.qualifiedName} filter")
-            //errorResponseSender.send(response, UnauthenticatedResponseDto.Builder(request).build())
             authenticationEntryPoint.commence(
                     request, response, e
             )
@@ -60,21 +61,28 @@ class TokenAuthenticationFilter(
     }
 
     private fun isBearerToken(header: String): Boolean {
-        if (header.trim().startsWith("Bearer")) return true
+        if (header.trim().startsWith("Bearer ")) return true
         return false
     }
 
     private fun extractBearerToken(header: String): String {
         val headerParts = header.split(" ")
+        if(headerParts.size != 2) {
+            throw AuthenticationCredentialsNotFoundException(
+                    "Wrong format of Bearer token"
+            )
+        }
         return headerParts[1]
     }
 
     private fun tryToAuthenticate(header: String) {
 
-        val authToken = extractBearerToken(header)
-        log.debug("authToken: ${authToken}")
+        var authToken: String? = null
 
         try {
+
+            authToken = extractBearerToken(header)
+            log.debug("authToken: $authToken")
 
             val userDetails = tokenDetailsService.loadUserByToken(authToken)
 
