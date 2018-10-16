@@ -52,12 +52,12 @@ class EnvironmentPasswordsCredentialsImporterFT {
                 }
         ))
 
-        val environmentAttributeUsersImporter = PasswordsCredentialsImporter(environmentCredentialsReader)
+        val environmentPasswordsImporter = PasswordsCredentialsImporter(environmentCredentialsReader)
 
         val resultTriples: MutableList<Triple<String, String, Array<String>>> = mutableListOf()
 
-        environmentAttributeUsersImporter.reset()
-        environmentAttributeUsersImporter.use { importer ->
+        environmentPasswordsImporter.reset()
+        environmentPasswordsImporter.use { importer ->
             for (triple in importer) {
                 resultTriples.add(triple)
             }

@@ -33,13 +33,16 @@ class AnnotationPasswordsCredentialImporterFT {
     }
 
     @Test
-    fun annotationAttributeUsersImporterPicksUpUsersFromAnnotationAttribute() {
+    fun annotationPasswordsImporterPicksUpUsersFromAnnotationAttribute() {
 
-        val enableAnnotationAttributes = EnableAnnotationAttributesExtractor.extractAttributes(importingClassMetadata!!)
+        val enableAnnotationAttributes = EnableAnnotationAttributesExtractor.
+                extractAttributes(importingClassMetadata!!)
+
         val annotationCredentialsReader = AnnotationCredentialsReader(
                 enableAnnotationAttributes, PasswordsArrayAnnotationExtractor())
 
-        val annotationAttributeUsersImporter = PasswordsCredentialsImporter(annotationCredentialsReader)
+        val annotationAttributeUsersImporter =
+                PasswordsCredentialsImporter(annotationCredentialsReader)
 
         val resultTriples = mutableListOf<Triple<String, String, Array<String>>>()
 
