@@ -39,7 +39,10 @@ class BasicAuthMethodInternalConfigurerFactory(override val name: String) : Auth
         )
     }
 
-    private fun getUsersDetailsService(attributes: EnableAnnotationAttributes): AvailabilityAwareUserDetailsService {
+    private fun getUsersDetailsService(
+            attributes: EnableAnnotationAttributes
+    ): AvailabilityAwareUserDetailsService {
+
         val usersSource = getUsersSource(attributes)
         return DefaultUserDetailsService(usersSource)
     }

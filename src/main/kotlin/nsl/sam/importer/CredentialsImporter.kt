@@ -74,4 +74,8 @@ open class CredentialsImporter<T>(
         return hasNext()
     }
 
+    override fun toString(): String {
+        return "${this::class.simpleName}(${credentialParser::class.simpleName}, ${credentialsReader::class.simpleName})"
+    }
+
 }

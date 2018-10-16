@@ -1,4 +1,4 @@
-package nsl.sam.integration.basicauth
+package nsl.sam.integration.controller
 
 import nsl.sam.IntegrationTestConstants
 import org.springframework.web.bind.annotation.GetMapping

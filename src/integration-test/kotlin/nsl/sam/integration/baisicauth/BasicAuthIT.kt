@@ -3,6 +3,7 @@ package nsl.sam.integration.basicauth
 import nsl.sam.IntegrationTestConstants
 import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.integration.controller.IntegrationTestController
 import nsl.sam.logger.logger
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

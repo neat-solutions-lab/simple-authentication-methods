@@ -38,10 +38,13 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
         factoriesArray.forEach {
             val factory = it.createInstance()
             val passwordsImporter = factory.create(attributes, environment)
+            log.debug("Checking if $passwordsImporter has items to be imported.")
             if (passwordsImporter.hasItems()) {
-                log.info("Selected ${PasswordsCredentialsImporter::class.simpleName} is " +
-                         "${passwordsImporter::class.qualifiedName}")
+                log.info("Selected ${PasswordsCredentialsImporterFactory::class.simpleName} is " +
+                         "${factory::class.qualifiedName}")
                 return passwordsImporter
+            } else {
+                log.debug("$passwordsImporter provides no items.")
             }
         }
 
@@ -50,8 +53,8 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
          */
         val defaultPasswordsImporter =
                 FilePasswordCredentialsImporterFactory().create(attributes, environment)
-        log.info("Selected ${PasswordsCredentialsImporter::class.simpleName} is the default one: " +
-                 "${defaultPasswordsImporter::class.qualifiedName}")
+        log.info("Selected ${PasswordsCredentialsImporterFactory::class.simpleName} is the default one: " +
+                 "${FilePasswordCredentialsImporterFactory::class.qualifiedName}")
         return defaultPasswordsImporter
     }
 
