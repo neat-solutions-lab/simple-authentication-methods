@@ -1,7 +1,7 @@
 package nsl.sam.method.token.tokensimporter.factory
 
 import nsl.sam.core.annotation.EnableAnnotationAttributes
-import nsl.sam.method.token.annotation.SimpleTokenAuthenticationAttibutesExtractor
+import nsl.sam.method.token.annotation.SimpleTokenAuthenticationAttributesExtractor
 import nsl.sam.method.token.annotation.SimpleTokenAuthenticationAttributes
 import nsl.sam.method.token.tokensimporter.TokensCredentialsImporter
 import nsl.sam.method.token.tokensimporter.TokenCredentialsImporterFactory
@@ -23,7 +23,7 @@ class FileTokenCredentialsImporterFactory : TokenCredentialsImporterFactory {
             environment: Environment): String {
 
         val simpleTokenAuthenticationAttributes =
-                SimpleTokenAuthenticationAttibutesExtractor.extractAttributes(
+                SimpleTokenAuthenticationAttributesExtractor.extractAttributes(
                     attributes.enableAnnotationMetadata
                 )
 

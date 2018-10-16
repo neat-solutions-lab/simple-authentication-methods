@@ -20,7 +20,9 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
         val log by logger()
     }
 
-    override fun create(attributes: EnableAnnotationAttributes, environment: Environment): UsersSource {
+    override fun create(
+            attributes: EnableAnnotationAttributes, environment: Environment
+    ): UsersSource {
 
         val passwordsImporter = getPasswordsImporter(attributes, environment)
         return InMemoryUsersSource(passwordsImporter)
@@ -31,24 +33,26 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
             attributes: EnableAnnotationAttributes, environment: Environment
     ): PasswordsCredentialsImporter {
 
-        val factoriesArray: Array<KClass<out PasswordsCredentialsImporterFactory>>
-                = getPasswordsImportersFactories()
+        val factoriesArray: Array<KClass<out PasswordsCredentialsImporterFactory>> = getPasswordsImportersFactories()
 
         factoriesArray.forEach {
             val factory = it.createInstance()
-            val usersImporter = factory.create(attributes, environment)
-            if (usersImporter.hasItems()) {
-                log.info("Selected UsersImporter is $usersImporter")
-                return usersImporter
+            val passwordsImporter = factory.create(attributes, environment)
+            if (passwordsImporter.hasItems()) {
+                log.info("Selected ${PasswordsCredentialsImporter::class.simpleName} is " +
+                         "${passwordsImporter::class.qualifiedName}")
+                return passwordsImporter
             }
         }
 
         /*
-         * if up to now the UsersImporter could not be selected then return the default one
+         * if up to now the PasswordsImporter could not be selected then return the default one
          */
-        val defaultUsersImporter = FilePasswordCredentialsImporterFactory().create(attributes, environment)
-        log.info("Selected UsersImporter is the default one: $defaultUsersImporter")
-        return defaultUsersImporter
+        val defaultPasswordsImporter =
+                FilePasswordCredentialsImporterFactory().create(attributes, environment)
+        log.info("Selected ${PasswordsCredentialsImporter::class.simpleName} is the default one: " +
+                 "${defaultPasswordsImporter::class.qualifiedName}")
+        return defaultPasswordsImporter
     }
 
     private fun getPasswordsImportersFactories(): Array<KClass<out PasswordsCredentialsImporterFactory>> {
@@ -58,5 +62,4 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
                 EnvironmentPasswordsCredentialsImporterFactory::class
         )
     }
-
 }

@@ -12,7 +12,6 @@ class PasswordsArrayAnnotationExtractor : AnnotationArrayExtractor {
                         attributes.enableAnnotationMetadata
                 )
         return simpleBasicAuthenticationAttributes.users
-
     }
 
 }

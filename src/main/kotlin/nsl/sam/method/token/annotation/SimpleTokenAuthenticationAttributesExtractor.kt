@@ -4,7 +4,7 @@ import nsl.sam.annotation.AnnotationMetadataResolver
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import org.springframework.core.type.AnnotationMetadata
 
-object SimpleTokenAuthenticationAttibutesExtractor {
+object SimpleTokenAuthenticationAttributesExtractor {
 
     fun extractAttributes(annotationMetadata: AnnotationMetadata): SimpleTokenAuthenticationAttributes {
 
