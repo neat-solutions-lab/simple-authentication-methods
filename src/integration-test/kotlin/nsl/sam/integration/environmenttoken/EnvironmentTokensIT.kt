@@ -1,10 +1,13 @@
-package nsl.sam.integration.annotationtoken
+package nsl.sam.integration.environmenttoken
 
 import nsl.sam.IntegrationTestConstants
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
+import nsl.sam.envvar.SteeredEnvironmentVariablesAccessor
 import nsl.sam.integration.controller.IntegrationTestController
 import nsl.sam.method.token.annotation.SimpleTokenAuthentication
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,19 +22,40 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ExtendWith(SpringExtension::class)
 @SpringBootApplication
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = [AnnotationTokensITConfiguration::class])
-class AnnotationTokensIT {
+        classes = [EnvironmentTokensITConfiguration::class])
+class EnvironmentTokensIT {
+
+    companion object {
+
+        @BeforeAll
+        @JvmStatic
+        fun beforeAll() {
+
+            System.setProperty(
+                    SteeredEnvironmentVariablesAccessor.SUPPLIER_PROPERTY_NAME,
+                    EnvironmentTokensSupplier::class.qualifiedName
+            )
+
+        }
+
+        @AfterAll
+        @JvmStatic
+        fun afterAll() {
+            System.clearProperty(SteeredEnvironmentVariablesAccessor.SUPPLIER_PROPERTY_NAME)
+        }
+    }
 
     @Autowired
     lateinit var testRestTemplate: TestRestTemplate
 
+
     @Test
-    fun successAuthenticationWhenFirstProperTokenFromAnnotationUsed() {
+    fun successAuthenticationWhenFirstProperTokenFromEnvironmentUsed() {
         // ARRANGE
         val headers = HttpHeaders()
         headers.set(
                 IntegrationTestConstants.TOKEN_AUTH_HEADER_NAME,
-                "Bearer AnnotationToken001"
+                "Bearer EnvironmentToken001"
         )
         val requestHttpEntity = HttpEntity("", headers)
 
@@ -50,12 +74,12 @@ class AnnotationTokensIT {
     }
 
     @Test
-    fun successAuthenticationWhenSecondProperTokenFromAnnotationUsed() {
+    fun successAuthenticationWhenSecondProperTokenFromEnvironmentUsed() {
         // ARRANGE
         val headers = HttpHeaders()
         headers.set(
                 IntegrationTestConstants.TOKEN_AUTH_HEADER_NAME,
-                "Bearer AnnotationToken003"
+                "Bearer EnvironmentToken003"
         )
         val requestHttpEntity = HttpEntity("", headers)
 
@@ -74,7 +98,7 @@ class AnnotationTokensIT {
     }
 
     @Test
-    fun failedAuthenticationWhenCommentedTokenFromAnnotationUsed() {
+    fun failedAuthenticationWhenCommentedTokenFromEnvironmentUsed() {
         // ARRANGE
         val headers = HttpHeaders()
         headers.set(
@@ -118,6 +142,8 @@ class AnnotationTokensIT {
         // ASSERT
         Assertions.assertThat(exchange.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
     }
+
+
 
     @Test
     fun failedAuthenticationWhenEmptyTokenUsed() {
@@ -257,10 +283,6 @@ class AnnotationTokensIT {
 
 @Configuration
 @EnableSimpleAuthenticationMethods
-@SimpleTokenAuthentication(tokens = [
-    "AnnotationToken001 annotation-tester001 USER ADMIN ROOT",
-    "#AnnotationToken002 annotation-tester002 USER ADMIN ROOT",
-    "AnnotationToken003 annotation-tester003 USER ADMIN ROOT"
-])
+@SimpleTokenAuthentication(tokensEnvPrefix = "SMS_TESTS_TOKEN")
 @ComponentScan(basePackageClasses = [IntegrationTestController::class])
-class AnnotationTokensITConfiguration
+class EnvironmentTokensITConfiguration

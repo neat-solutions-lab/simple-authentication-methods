@@ -24,7 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ExtendWith(SpringExtension::class)
 @SpringBootApplication
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = [EnvironmentPasswordsIT::class])
+        classes = [EnvironmentPasswordsITConfiguration::class])
 class EnvironmentPasswordsIT {
 
     companion object {
