@@ -22,16 +22,6 @@ class GeneralConfiguration {
         return BeanDefinitionRegistryPostProcessorImpl()
     }
 
-    //@Bean
-    //fun localTokensStore(): InMemoryTokensResolver {
-    //    return InMemoryTokensResolver()
-    //}
-
-    //@Bean
-    //fun tokenToUserMapper(): AvailabilityAwareTokenDetailsService {
-    //    return DefaultTokenDetailsService(localTokensStore())
-    //}
-
     @Bean
     fun configurersFactories(): ConfigurersFactories {
         return ConfigurersFactoriesImpl()
