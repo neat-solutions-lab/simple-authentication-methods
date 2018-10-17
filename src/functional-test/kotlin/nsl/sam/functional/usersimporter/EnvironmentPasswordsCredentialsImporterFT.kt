@@ -6,9 +6,10 @@ import nsl.sam.envvar.EnvironmentVariablesAccessor
 import nsl.sam.functional.controller.CustomAuthorizationTestController
 import nsl.sam.importer.reader.impl.EnvironmentCredentialsReader
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
+import nsl.sam.method.basicauth.domain.user.UserTraits
 import nsl.sam.method.basicauth.usersimporter.PasswordsCredentialsImporter
 import nsl.sam.method.basicauth.usersimporter.extractor.PasswordsArrayEnvVarExtractor
-import nsl.sam.utils.UsersTriplesComparator
+import nsl.sam.utils.UserTraitsComparator
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -54,21 +55,21 @@ class EnvironmentPasswordsCredentialsImporterFT {
 
         val environmentPasswordsImporter = PasswordsCredentialsImporter(environmentCredentialsReader)
 
-        val resultTriples: MutableList<Triple<String, String, Array<String>>> = mutableListOf()
+        val resultUserTraits: MutableList<UserTraits> = mutableListOf()
 
         environmentPasswordsImporter.reset()
         environmentPasswordsImporter.use { importer ->
-            for (triple in importer) {
-                resultTriples.add(triple)
+            for (userTrait in importer) {
+                resultUserTraits.add(userTrait)
             }
         }
 
-        Assertions.assertThat(resultTriples.size).isEqualTo(3)
-        Assertions.assertThat(resultTriples).usingElementComparator(UsersTriplesComparator()).isEqualTo(
+        Assertions.assertThat(resultUserTraits.size).isEqualTo(3)
+        Assertions.assertThat(resultUserTraits).usingElementComparator(UserTraitsComparator()).isEqualTo(
                 listOf(
-                        Triple("environment-user1", "{noop}test", arrayOf("USER", "ADMIN")),
-                        Triple("environment-user2", "{noop}test", arrayOf("USER", "ADMIN")),
-                        Triple("environment-user3", "{noop}test", arrayOf("USER", "ADMIN"))
+                        UserTraits("environment-user1", "{noop}test", arrayOf("USER", "ADMIN")),
+                        UserTraits("environment-user2", "{noop}test", arrayOf("USER", "ADMIN")),
+                        UserTraits("environment-user3", "{noop}test", arrayOf("USER", "ADMIN"))
                 )
         )
     }

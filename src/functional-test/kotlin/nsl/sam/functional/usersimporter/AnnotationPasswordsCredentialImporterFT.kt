@@ -5,9 +5,10 @@ import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.controller.CustomAuthorizationTestController
 import nsl.sam.importer.reader.impl.AnnotationCredentialsReader
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
+import nsl.sam.method.basicauth.domain.user.UserTraits
 import nsl.sam.method.basicauth.usersimporter.PasswordsCredentialsImporter
 import nsl.sam.method.basicauth.usersimporter.extractor.PasswordsArrayAnnotationExtractor
-import nsl.sam.utils.UsersTriplesComparator
+import nsl.sam.utils.UserTraitsComparator
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -44,20 +45,20 @@ class AnnotationPasswordsCredentialImporterFT {
         val annotationAttributeUsersImporter =
                 PasswordsCredentialsImporter(annotationCredentialsReader)
 
-        val resultTriples = mutableListOf<Triple<String, String, Array<String>>>()
+        val resultUserTraits = mutableListOf<UserTraits>()
 
         annotationAttributeUsersImporter.reset()
         annotationAttributeUsersImporter.use { importer ->
-            for (triple in importer) {
-                resultTriples.add(triple)
+            for (userTraits in importer) {
+                resultUserTraits.add(userTraits)
             }
         }
 
-        Assertions.assertThat(resultTriples.size).isEqualTo(2)
-        Assertions.assertThat(resultTriples).usingElementComparator(UsersTriplesComparator()).isEqualTo(
+        Assertions.assertThat(resultUserTraits.size).isEqualTo(2)
+        Assertions.assertThat(resultUserTraits).usingElementComparator(UserTraitsComparator()).isEqualTo(
                 listOf(
-                        Triple("hardcoded-user1", "{noop}test", arrayOf("USER", "ADMIN")),
-                        Triple("hardcoded-user2", "{noop}test", arrayOf("USER", "ADMIN"))
+                        UserTraits("hardcoded-user1", "{noop}test", arrayOf("USER", "ADMIN")),
+                        UserTraits("hardcoded-user2", "{noop}test", arrayOf("USER", "ADMIN"))
                 )
         )
     }

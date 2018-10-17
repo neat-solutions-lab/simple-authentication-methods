@@ -30,9 +30,9 @@ class InMemoryUsersSource(private val passwordsImporter: PasswordsCredentialsImp
     private fun importUsersFromImporter() {
         passwordsImporter.reset()
         passwordsImporter.use { importer ->
-            for ((name, pass, roles) in importer) {
-                log.debug("Adding user to in-memory users map: $name")
-                usersMap[name] = UserTraits(name, pass, roles)
+            for (userTraits in importer) {
+                log.debug("Adding user to in-memory users map: ${userTraits.name}")
+                usersMap[userTraits.name] = userTraits
             }
         }
     }
