@@ -41,9 +41,9 @@ class InMemoryUsersSourceFactoryFT {
 
         val inMemoryUsersSource = factory.create(enableAnnotationAttributes, environment)
 
-        val passwordAndRoles = inMemoryUsersSource.getUserPasswordAndRoles("test")
+        val passwordAndRoles = inMemoryUsersSource.getUserTraits("test")
 
-        Assertions.assertThat(passwordAndRoles.first).isEqualTo("{noop}test")
+        Assertions.assertThat(passwordAndRoles.password).isEqualTo("{noop}test")
     }
 }
 

@@ -23,12 +23,12 @@ class DefaultUserDetailsService(private val usersSource: UsersSource) : Availabi
     override fun loadUserByUsername(username: String): UserDetails {
         log.debug("Loading $username user")
 
-        val (pass, roles) = usersSource.getUserPasswordAndRoles(username)
-        log.debug("Building User object for $username user")
+        val userTraits = usersSource.getUserTraits(username)
+
         return User.builder()
                 .username(username)
-                .password(pass)
-                .roles(*roles)
+                .password(userTraits.password)
+                .roles(*userTraits.roles)
                 .build()
     }
 }

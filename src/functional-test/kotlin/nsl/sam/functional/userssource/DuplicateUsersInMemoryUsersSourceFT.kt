@@ -13,13 +13,14 @@ class DuplicateUsersInMemoryUsersSourceFT {
 
         val fileCredentialsReader = FileCredentialsReader("src/functional-test/config/duplicate-passwords.conf")
         val inMemoryUsersSource = InMemoryUsersSource(PasswordsCredentialsImporter(fileCredentialsReader))
-        val passwordAndRoles = inMemoryUsersSource.getUserPasswordAndRoles("test")
+        //val passwordAndRoles = inMemoryUsersSource.getUserPasswordAndRoles("test")
+        val passwordAndRoles = inMemoryUsersSource.getUserTraits("test")
 
         /*
          * ensure that the password belongs to the last user of name "test" listed in
          * the file with users
          */
-        Assertions.assertThat(passwordAndRoles.first).isEqualTo("{noop}double")
+        Assertions.assertThat(passwordAndRoles.password).isEqualTo("{noop}double")
         println("passwordAndRoles: $passwordAndRoles")
     }
 
