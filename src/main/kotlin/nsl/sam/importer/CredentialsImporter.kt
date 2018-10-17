@@ -1,5 +1,7 @@
 package nsl.sam.importer
 
+import nsl.sam.changes.Changeable
+import nsl.sam.changes.ChangeDetector
 import nsl.sam.importer.parser.CredentialsParser
 import nsl.sam.importer.reader.CredentialsReader
 import nsl.sam.interfaces.ItemsAvailabilityAware
@@ -10,15 +12,29 @@ import java.io.Closeable
 open class CredentialsImporter<T>(
         private val credentialParser: CredentialsParser<T>,
         private val credentialsReader: CredentialsReader
-) : Iterator<T>, ItemsAvailabilityAware, Closeable, Resettable {
+) : Iterator<T>, ItemsAvailabilityAware, Closeable, Resettable, Changeable<String> {
 
     companion object {
         val log by logger()
     }
 
+    private var changeDetector: ChangeDetector<String>? = null
+
     private var noMoreElementsInReader = false
 
     private var nextElement: T? = null
+
+    override fun hasDetector(): Boolean {
+        return null != changeDetector
+    }
+
+    override fun getChangeDetector(): ChangeDetector<String>? {
+        return changeDetector
+    }
+
+    override fun setChangeDetector(detector: ChangeDetector<String>) {
+        this.changeDetector = detector
+    }
 
     override fun hasNext(): Boolean {
         if(null != nextElement) return true

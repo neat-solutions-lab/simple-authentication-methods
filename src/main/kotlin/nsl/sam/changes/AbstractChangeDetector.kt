@@ -1,8 +1,13 @@
 package nsl.sam.changes
 
+import nsl.sam.logger.logger
 import java.time.Instant
 
 abstract class AbstractChangeDetector<T>: ChangeDetector<T> {
+
+    companion object {
+        val log by logger()
+    }
 
     private val listeners: MutableList<ChangeListener<T>> = mutableListOf()
 
@@ -14,7 +19,7 @@ abstract class AbstractChangeDetector<T>: ChangeDetector<T> {
         this.listeners.remove(listener)
     }
 
-    private fun changeDetectionProcedure() {
+    private fun doDetectionProcedure() {
         val changedResource = getChangedResource() ?: return
 
         val changeEvent = ChangeEvent(Instant.now(), changedResource)
@@ -26,6 +31,6 @@ abstract class AbstractChangeDetector<T>: ChangeDetector<T> {
     abstract fun getChangedResource(): T?
 
     override fun run() {
-        changeDetectionProcedure()
+        doDetectionProcedure()
     }
 }
