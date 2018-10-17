@@ -2,12 +2,10 @@ package nsl.sam.method.token.tokendetails.impl
 
 import nsl.sam.logger.logger
 import nsl.sam.method.token.tokendetails.TokenDetailsService
-import nsl.sam.method.token.token.ResolvedToken
+import nsl.sam.method.token.domain.token.ResolvedToken
 import nsl.sam.method.token.tokendetails.AvailabilityAwareTokenDetailsService
 import nsl.sam.method.token.tokensresolver.TokensResolver
-import nsl.sam.method.token.tokensresolver.impl.InMemoryTokensResolver
 import nsl.sam.utils.prune
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
@@ -18,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails
  *
  * @see TokenDetailsService
  */
-class DefaultTokenDetailsService(private val tokensSource: TokensResolver) : AvailabilityAwareTokenDetailsService {
+class DefaultTokenDetailsService(private val tokensResolver: TokensResolver) : AvailabilityAwareTokenDetailsService {
 
     override fun hasItems(): Boolean {
         return true
@@ -32,12 +30,12 @@ class DefaultTokenDetailsService(private val tokensSource: TokensResolver) : Ava
 
         try {
 
-            val resolvedToken: ResolvedToken = tokensSource.getResolvedToken(token)
+            val resolvedToken: ResolvedToken = tokensResolver.getResolvedToken(token)
 
             return User.builder()
-                    .username(resolvedToken.userAndRole.name)
+                    .username(resolvedToken.userName)
                     .password("")
-                    .authorities(*resolvedToken.userAndRole.roles)
+                    .authorities(*resolvedToken.roles)
                     .build()
 
         } catch (ex: BadCredentialsException) {

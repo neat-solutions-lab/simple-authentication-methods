@@ -28,14 +28,18 @@ class GeneralConfiguration {
     }
 
     @Bean
-    fun basicAuthMethodInternalConfigurerFactory(configurersFactories: ConfigurersFactories): AuthMethodInternalConfigurerFactory {
+    fun basicAuthMethodInternalConfigurerFactory(
+            configurersFactories: ConfigurersFactories
+    ): AuthMethodInternalConfigurerFactory {
         val factory = BasicAuthMethodInternalConfigurerFactory("default-basic-auth-factory")
         configurersFactories.addFactory(factory)
         return factory
     }
 
     @Bean
-    fun tokenAuthMethodInternalConfigurerFactory(configurersFactories: ConfigurersFactories): AuthMethodInternalConfigurerFactory {
+    fun tokenAuthMethodInternalConfigurerFactory(
+            configurersFactories: ConfigurersFactories
+    ): AuthMethodInternalConfigurerFactory {
         val factory = TokenAuthMethodInternalConfigurerFactory("default-simple-token-factory")
         configurersFactories.addFactory(factory)
         return factory

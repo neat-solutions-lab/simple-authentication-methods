@@ -5,8 +5,7 @@ import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.envvar.EnvironmentVariablesAccessor
 import nsl.sam.importer.reader.impl.EnvironmentCredentialsReader
 import nsl.sam.method.token.annotation.SimpleTokenAuthentication
-import nsl.sam.method.token.token.ResolvedToken
-import nsl.sam.method.token.token.UserAndRoles
+import nsl.sam.method.token.domain.token.ResolvedToken
 import nsl.sam.method.token.tokensimporter.TokensCredentialsImporter
 import nsl.sam.method.token.tokensimporter.extractor.TokensArrayEnvVarExtractor
 import nsl.sam.utils.ResolvedTokensComparator
@@ -68,12 +67,12 @@ class EnvironmentTokensCredentialsImporterFT {
         Assertions.assertThat(resolvedTokens.size).isEqualTo(3)
         Assertions.assertThat(resolvedTokens).usingElementComparator(ResolvedTokensComparator()).isEqualTo(
                 listOf(
-                        ResolvedToken("12345678910", UserAndRoles(
-                                "tester10", arrayOf("ROLE_USER", "ROLE_ADMIN", "ROLE_ROOT"))),
-                        ResolvedToken("12345678911", UserAndRoles(
-                                "tester11", arrayOf("ROLE_USER", "ROLE_ADMIN", "ROLE_ROOT"))),
-                        ResolvedToken("12345678912", UserAndRoles(
-                                "tester12", arrayOf("ROLE_USER", "ROLE_ADMIN", "ROLE_ROOT")))
+                        ResolvedToken("12345678910",
+                                "tester10", arrayOf("ROLE_USER", "ROLE_ADMIN", "ROLE_ROOT")),
+                        ResolvedToken("12345678911",
+                                "tester11", arrayOf("ROLE_USER", "ROLE_ADMIN", "ROLE_ROOT")),
+                        ResolvedToken("12345678912",
+                                "tester12", arrayOf("ROLE_USER", "ROLE_ADMIN", "ROLE_ROOT"))
                 )
         )
     }

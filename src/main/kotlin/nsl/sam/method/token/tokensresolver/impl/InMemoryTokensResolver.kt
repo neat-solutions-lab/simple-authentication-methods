@@ -1,7 +1,7 @@
 package nsl.sam.method.token.tokensresolver.impl
 
 import nsl.sam.logger.logger
-import nsl.sam.method.token.token.ResolvedToken
+import nsl.sam.method.token.domain.token.ResolvedToken
 import nsl.sam.method.token.tokensimporter.TokensCredentialsImporter
 import nsl.sam.method.token.tokensresolver.TokensResolver
 import nsl.sam.utils.prune

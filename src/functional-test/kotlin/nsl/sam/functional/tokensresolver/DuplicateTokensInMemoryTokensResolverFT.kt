@@ -10,11 +10,10 @@ class DuplicateTokensInMemoryTokensResolverFT {
 
     @Test
     fun inCaseOfDuplicateTokensTheLastOneWins() {
-        //val fileTokensImporter = FileTokensImporter("src/functional-test/config/duplicate-tokens.conf")
         val fileTokensImporter = TokensCredentialsImporter(FileCredentialsReader("src/functional-test/config/duplicate-tokens.conf"))
         val inMemoryTokensResolver = InMemoryTokensResolver(fileTokensImporter)
         val resolvedToken = inMemoryTokensResolver.getResolvedToken("1234567891")
 
-        Assertions.assertThat(resolvedToken.userAndRole.name).isEqualTo("tester5")
+        Assertions.assertThat(resolvedToken.userName).isEqualTo("tester5")
     }
 }

@@ -3,8 +3,7 @@ package nsl.sam.method.token.tokensimporter.parser
 import nsl.sam.importer.parser.CredentialsParser
 import nsl.sam.importer.extractor.CredentialsParsingException
 import nsl.sam.logger.logger
-import nsl.sam.method.token.token.ResolvedToken
-import nsl.sam.method.token.token.UserAndRoles
+import nsl.sam.method.token.domain.token.ResolvedToken
 
 class TokensParser : CredentialsParser<ResolvedToken> {
 
@@ -23,6 +22,8 @@ class TokensParser : CredentialsParser<ResolvedToken> {
 
         val roles = if (parts.size > 2) parts.subList(2, parts.lastIndex + 1) else emptyList()
 
-        return ResolvedToken(tokenValue, UserAndRoles(userName, roles.map { "ROLE_$it" }.toTypedArray()))
+        return ResolvedToken(
+                tokenValue, userName, roles.map { "ROLE_$it" }.toTypedArray()
+        )
     }
 }

@@ -4,8 +4,7 @@ import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.importer.reader.impl.AnnotationCredentialsReader
 import nsl.sam.method.token.annotation.SimpleTokenAuthentication
-import nsl.sam.method.token.token.ResolvedToken
-import nsl.sam.method.token.token.UserAndRoles
+import nsl.sam.method.token.domain.token.ResolvedToken
 import nsl.sam.method.token.tokensimporter.TokensCredentialsImporter
 import nsl.sam.method.token.tokensimporter.extractor.TokensArrayAnnotationExtractor
 import nsl.sam.utils.ResolvedTokensComparator
@@ -54,10 +53,11 @@ class AnnotationTokensCredentialsImporterFT {
         Assertions.assertThat(resolvedTokens.size).isEqualTo(2)
         Assertions.assertThat(resolvedTokens).usingElementComparator(ResolvedTokensComparator()).isEqualTo(
                 listOf(
-                        ResolvedToken("12345678910", UserAndRoles(
-                                "tester10", arrayOf("ROLE_USER", "ROLE_ADMIN", "ROLE_ROOT"))),
-                        ResolvedToken("12345678911", UserAndRoles(
-                                "tester11", arrayOf("ROLE_USER", "ROLE_ADMIN", "ROLE_ROOT")))
+                        ResolvedToken("12345678910",
+                                "tester10", arrayOf("ROLE_USER", "ROLE_ADMIN", "ROLE_ROOT")),
+
+                        ResolvedToken("12345678911",
+                                "tester11", arrayOf("ROLE_USER", "ROLE_ADMIN", "ROLE_ROOT"))
                 )
         )
     }

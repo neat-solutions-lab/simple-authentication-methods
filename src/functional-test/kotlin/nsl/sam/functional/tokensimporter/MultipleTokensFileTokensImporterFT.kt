@@ -56,7 +56,7 @@ internal class MultipleTokensFileTokensImporterFT {
             for(token in it) {
                 println("token: $token")
                 tokensNumber++
-                usersSet.add(token.userAndRole.name)
+                usersSet.add(token.userName)
             }
         }
 

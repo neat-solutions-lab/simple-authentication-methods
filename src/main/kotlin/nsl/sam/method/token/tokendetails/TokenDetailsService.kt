@@ -1,6 +1,5 @@
 package nsl.sam.method.token.tokendetails
 
-import nsl.sam.method.token.token.UserAndRoles
 import org.springframework.security.core.userdetails.UserDetails
 
 /**
@@ -10,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails
 interface TokenDetailsService {
 
     /**
-     * Maps given [token] value to underlying user (in form of [UserAndRoles] data class).
+     * Maps given [token] value to underlying user).
      *
      * @param token Token value which the method will try to map to associated user (and his roles).
      *

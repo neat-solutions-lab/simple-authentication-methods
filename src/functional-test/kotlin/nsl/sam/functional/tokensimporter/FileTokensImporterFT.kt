@@ -3,7 +3,7 @@ package nsl.sam.functional.tokensimporter
 import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.method.token.annotation.SimpleTokenAuthentication
-import nsl.sam.method.token.token.ResolvedToken
+import nsl.sam.method.token.domain.token.ResolvedToken
 import nsl.sam.method.token.tokensimporter.TokensCredentialsImporter
 import nsl.sam.method.token.tokensimporter.factory.FileTokenCredentialsImporterFactory
 import org.assertj.core.api.Assertions
@@ -63,7 +63,7 @@ internal class FileTokensImporterFT {
 
         Assertions.assertThat(tokensNumber).isEqualTo(1)
         Assertions.assertThat(resolvedToken?.tokenValue).isEqualTo("12345")
-        Assertions.assertThat(resolvedToken?.userAndRole?.roles).hasSameElementsAs(
+        Assertions.assertThat(resolvedToken?.roles).hasSameElementsAs(
                 listOf("ROLE_USER", "ROLE_ADMIN", "ROLE_ROOT")
         )
     }
