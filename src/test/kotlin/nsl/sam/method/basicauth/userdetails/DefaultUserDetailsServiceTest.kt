@@ -6,6 +6,7 @@ import nsl.sam.method.basicauth.usersimporter.PasswordsCredentialsImporter
 import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
+import java.util.*
 
 internal class DefaultUserDetailsServiceTest {
 
@@ -13,7 +14,10 @@ internal class DefaultUserDetailsServiceTest {
     fun userWithNoRolesTest() {
 
         val fileCredentialsReader = FileCredentialsReader("src/test/config/passwords-no-roles.conf")
-        val inMemoryUsersSource = InMemoryUsersSource.createInstance(PasswordsCredentialsImporter(fileCredentialsReader))
+        val inMemoryUsersSource = InMemoryUsersSource.createInstance(
+                PasswordsCredentialsImporter(fileCredentialsReader),
+                Properties()
+        )
         val userDetailsService = DefaultUserDetailsService(inMemoryUsersSource)
         val userDetails = userDetailsService.loadUserByUsername("test1")
 

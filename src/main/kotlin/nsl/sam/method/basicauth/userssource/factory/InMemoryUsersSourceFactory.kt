@@ -11,6 +11,7 @@ import nsl.sam.method.basicauth.userssource.UsersSource
 import nsl.sam.method.basicauth.userssource.UsersSourceFactory
 import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
 import org.springframework.core.env.Environment
+import java.util.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
@@ -25,7 +26,21 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
     ): UsersSource {
 
         val passwordsImporter = getPasswordsImporter(attributes, environment)
-        return InMemoryUsersSource.createInstance(passwordsImporter)
+        val confProperties = getConfigurationProperties(attributes, environment)
+        return InMemoryUsersSource.createInstance(passwordsImporter, confProperties)
+    }
+
+    private fun getConfigurationProperties(attributes: EnableAnnotationAttributes, environment: Environment): Properties {
+        val confProperties = Properties()
+
+
+
+        confProperties.setProperty(
+                "sam.passwords-file-change-detection-period",
+                environment.getProperty("sam.passwords-file-change-detection-period", "1000")
+        )
+
+        return confProperties
     }
 
     private fun getPasswordsImporter(

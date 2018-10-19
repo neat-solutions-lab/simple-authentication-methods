@@ -7,13 +7,17 @@ import nsl.sam.method.basicauth.userssource.impl.InMemoryUsersSource
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.util.*
 
 internal class InMemoryUsersSourceTest {
 
     @Test
     fun userWithNoRoles() {
         val fileCredentialsReader = FileCredentialsReader("src/test/config/passwords-no-roles.conf")
-        val inMemoryUsersSource = InMemoryUsersSource.createInstance(PasswordsCredentialsImporter(fileCredentialsReader))
+        val inMemoryUsersSource = InMemoryUsersSource.createInstance(
+                PasswordsCredentialsImporter(fileCredentialsReader),
+                Properties()
+        )
 
 
         assertEquals(true, inMemoryUsersSource.hasItems())
@@ -22,8 +26,10 @@ internal class InMemoryUsersSourceTest {
     @Test
     fun testEmptyFile() {
         val fileCredentialsReader = FileCredentialsReader("src/test/config/passwords-empty.conf")
-        val inMemoryUsersSource = InMemoryUsersSource.createInstance(PasswordsCredentialsImporter(fileCredentialsReader))
-
+        val inMemoryUsersSource = InMemoryUsersSource.createInstance(
+                PasswordsCredentialsImporter(fileCredentialsReader),
+                Properties()
+        )
         assertEquals(false, inMemoryUsersSource.hasItems())
     }
 
@@ -31,8 +37,10 @@ internal class InMemoryUsersSourceTest {
     fun testBlankFilePath() {
 
         val fileCredentialsReader = FileCredentialsReader("")
-        val inMemoryUsersSource = InMemoryUsersSource.createInstance(PasswordsCredentialsImporter(fileCredentialsReader))
-
+        val inMemoryUsersSource = InMemoryUsersSource.createInstance(
+                PasswordsCredentialsImporter(fileCredentialsReader),
+                Properties()
+        )
         assertEquals(false, inMemoryUsersSource.hasItems())
     }
 
@@ -41,7 +49,10 @@ internal class InMemoryUsersSourceTest {
     fun testMixed() {
 
         val fileCredentialsReader = FileCredentialsReader("src/test/config/passwords-mixed.conf")
-        val inMemoryUsersSource = InMemoryUsersSource.createInstance(PasswordsCredentialsImporter(fileCredentialsReader))
+        val inMemoryUsersSource = InMemoryUsersSource.createInstance(
+                PasswordsCredentialsImporter(fileCredentialsReader),
+                Properties()
+        )
 
         assertEquals(true, inMemoryUsersSource.hasItems())
     }
@@ -50,8 +61,10 @@ internal class InMemoryUsersSourceTest {
     fun testIndividualUsersAvailability() {
 
         val fileCredentialsReader = FileCredentialsReader("src/test/config/passwords-mixed.conf")
-        val inMemoryUsersSource = InMemoryUsersSource.createInstance(PasswordsCredentialsImporter(fileCredentialsReader))
-
+        val inMemoryUsersSource = InMemoryUsersSource.createInstance(
+                PasswordsCredentialsImporter(fileCredentialsReader),
+                Properties()
+        )
 
         val users = arrayOf("test1", "test2", "test3", "test5", "test6", "test8", "test9", "test10")
         val passwordAndRolesList = mutableListOf<UserTraits>()

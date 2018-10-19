@@ -41,12 +41,14 @@ class BasicAuthPasswordsFileAutoReloadFT {
             tmpConfigFile = createTempFile()
             File("src/functional-test/config/passwords.conf").copyTo(tmpConfigFile!!, true)
             System.setProperty("sam.passwords-file", tmpConfigFile?.absolutePath)
+            System.setProperty("sam.passwords-file-change-detection-period", "10")
         }
 
         @AfterAll
         @JvmStatic
         fun afterAll() {
             System.clearProperty("sam.passwords-file")
+            System.clearProperty("sam.passwords-file-change-detection-period")
             tmpConfigFile?.delete()
         }
     }
@@ -59,7 +61,7 @@ class BasicAuthPasswordsFileAutoReloadFT {
 
         tmpConfigFile?.appendText("\nadded-user:{noop}added-password ADMIN")
 
-        Thread.sleep(5000)
+        Thread.sleep(500)
 
         // ACT
         val response: MockHttpServletResponse = mvc
@@ -111,7 +113,6 @@ class BasicAuthPasswordsFileAutoReloadFT {
         Assertions.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
     }
 }
-
 
 @Configuration
 @EnableSimpleAuthenticationMethods
