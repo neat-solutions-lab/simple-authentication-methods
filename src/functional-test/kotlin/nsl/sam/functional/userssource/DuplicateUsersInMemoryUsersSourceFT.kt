@@ -12,8 +12,7 @@ class DuplicateUsersInMemoryUsersSourceFT {
     fun inCaseOfDuplicateUsersTheLastOneWins() {
 
         val fileCredentialsReader = FileCredentialsReader("src/functional-test/config/duplicate-passwords.conf")
-        val inMemoryUsersSource = InMemoryUsersSource(PasswordsCredentialsImporter(fileCredentialsReader))
-        //val passwordAndRoles = inMemoryUsersSource.getUserPasswordAndRoles("test")
+        val inMemoryUsersSource = InMemoryUsersSource.createInstance(PasswordsCredentialsImporter(fileCredentialsReader))
         val passwordAndRoles = inMemoryUsersSource.getUserTraits("test")
 
         /*

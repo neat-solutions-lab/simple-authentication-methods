@@ -25,8 +25,7 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
     ): UsersSource {
 
         val passwordsImporter = getPasswordsImporter(attributes, environment)
-        return InMemoryUsersSource(passwordsImporter)
-
+        return InMemoryUsersSource.createInstance(passwordsImporter)
     }
 
     private fun getPasswordsImporter(

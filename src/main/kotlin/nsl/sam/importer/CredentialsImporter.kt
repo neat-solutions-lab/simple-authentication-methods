@@ -24,7 +24,7 @@ open class CredentialsImporter<T>(
 
     private var nextElement: T? = null
 
-    override fun hasDetector(): Boolean {
+    override fun hasChangeDetector(): Boolean {
         return null != changeDetector
     }
 
@@ -87,7 +87,9 @@ open class CredentialsImporter<T>(
 
     override fun hasItems(): Boolean {
         reset()
-        return hasNext()
+        val answer = hasNext()
+        close()
+        return answer
     }
 
     override fun toString(): String {

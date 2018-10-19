@@ -6,6 +6,7 @@ import kotlin.reflect.KClass
 class SimpleBasicAuthenticationAttributes private constructor(
         val passwordsFilePathProperty: String = "",
         val passwordsFilePath: String = "",
+        val detectPasswordsFileChanges: Boolean = false,
         val users: Array<String> = arrayOf(),
         val usersEnvPrefix: String = "",
         val authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = emptyArray()
@@ -20,7 +21,7 @@ class SimpleBasicAuthenticationAttributes private constructor(
     }
 
     private constructor (builder: Builder) : this(
-            builder.passwordFilePathProperty, builder.passwordFilePath,
+            builder.passwordFilePathProperty, builder.passwordFilePath, builder.detectPasswordsFileChanges,
             builder.users, builder.usersEnvPrefix, builder.authenticationEntryPointFactory
     )
 
@@ -29,6 +30,9 @@ class SimpleBasicAuthenticationAttributes private constructor(
             private set
 
         var passwordFilePath: String = ""
+            private set
+
+        var detectPasswordsFileChanges: Boolean = false
             private set
 
         var users: Array<String> = arrayOf()
@@ -43,6 +47,9 @@ class SimpleBasicAuthenticationAttributes private constructor(
 
         fun passwordFilePath(value: String) =
                 apply { this.passwordFilePath = value }
+
+        fun detectPasswordsFileChanges(value: Boolean) =
+                apply { this.detectPasswordsFileChanges = value }
 
         fun users(value: Array<String>) = apply { this.users = value }
 

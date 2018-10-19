@@ -13,7 +13,7 @@ internal class DefaultUserDetailsServiceTest {
     fun userWithNoRolesTest() {
 
         val fileCredentialsReader = FileCredentialsReader("src/test/config/passwords-no-roles.conf")
-        val inMemoryUsersSource = InMemoryUsersSource(PasswordsCredentialsImporter(fileCredentialsReader))
+        val inMemoryUsersSource = InMemoryUsersSource.createInstance(PasswordsCredentialsImporter(fileCredentialsReader))
         val userDetailsService = DefaultUserDetailsService(inMemoryUsersSource)
         val userDetails = userDetailsService.loadUserByUsername("test1")
 

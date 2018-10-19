@@ -7,6 +7,7 @@ import kotlin.reflect.KClass
 annotation class SimpleBasicAuthentication(
         val passwordsFilePropertyName: String = "",
         val passwordsFilePath: String = "",
+        val detectPasswordsFileChanges: Boolean = false,
         val users: Array<String> = [],
         val usersEnvPrefix: String = "",
         val authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = []

@@ -26,7 +26,7 @@ class FileCredentialsReader(val path: String) : CredentialsReader {
 
     override fun readCredentials(): String? {
 
-        log.debug("readCredentials()")
+        log.debug("readCredentials(): $path")
 
         var line: String?
 
@@ -38,12 +38,17 @@ class FileCredentialsReader(val path: String) : CredentialsReader {
     }
 
     override fun close() {
+        log.debug("Closing file with credentials: $path (bufferedReader: $bufferedReader)")
+        internalClose()
+    }
+
+    private fun internalClose() {
         bufferedReader?.close()
     }
 
     override fun reset() {
         if (!File(path).exists()) return
-        close()
+        internalClose()
         bufferedReader = BufferedReader(FileReader(File(path)))
     }
 }

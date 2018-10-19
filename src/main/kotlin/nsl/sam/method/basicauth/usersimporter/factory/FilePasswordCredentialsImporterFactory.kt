@@ -1,7 +1,9 @@
 package nsl.sam.method.basicauth.usersimporter.factory
 
+import nsl.sam.changes.resource.FileChangeDetector
 import nsl.sam.core.annotation.EnableAnnotationAttributes
 import nsl.sam.importer.reader.impl.FileCredentialsReader
+import nsl.sam.logger.logger
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributes
 import nsl.sam.method.basicauth.annotation.SimpleBasicAuthenticationAttributesExtractor
 import nsl.sam.method.basicauth.usersimporter.PasswordsCredentialsImporter
@@ -10,24 +12,61 @@ import org.springframework.core.env.Environment
 
 class FilePasswordCredentialsImporterFactory : PasswordsCredentialsImporterFactory {
 
+    companion object {
+        val log by logger()
+    }
+
     override fun create(
             attributes: EnableAnnotationAttributes,
             environment: Environment
     ): PasswordsCredentialsImporter {
 
-        val passwordsFilePath = getPasswordsFilePath(attributes, environment)
-        return PasswordsCredentialsImporter(FileCredentialsReader(passwordsFilePath))
+        val simpleBasicAuthenticationAttributes = extractSimpleBasicAuthenticationAttributes(attributes)
+
+        val passwordsFilePath = getPasswordsFilePath(simpleBasicAuthenticationAttributes, environment)
+        log.info("Passwords file to be used by ${PasswordsCredentialsImporter::class.simpleName}: $passwordsFilePath")
+
+        val importer = PasswordsCredentialsImporter(FileCredentialsReader(passwordsFilePath))
+        injectChangeDetectorIfConfigured(importer, passwordsFilePath, simpleBasicAuthenticationAttributes, environment)
+        return importer
     }
 
+    private fun injectChangeDetectorIfConfigured(
+            importer: PasswordsCredentialsImporter,
+            observableFilePath: String,
+            simpleBasicAuthenticationAttributes: SimpleBasicAuthenticationAttributes,
+            environment: Environment) {
+
+        if (!isPasswordsFileChangeDetectionEnabled(simpleBasicAuthenticationAttributes, environment)) return
+
+        val fileChangeDetector = FileChangeDetector(observableFilePath)
+        log.info("Passwords file changes detector created for path: $observableFilePath")
+
+        importer.setChangeDetector(fileChangeDetector)
+        log.info("Passwords file changes detector injected to the importer: ${importer::class.qualifiedName}")
+    }
+
+    private fun isPasswordsFileChangeDetectionEnabled(
+            simpleBasicAuthenticationAttributes: SimpleBasicAuthenticationAttributes,
+            environment: Environment
+    ): Boolean {
+
+        val propertyValue = environment.getProperty("sam.detect-passwords-file-changes")
+        if(propertyValue != null && propertyValue.toBoolean()) {
+            return true
+        }
+        return simpleBasicAuthenticationAttributes.detectPasswordsFileChanges
+    }
+
+    private fun extractSimpleBasicAuthenticationAttributes(attributes: EnableAnnotationAttributes) =
+            SimpleBasicAuthenticationAttributesExtractor.extractAttributes(
+                    attributes.enableAnnotationMetadata
+            )
+
     private fun getPasswordsFilePath(
-            attributes: EnableAnnotationAttributes,
+            simpleBasicAuthenticationAttributes: SimpleBasicAuthenticationAttributes,
             environment: Environment
     ): String {
-
-        val simpleBasicAuthenticationAttributes =
-                SimpleBasicAuthenticationAttributesExtractor.extractAttributes(
-                        attributes.enableAnnotationMetadata
-                )
         return decideOnPasswordFilePath(simpleBasicAuthenticationAttributes, environment)
     }
 

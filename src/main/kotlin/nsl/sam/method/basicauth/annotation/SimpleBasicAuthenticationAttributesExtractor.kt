@@ -23,6 +23,9 @@ object SimpleBasicAuthenticationAttributesExtractor {
                 .passwordFilePath(annotationMetadataResolver.getRequiredAttributeValue(
                         "passwordsFilePath", String::class
                 ))
+                .detectPasswordsFileChanges(annotationMetadataResolver.getRequiredAttributeValue(
+                        "detectPasswordsFileChanges", Boolean::class
+                ))
                 .authenticationEntryPointFactory(annotationMetadataResolver.getRequiredAttributeAsKClassArray(
                         "authenticationEntryPointFactory",
                         AuthenticationEntryPointFactory::class

@@ -22,6 +22,9 @@ class FileChangeDetector(private val path: String) : AbstractChangeDetector<Stri
     }
 
     override fun getChangedResource(): String? {
+
+        log.debug("${this::class.qualifiedName} change detector called")
+
         val file = File(path)
         val currentExists = file.exists()
         val currentLastModified = file.lastModified()
@@ -33,6 +36,8 @@ class FileChangeDetector(private val path: String) : AbstractChangeDetector<Stri
         val changeDetected = hasChangeOccurred(currentExists, currentLastModified, currentSize)
 
         if (!changeDetected) return null
+
+        log.info("Detector ${this::class.qualifiedName} detected change of resource: $path")
 
         lastCheckFileExists = currentExists
         lastCheckLastModified = currentLastModified
