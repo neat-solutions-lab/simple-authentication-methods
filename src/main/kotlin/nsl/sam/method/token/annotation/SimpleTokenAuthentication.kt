@@ -7,6 +7,7 @@ import kotlin.reflect.KClass
 annotation class SimpleTokenAuthentication (
     val tokensFilePropertyName: String = "",
     val tokensFilePath: String = "",
+    val detectTokensFileChanges: Boolean = false,
     val tokens: Array<String> = [],
     val tokensEnvPrefix: String = "",
     val authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = []

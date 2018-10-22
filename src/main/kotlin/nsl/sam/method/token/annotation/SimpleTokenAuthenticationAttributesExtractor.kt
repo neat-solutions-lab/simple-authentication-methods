@@ -24,6 +24,9 @@ object SimpleTokenAuthenticationAttributesExtractor {
                 .tokensFilePath(annotationMetadataResolver.getRequiredAttributeValue(
                         "tokensFilePath", String::class
                 ))
+                .detectTokensFileChanges(annotationMetadataResolver.getRequiredAttributeValue(
+                        "detectTokensFileChanges", Boolean::class
+                ))
                 .tokens(annotationMetadataResolver.getRequiredAttributeValue(
                         "tokens", Array<String>::class
                 ))

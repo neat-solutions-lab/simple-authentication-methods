@@ -30,14 +30,19 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
         return InMemoryUsersSource.createInstance(passwordsImporter, confProperties)
     }
 
-    private fun getConfigurationProperties(attributes: EnableAnnotationAttributes, environment: Environment): Properties {
+    private fun getConfigurationProperties(
+            attributes: EnableAnnotationAttributes,
+            environment: Environment
+    ): Properties {
+
         val confProperties = Properties()
-
-
 
         confProperties.setProperty(
                 "sam.passwords-file-change-detection-period",
-                environment.getProperty("sam.passwords-file-change-detection-period", "1000")
+                environment.getProperty(
+                        "sam.passwords-file-change-detection-period",
+                        "1000"
+                )
         )
 
         return confProperties
@@ -47,7 +52,8 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
             attributes: EnableAnnotationAttributes, environment: Environment
     ): PasswordsCredentialsImporter {
 
-        val factoriesArray: Array<KClass<out PasswordsCredentialsImporterFactory>> = getPasswordsImportersFactories()
+        val factoriesArray: Array<KClass<out PasswordsCredentialsImporterFactory>>
+                = getPasswordsImportersFactories()
 
         factoriesArray.forEach {
             val factory = it.createInstance()

@@ -1,7 +1,7 @@
 package nsl.test.changes
 
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.method.basicauth.annotation.SimpleBasicAuthentication
+import nsl.sam.method.token.annotation.SimpleTokenAuthentication
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -15,13 +15,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-        classes = [FileChangesDetectorExplorationConfiguration::class])
+        classes = [TokensFileChangesDetectorExplorationConfiguration::class])
 @AutoConfigureMockMvc(secure = false)
 @TestPropertySource(properties = [
-    "sam.passwords-file=/tmp/passwords.conf",
-    "sam.detect-passwords-file-changes=true"
+    "sam.tokens-file=/tmp/tokens.conf",
+    "sam.detect-tokens-file-changes=true",
+    "sam.tokens-file-change-detection-period=10"
 ])
-class FileChangesDetectorExploration {
+class TokensFileChangesDetectorExploration {
 
     companion object {
         const val SLEEP_TIME = 100000L
@@ -29,7 +30,7 @@ class FileChangesDetectorExploration {
 
     @Test
     fun test() {
-        println("Hello from FileChangesDetectorExploration")
+        println("Hello from ${this::class.simpleName}")
         Thread.sleep(SLEEP_TIME)
     }
 
@@ -37,5 +38,5 @@ class FileChangesDetectorExploration {
 
 @Configuration
 @EnableSimpleAuthenticationMethods
-@SimpleBasicAuthentication
-class FileChangesDetectorExplorationConfiguration
+@SimpleTokenAuthentication(detectTokensFileChanges = false)
+class TokensFileChangesDetectorExplorationConfiguration

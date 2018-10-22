@@ -6,6 +6,7 @@ import kotlin.reflect.KClass
 class SimpleTokenAuthenticationAttributes private constructor (
         val tokensFilePropertyName: String = "",
         val tokensFilePath: String = "",
+        val detectTokensFileChanges: Boolean = false,
         val tokens: Array<String> = arrayOf(),
         val tokensEnvPrefix: String = "",
         val authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = arrayOf()
@@ -18,6 +19,7 @@ class SimpleTokenAuthenticationAttributes private constructor (
     private constructor(builder: Builder):this(
             builder.tokensFilePropertyName,
             builder.tokensFilePath,
+            builder.detectTokensFileChanges,
             builder.tokens,
             builder.tokensEnvPrefix,
             builder.authenticationEntryPointFactory
@@ -28,6 +30,9 @@ class SimpleTokenAuthenticationAttributes private constructor (
             private set
 
         var tokensFilePath: String = ""
+            private set
+
+        var detectTokensFileChanges: Boolean = false
             private set
 
         var tokens: Array<String> = arrayOf()
@@ -42,6 +47,9 @@ class SimpleTokenAuthenticationAttributes private constructor (
 
         fun tokensFilePath(value: String) =
                 apply { this.tokensFilePath = value }
+
+        fun detectTokensFileChanges(value: Boolean) =
+                apply { this.detectTokensFileChanges = value }
 
         fun tokens(value: Array<String>) =
                 apply { this.tokens = value }

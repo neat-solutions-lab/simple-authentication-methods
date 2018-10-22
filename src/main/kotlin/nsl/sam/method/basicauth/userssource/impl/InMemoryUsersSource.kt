@@ -30,7 +30,7 @@ class InMemoryUsersSource private constructor(
     }
 
     private val usersMap: MutableMap<String, UserTraits> = mutableMapOf()
-    private lateinit var conditionallyConcurrent: ConditionalReadWriteSynchronizer
+    private lateinit var readWriteSynchronizer: ConditionalReadWriteSynchronizer
 
     override fun onChangeDetected(changeEvent: ChangeEvent<String>) {
         log.info("Underlying passwords file has changed. Reimporting users list.")
@@ -47,23 +47,23 @@ class InMemoryUsersSource private constructor(
      */
     private fun initialize() {
         if (passwordsImporter.hasChangeDetector()) {
-            this.conditionallyConcurrent = ConditionalReadWriteSynchronizer(true)
+            this.readWriteSynchronizer = ConditionalReadWriteSynchronizer(true)
             val detector = passwordsImporter.getChangeDetector()
             detector?.addChangeListener(this)
             ScheduledExecutor.addTask(
                     detector!!,
                     getFileChangeDetectionPeriod())
         } else {
-            this.conditionallyConcurrent = ConditionalReadWriteSynchronizer(false)
+            this.readWriteSynchronizer = ConditionalReadWriteSynchronizer(false)
         }
         importUsersFromImporter()
     }
 
-    override fun getUserTraits(username: String): UserTraits = conditionallyConcurrent.readLock {
+    override fun getUserTraits(username: String): UserTraits = readWriteSynchronizer.readLock {
         usersMap[username] ?: throw UsernameNotFoundException("Failed to find $username username")
     }
 
-    private fun importUsersFromImporter() = conditionallyConcurrent.writeLock {
+    private fun importUsersFromImporter() = readWriteSynchronizer.writeLock {
         usersMap.clear()
         passwordsImporter.reset()
         passwordsImporter.use { importer ->

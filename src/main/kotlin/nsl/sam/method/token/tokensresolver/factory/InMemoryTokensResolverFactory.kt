@@ -15,6 +15,7 @@ import nsl.sam.method.token.tokensresolver.TokensResolver
 import nsl.sam.method.token.tokensresolver.TokensResolverFactory
 import nsl.sam.method.token.tokensresolver.impl.InMemoryTokensResolver
 import org.springframework.core.env.Environment
+import java.util.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 
@@ -26,7 +27,21 @@ class InMemoryTokensResolverFactory : TokensResolverFactory {
 
     override fun create(attributes: EnableAnnotationAttributes, environment: Environment): TokensResolver {
         val tokensImporter = getTokensImporter(attributes, environment)
-        return InMemoryTokensResolver(tokensImporter)
+        val confProperties = getConfigurationProperties(environment)
+        return InMemoryTokensResolver.createInstance(tokensImporter, confProperties)
+    }
+
+    private fun getConfigurationProperties(environment: Environment): Properties {
+        val confProperties = Properties()
+
+        confProperties.setProperty(
+                "sam.tokens-file-change-detection-period",
+                environment.getProperty(
+                        "sam.tokens-file-change-detection-period",
+                        "1000"
+                )
+        )
+        return confProperties
     }
 
     private fun getTokensImporter(
