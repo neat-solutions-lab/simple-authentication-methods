@@ -2,15 +2,14 @@ package nsl.sam.method.basicauth.userssource.impl
 
 import nsl.sam.changes.ChangeEvent
 import nsl.sam.changes.ChangeListener
+import nsl.sam.concurrent.ConditionalReadWriteSynchronizer
 import nsl.sam.logger.logger
 import nsl.sam.method.basicauth.domain.user.UserTraits
 import nsl.sam.method.basicauth.usersimporter.PasswordsCredentialsImporter
 import nsl.sam.method.basicauth.userssource.UsersSource
 import nsl.sam.scheduler.ScheduledExecutor
-import nsl.sam.utils.Conditionally
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import java.util.*
-import java.util.concurrent.locks.ReentrantReadWriteLock
 
 class InMemoryUsersSource private constructor(
         private val passwordsImporter: PasswordsCredentialsImporter,
@@ -31,10 +30,7 @@ class InMemoryUsersSource private constructor(
     }
 
     private val usersMap: MutableMap<String, UserTraits> = mutableMapOf()
-    private val readWriteLock = ReentrantReadWriteLock()
-
-
-    private lateinit var ifSynchronized: Conditionally
+    private lateinit var conditionallyConcurrent: ConditionalReadWriteSynchronizer
 
     override fun onChangeDetected(changeEvent: ChangeEvent<String>) {
         log.info("Underlying passwords file has changed. Reimporting users list.")
@@ -51,30 +47,23 @@ class InMemoryUsersSource private constructor(
      */
     private fun initialize() {
         if (passwordsImporter.hasChangeDetector()) {
-            this.ifSynchronized = Conditionally(true)
+            this.conditionallyConcurrent = ConditionalReadWriteSynchronizer(true)
             val detector = passwordsImporter.getChangeDetector()
             detector?.addChangeListener(this)
             ScheduledExecutor.addTask(
                     detector!!,
                     getFileChangeDetectionPeriod())
         } else {
-            this.ifSynchronized = Conditionally(false)
+            this.conditionallyConcurrent = ConditionalReadWriteSynchronizer(false)
         }
         importUsersFromImporter()
     }
 
-    override fun getUserTraits(username: String): UserTraits = try {
-
-        ifSynchronized { readWriteLock.readLock().lock() }
-
-        usersMap[username]
-                ?: throw UsernameNotFoundException("Failed to find $username username")
-    } finally {
-        ifSynchronized { readWriteLock.readLock().unlock() }
+    override fun getUserTraits(username: String): UserTraits = conditionallyConcurrent.readLock {
+        usersMap[username] ?: throw UsernameNotFoundException("Failed to find $username username")
     }
 
-    private fun importUsersFromImporter() = try {
-        ifSynchronized { readWriteLock.writeLock().lock() }
+    private fun importUsersFromImporter() = conditionallyConcurrent.writeLock {
         usersMap.clear()
         passwordsImporter.reset()
         passwordsImporter.use { importer ->
@@ -83,8 +72,6 @@ class InMemoryUsersSource private constructor(
                 usersMap[userTraits.name] = userTraits
             }
         }
-    } finally {
-        ifSynchronized { readWriteLock.writeLock().unlock() }
     }
 
     private fun getFileChangeDetectionPeriod(): Long {
