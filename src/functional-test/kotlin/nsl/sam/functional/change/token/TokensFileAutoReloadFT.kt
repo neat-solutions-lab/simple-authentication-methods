@@ -1,6 +1,7 @@
-package nsl.sam.functional.change.basicauth
+package nsl.sam.functional.change.token
 
 import nsl.sam.FunctionalTestConstants
+import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.configuration.FakeControllerConfiguration
 import org.assertj.core.api.Assertions
@@ -14,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
@@ -24,54 +24,52 @@ import java.io.File
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-        classes = [BasicAuthPasswordsFileAutoReloadFTConfiguration::class])
+        classes = [TokensFileAutoReloadFTConfiguration::class])
 @AutoConfigureMockMvc(secure = false)
 @TestPropertySource(properties = [
-    "sam.detect-passwords-file-changes=true"
+    "sam.detect-tokens-file-changes=true"
 ])
-class BasicAuthPasswordsFileAutoReloadFT {
+class TokensFileAutoReloadFT {
 
     companion object {
 
-        var tmpConfigFile: File?  = null
+        var tmpConfigFile: File? = null
 
         @BeforeAll
         @JvmStatic
         fun beforeAll() {
             tmpConfigFile = createTempFile()
-            File("src/functional-test/config/passwords.conf").copyTo(tmpConfigFile!!, true)
-            System.setProperty("sam.passwords-file", tmpConfigFile?.absolutePath)
-            System.setProperty("sam.passwords-file-change-detection-period", "10")
+            File("src/functional-test/config/tokens.conf").copyTo(tmpConfigFile!!, true)
+            System.setProperty("sam.tokens-file", tmpConfigFile?.absolutePath)
+            System.setProperty("sam.tokens-file-change-detection-period", "10")
         }
 
         @AfterAll
         @JvmStatic
         fun afterAll() {
-            System.clearProperty("sam.passwords-file")
-            System.clearProperty("sam.passwords-file-change-detection-period")
-            tmpConfigFile?.delete()
+            System.clearProperty("sam.tokens-file")
+            System.clearProperty("sam.tokens-file-change-detection-period")
+            //tmpConfigFile?.delete()
         }
     }
 
+
     @Autowired
-    private lateinit var mvc: MockMvc
+    lateinit var mvc: MockMvc
 
     @Test
-    fun successfullAuhorizationOfUserAddedToPasswordsFileInRuntime() {
-
-        tmpConfigFile?.appendText("\nadded-user:{noop}added-password ADMIN")
+    fun successAuthenticationWithTokenAddedInRuntime() {
+        // ACT
+        tmpConfigFile?.appendText("\nTOKENADDEDINRUNTIME tester USER ADMIN ROOT")
 
         Thread.sleep(500)
 
-        // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
-                        MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT)
-                                .with(
-                                        SecurityMockMvcRequestPostProcessors.httpBasic(
-                                                "added-user",
-                                                "added-password")
-                                )
+                        MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT).header(
+                                FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME,
+                                "Bearer TOKENADDEDINRUNTIME"
+                        )
                 )
                 .andReturn().response
 
@@ -81,16 +79,14 @@ class BasicAuthPasswordsFileAutoReloadFT {
     }
 
     @Test
-    fun successAuthenticationWithNotAddedButExistingUser() {
+    fun successAuthenticationWithNotAddedButExistingToken() {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
-                        MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT)
-                                .with(
-                                        SecurityMockMvcRequestPostProcessors.httpBasic(
-                                                FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_NAME,
-                                                FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_CORRECT_PASSWORD)
-                                )
+                        MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT).header(
+                                FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME,
+                                FunctionalTestConstants.TOKEN_AUTH_HEADER_AUTHORIZED_VALUE
+                        )
                 )
                 .andReturn().response
 
@@ -100,12 +96,18 @@ class BasicAuthPasswordsFileAutoReloadFT {
     }
 
     @Test
-    fun failedAuthenticationWithBasicAuthWhenNotExistingUser() {
+    fun failedAuthenticationWithWrongTokenAfterOtherTokenAddedInRuntime() {
         // ACT
+        tmpConfigFile?.appendText("\nANOTHERTOKENADDEDINRUNTIME tester USER ADMIN ROOT")
+
+        Thread.sleep(500)
+
         val response: MockHttpServletResponse = mvc
                 .perform(
-                        MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT)
-                                .with(SecurityMockMvcRequestPostProcessors.httpBasic(FunctionalTestConstants.NOT_EXISTING_BASIC_AUTH_USER_NAME, FunctionalTestConstants.NOT_EXISTING_BASIC_AUTH_USER_PASSWORD))
+                        MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_TEST_ENDPOINT).header(
+                                FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME,
+                                "Bearer COMPLETLYWRONGTOKEN"
+                        )
                 )
                 .andReturn().response
 
@@ -115,5 +117,5 @@ class BasicAuthPasswordsFileAutoReloadFT {
 }
 
 @Configuration
-@EnableSimpleAuthenticationMethods
-class BasicAuthPasswordsFileAutoReloadFTConfiguration : FakeControllerConfiguration()
+@EnableSimpleAuthenticationMethods(methods = [AuthenticationMethod.SIMPLE_TOKEN])
+class TokensFileAutoReloadFTConfiguration : FakeControllerConfiguration()

@@ -48,20 +48,13 @@ class InMemoryTokensResolver private constructor(
     }
 
     override fun onChangeDetected(changeEvent: ChangeEvent<String>) {
-        println("CHANGE REPORTED.....")
+        log.info("Underlying tokens file has changed. Reimporting tokens list.")
+        importTokensFromImporter()
     }
 
     override fun getResolvedToken(tokenAsString: String): ResolvedToken = readWriteSynchronizer.readLock {
         tokensMap[tokenAsString] ?: throw BadCredentialsException("Filed to find token ${tokenAsString.prune()}")
     }
-
-//    override fun getResolvedToken(tokenAsString: String): ResolvedToken {
-//
-//        if (tokensMap.containsKey(tokenAsString))
-//            return tokensMap[tokenAsString]!!
-//
-//        throw BadCredentialsException("No token ${tokenAsString.prune()} in local file")
-//    }
 
     private fun importTokensFromImporter() = readWriteSynchronizer.writeLock {
         tokensImporter.reset()
