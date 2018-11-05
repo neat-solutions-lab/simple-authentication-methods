@@ -32,7 +32,6 @@ import java.io.File
 @TestPropertySource(properties = [
     "sam.detect-tokens-file-changes=true"
 ])
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class TokensFileAutoReloadFT {
 
     companion object {
@@ -56,8 +55,6 @@ class TokensFileAutoReloadFT {
             //tmpConfigFile?.delete()
 
             ScheduledExecutor.shutdownNow()
-            //ScheduledExecutor.awaitTermination()
-
         }
     }
 

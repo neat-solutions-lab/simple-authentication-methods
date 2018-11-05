@@ -32,7 +32,6 @@ import java.io.File
 @TestPropertySource(properties = [
     "sam.detect-passwords-file-changes=true"
 ])
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class PasswordsFileAutoReloadFT {
 
     companion object {
@@ -56,8 +55,6 @@ class PasswordsFileAutoReloadFT {
             tmpConfigFile?.delete()
 
             ScheduledExecutor.shutdownNow()
-            //ScheduledExecutor.awaitTermination()
-
         }
     }
 

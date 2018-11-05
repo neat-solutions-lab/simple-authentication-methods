@@ -1,6 +1,5 @@
 package nsl.sam.scheduler
 
-import nsl.sam.logger.logger
 import org.slf4j.LoggerFactory
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -10,11 +9,9 @@ object ScheduledExecutor {
 
     val log = LoggerFactory.getLogger(this::class.java.name)!!
 
-    //private val executor = Executors.newSingleThreadScheduledExecutor()
     private var executor: ScheduledExecutorService? = null
 
     private fun getScheduledExecutor(): ScheduledExecutorService {
-        //var rv = null
         log.debug("getSchduledExecutor()")
         if(executor == null || executor!!.isShutdown) {
             executor = Executors.newSingleThreadScheduledExecutor()
