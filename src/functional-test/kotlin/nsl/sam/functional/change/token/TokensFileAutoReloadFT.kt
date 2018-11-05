@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.mock.web.MockHttpServletResponse
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
@@ -31,6 +32,7 @@ import java.io.File
 @TestPropertySource(properties = [
     "sam.detect-tokens-file-changes=true"
 ])
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class TokensFileAutoReloadFT {
 
     companion object {
@@ -54,7 +56,7 @@ class TokensFileAutoReloadFT {
             //tmpConfigFile?.delete()
 
             ScheduledExecutor.shutdownNow()
-            ScheduledExecutor.awaitTermination()
+            //ScheduledExecutor.awaitTermination()
 
         }
     }
