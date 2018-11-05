@@ -16,6 +16,7 @@ class InMemoryTokensResolver private constructor(
         private val tokensImporter: TokensCredentialsImporter,
         private val configProperties: Properties
 ): TokensResolver, ChangeListener<String> {
+
     companion object {
 
         val log by logger()

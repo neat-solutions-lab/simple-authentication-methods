@@ -4,9 +4,11 @@ import nsl.sam.FunctionalTestConstants
 import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.configuration.FakeControllerConfiguration
+import nsl.sam.scheduler.ScheduledExecutor
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -50,6 +52,10 @@ class TokensFileAutoReloadFT {
             System.clearProperty("sam.tokens-file")
             System.clearProperty("sam.tokens-file-change-detection-period")
             //tmpConfigFile?.delete()
+
+            ScheduledExecutor.shutdownNow()
+            ScheduledExecutor.awaitTermination()
+
         }
     }
 

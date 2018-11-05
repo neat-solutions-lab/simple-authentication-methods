@@ -11,4 +11,12 @@ object ScheduledExecutor {
         executor.scheduleAtFixedRate(task, periodMilliseconds, periodMilliseconds, TimeUnit.MILLISECONDS)
     }
 
+    fun shutdownNow() {
+        executor.shutdownNow()
+    }
+
+    fun awaitTermination() {
+        executor.awaitTermination(3, TimeUnit.MINUTES)
+    }
+
 }

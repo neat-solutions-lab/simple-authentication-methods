@@ -4,6 +4,7 @@ import nsl.sam.FunctionalTestConstants
 import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
 import nsl.sam.functional.configuration.FakeControllerConfiguration
+import nsl.sam.scheduler.ScheduledExecutor
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -51,6 +52,10 @@ class PasswordsFileAutoReloadFT {
             System.clearProperty("sam.passwords-file")
             System.clearProperty("sam.passwords-file-change-detection-period")
             tmpConfigFile?.delete()
+
+            ScheduledExecutor.shutdownNow()
+            ScheduledExecutor.awaitTermination()
+
         }
     }
 
