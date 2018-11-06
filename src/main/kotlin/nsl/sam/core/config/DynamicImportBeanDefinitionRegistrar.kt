@@ -1,6 +1,7 @@
 package nsl.sam.core.config
 
 import nsl.sam.configurer.ConfigurersFactories
+import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableAnnotationAttributesExtractor
 import nsl.sam.core.config.ordering.OrderingHelper
 import nsl.sam.core.config.ordering.ReservedNumbersFinder
@@ -35,13 +36,7 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
 
         val annotationAttributes = EnableAnnotationAttributesExtractor.extractAttributes(importingClassMetadata)
-        log.debug("annotation attributes for ${importingClassMetadata.className}: $annotationAttributes")
-
-//        if(annotationAttributes.methods.contains(AuthenticationMethod.SIMPLE_NO_METHOD)) {
-//            log.debug("Skipping authentication configuration because one of declared methods is " +
-//                    "${AuthenticationMethod.SIMPLE_NO_METHOD.name}")
-//            return
-//        }
+        log.info("annotation attributes for ${importingClassMetadata.className}: $annotationAttributes")
 
         /*
          * due to auto-ordering mechanism, I need to know all reserved order number,

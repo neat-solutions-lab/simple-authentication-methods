@@ -20,6 +20,8 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic
+import org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers
+import org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.*
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.test.context.TestPropertySource
@@ -57,8 +59,15 @@ class NoAuthMethodEnabledFT {
     //
 
     @Test
-    fun webSecurityConfigurerBeanPresent() {
-        this.ctx.getBean(WebSecurityConfigurerAdapter::class.java)
+    fun defaultSpringBootWebSecurityConfigurerBeanPresent() {
+        //val adapter = this.ctx.getBean(WebSecurityConfigurerAdapter::class.java)
+        //this.ctx.beanDefinitionNames.forEach { println(it) }
+
+        val defaultConfigurer = this.ctx.beanDefinitionNames
+                .find { it.contains("SpringBootWebSecurityConfiguration\$DefaultConfigurerAdapter") }
+        println("default configurer: $defaultConfigurer")
+        org.assertj.core.api.Assertions.assertThat(defaultConfigurer).isNotNull()
+
     }
 
     //
@@ -71,10 +80,14 @@ class NoAuthMethodEnabledFT {
         assertNull(filter)
     }
 
+    /*
+     * default Spring Boot configuration configures Basic Auth with random password, so BasicAuthenticationFilter
+     * should be present in the filters chain
+     */
     @Test
-    fun noBasicAuthenticationFilterInFilterChainWhenNoMethodIsEnabled() {
+    fun basicAuthenticationFilterInFilterChainWhenNoMethodIsEnabled() {
         val filter = this.filterChain.getFilters("/").find { it::class == BasicAuthenticationFilter::class }
-        assertNull(filter)
+        org.assertj.core.api.Assertions.assertThat(filter).isNotNull()
     }
 
     //
@@ -82,8 +95,6 @@ class NoAuthMethodEnabledFT {
     //
 
     @Test
-    @Disabled("During refactoring time, the being tested bean is part of GeneralConfiguration, so it is all the" +
-            " time in ApplicationContext.")
     fun localFileTokensToUserMapperBeanNotPresentWhenSimpleTokenMethodDisabled() {
         Assertions.assertThrows(NoSuchBeanDefinitionException::class.java) {
             this.ctx.getBean(TokenDetailsService::class.java)
@@ -95,7 +106,7 @@ class NoAuthMethodEnabledFT {
     //
 
     @Test
-    fun authenticatedAsAnonymousUserWhenBasicAuthUsedButNoMethodEnabled() {
+    fun failedAuthenticationDueToDefaultRandomBasicHttpPassword() {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
@@ -106,36 +117,9 @@ class NoAuthMethodEnabledFT {
                                         FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_CORRECT_PASSWORD)
                                 )
                 )
+                .andExpect(unauthenticated())
                 .andReturn().response
-
-        // ASSERT
-        assertEquals("anonymousUser", response.contentAsString)
-    }
-
-    @Test
-    fun authenticatedAsAnonymousUserWhenTokenUsedButNoMethodEnabled() {
-        // ACT
-        val response: MockHttpServletResponse = mvc
-                .perform(
-                        MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT).header(
-                                FunctionalTestConstants.TOKEN_AUTH_HEADER_NAME, FunctionalTestConstants.TOKEN_AUTH_HEADER_AUTHORIZED_VALUE
-                        )
-                )
-                .andReturn().response
-
-        // ASSERT
-        assertEquals("anonymousUser", response.contentAsString)
-    }
-
-    @Test
-    fun authenticatedAsAnonymousUserWhenNoAnyCredentialsUsedAndNoMethodEnabled() {
-        // ACT
-        val response: MockHttpServletResponse = mvc
-                .perform(MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT))
-                .andReturn().response
-
-        // ASSERT
-        assertEquals("anonymousUser", response.contentAsString)
+        println("response: ${response.contentAsString}")
     }
 
     @Configuration

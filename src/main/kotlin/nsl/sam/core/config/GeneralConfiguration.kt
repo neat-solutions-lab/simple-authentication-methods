@@ -17,10 +17,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc
 @EnableWebMvc
 class GeneralConfiguration {
 
-    @Bean
-    fun beanDefinitionRegistryPostProcessor(): BeanDefinitionRegistryPostProcessor {
-        return BeanDefinitionRegistryPostProcessorImpl()
-    }
+//    @Bean
+//    fun beanDefinitionRegistryPostProcessor(): BeanDefinitionRegistryPostProcessor {
+//        return BeanDefinitionRegistryPostProcessorImpl()
+//    }
 
     @Bean
     fun configurersFactories(): ConfigurersFactories {
