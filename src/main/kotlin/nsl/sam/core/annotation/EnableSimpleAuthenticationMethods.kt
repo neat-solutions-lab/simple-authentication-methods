@@ -51,13 +51,22 @@ annotation class EnableSimpleAuthenticationMethods(
          */
         val match: String = "",
 
+        /**
+         * this annotation can be applied multiple times, each usage of the annotation generates
+         * bytecode with the instance of WebSecurityConfigurerAdapter derivative, the order attribute defines the precedense relation
+         * that Spring Security will take into account while processing all generate WebSecurityConfigurerAdapter(s)
+         */
         val order: Int = -1,
+
 
         val authorizations: String = "",
 
+
         val forceHttps: Boolean = false,
 
+
         val debug: Boolean = false,
+
 
         val authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = []
 )
