@@ -3,21 +3,7 @@ image: neatsolutionslab/jdk:11.0.0open
 before_script:
 - source ~/.sdkman/bin/sdkman-init.sh
 
-#build-on-java10.0.2-kotlin1.2.51:
-#  stage: build
-#  tags:
-#  - nsl-docker
-#  script:
-#  - mvn package -Dmaven.test.skip=true
-#
-#test-on-java10.0.2-kotlin1.2.51:
-#  stage: test
-#  tags:
-#  - nsl-docker
-#  script:
-#  - mvn verify
-
-build-on-java11.0.0-kotlin1.2.51:
+build-on-java11.0.0:
   image: neatsolutionslab/jdk:11.0.0open
   stage: build
   tags:
@@ -25,7 +11,7 @@ build-on-java11.0.0-kotlin1.2.51:
   script:
   - mvn package -Dmaven.test.skip=true
 
-test-on-java11.0.0-kotlin1.2.51:
+test-on-java11.0.0:
   image: neatsolutionslab/jdk:11.0.0open
   stage: test
   tags:
