@@ -34,11 +34,6 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
     @Synchronized
     override fun registerBeanDefinitions(importingClassMetadata: AnnotationMetadata, registry: BeanDefinitionRegistry) {
 
-        //val annotationMetadataResolver = AnnotationMetadataResolver(
-        //        importingClassMetadata, EnableSimpleAuthenticationMethods::class
-        //)
-        //val value = annotationMetadataResolver.getAttributeValue("debug", Boolean::class)
-
         val annotationAttributes = EnableAnnotationAttributesExtractor.extractAttributes(importingClassMetadata)
         log.debug("annotation attributes for ${importingClassMetadata.className}: $annotationAttributes")
 
