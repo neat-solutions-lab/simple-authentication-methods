@@ -25,7 +25,7 @@ import org.hamcrest.Matchers.*
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc(secure = false)
 @TestPropertySource(properties = [
-    "sam.tokens-file=src/functional-test/config/tokens.conf"])
+    "nsl.sam.tokens-file=src/functional-test/config/tokens.conf"])
 class CustomAuthenticationEntryPointTokenScenarioFT {
 
     @Autowired

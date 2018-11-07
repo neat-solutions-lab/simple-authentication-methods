@@ -18,7 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
         classes = [TokensFileChangesDetectorExplorationConfiguration::class])
 @AutoConfigureMockMvc(secure = false)
 @TestPropertySource(properties = [
-    "sam.tokens-file=/tmp/tokens.conf",
+    "nsl.sam.tokens-file=/tmp/tokens.conf",
     "sam.detect-tokens-file-changes=true",
     "sam.tokens-file-change-detection-period=10"
 ])

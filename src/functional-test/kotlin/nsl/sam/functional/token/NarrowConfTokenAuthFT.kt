@@ -36,7 +36,7 @@ import kotlin.test.assertNull
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
-    "sam.tokens-file=src/functional-test/config/tokens.conf"
+    "nsl.sam.tokens-file=src/functional-test/config/tokens.conf"
 ])
 class NarrowConfTokenAuthFT {
 

@@ -43,14 +43,14 @@ class TokensFileAutoReloadFT {
         fun beforeAll() {
             tmpConfigFile = createTempFile()
             File("src/functional-test/config/tokens.conf").copyTo(tmpConfigFile!!, true)
-            System.setProperty("sam.tokens-file", tmpConfigFile?.absolutePath)
+            System.setProperty("nsl.sam.tokens-file", tmpConfigFile?.absolutePath)
             System.setProperty("sam.tokens-file-change-detection-period", "10")
         }
 
         @AfterAll
         @JvmStatic
         fun afterAll() {
-            System.clearProperty("sam.tokens-file")
+            System.clearProperty("nsl.sam.tokens-file")
             System.clearProperty("sam.tokens-file-change-detection-period")
             //tmpConfigFile?.delete()
 

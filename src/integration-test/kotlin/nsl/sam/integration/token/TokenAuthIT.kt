@@ -23,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = [TestConfiguration::class])
 @TestPropertySource(properties = [
     "nsl.sam.passwords-file=src/integration-test/config/passwords.conf",
-    "sam.tokens-file=src/integration-test/config/tokens.conf"])
+    "nsl.sam.tokens-file=src/integration-test/config/tokens.conf"])
 class TokenAuthIT {
 
     companion object {

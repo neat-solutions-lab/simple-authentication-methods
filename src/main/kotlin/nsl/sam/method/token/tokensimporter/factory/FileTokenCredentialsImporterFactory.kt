@@ -100,8 +100,8 @@ class FileTokenCredentialsImporterFactory : TokenCredentialsImporterFactory {
         if (simpleTokenAuthenticationAttributes.tokensFilePropertyName.isNotBlank())
             return simpleTokenAuthenticationAttributes.tokensFilePropertyName
 
-        if(environment.containsProperty("sam.tokens-file"))
-            return environment.getProperty("sam.tokens-file", "")
+        if(environment.containsProperty("nsl.sam.tokens-file"))
+            return environment.getProperty("nsl.sam.tokens-file", "")
 
         return ""
     }

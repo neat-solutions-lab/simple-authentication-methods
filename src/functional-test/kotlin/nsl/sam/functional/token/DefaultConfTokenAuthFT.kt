@@ -32,7 +32,7 @@ import org.assertj.core.api.Assertions as Assertj
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
     "nsl.sam.passwords-file=src/functional-test/config/passwords.conf",
-    "sam.tokens-file=src/functional-test/config/tokens.conf"])
+    "nsl.sam.tokens-file=src/functional-test/config/tokens.conf"])
 class DefaultConfTokenAuthFT {
 
     companion object {
