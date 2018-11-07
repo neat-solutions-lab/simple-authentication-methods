@@ -18,7 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
         classes = [PasswordsFileChangesDetectorExplorationConfiguration::class])
 @AutoConfigureMockMvc(secure = false)
 @TestPropertySource(properties = [
-    "sam.passwords-file=/tmp/passwords.conf",
+    "nsl.sam.passwords-file=/tmp/passwords.conf",
     "sam.detect-passwords-file-changes=true"
 ])
 class PasswordsFileChangesDetectorExploration {

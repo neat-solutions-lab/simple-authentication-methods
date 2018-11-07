@@ -103,8 +103,8 @@ class FilePasswordCredentialsImporterFactory : PasswordsCredentialsImporterFacto
                     simpleBasicAuthenticationAttributes.passwordsFilePathProperty, ""
             )
 
-        if (environment.containsProperty("sam.passwords-file"))
-            return environment.getProperty("sam.passwords-file", "")
+        if (environment.containsProperty("nsl.sam.passwords-file"))
+            return environment.getProperty("nsl.sam.passwords-file", "")
 
         return ""
     }

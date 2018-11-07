@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc(secure = false)
 @TestPropertySource(properties = [
-    "sam.passwords-file=src/functional-test/config/passwords.conf"])
+    "nsl.sam.passwords-file=src/functional-test/config/passwords.conf"])
 class SpecificEntryPointFactoryFT {
 
     @Autowired

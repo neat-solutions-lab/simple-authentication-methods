@@ -24,7 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
         classes = [InMemoryUsersSourceFactoryTestConfiguration::class])
 @AutoConfigureMockMvc(secure = false)
 @TestPropertySource(properties = [
-    "sam.passwords-file=src/functional-test/config/passwords.conf"])
+    "nsl.sam.passwords-file=src/functional-test/config/passwords.conf"])
 class InMemoryUsersSourceFactoryFT {
     companion object {
         var importingClassMetadata: AnnotationMetadata? = null

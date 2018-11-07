@@ -27,7 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         classes = [TestConfiguration::class])
 @TestPropertySource(properties = [
-    "sam.passwords-file=src/integration-test/config/passwords.conf",
+    "nsl.sam.passwords-file=src/integration-test/config/passwords.conf",
     "sam.tokens-file=src/integration-test/config/tokens.conf"])
 class BasicAuthIT {
 

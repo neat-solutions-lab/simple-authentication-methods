@@ -16,7 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
-    "sam.passwords-file=src/functional-test/config/effectively-empty-passwords.conf",
+    "nsl.sam.passwords-file=src/functional-test/config/effectively-empty-passwords.conf",
     "nsl.sam.anonymous-fallback=true",
     "server.address=localhost"
 ])

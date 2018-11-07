@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-@TestPropertySource(properties = ["sam.passwords-file=src/functional-test/config/effectively-empty-passwords.conf"])
+@TestPropertySource(properties = ["nsl.sam.passwords-file=src/functional-test/config/effectively-empty-passwords.conf"])
 class EmptyPassFileAndNoFallbackFT {
 
     @Autowired
