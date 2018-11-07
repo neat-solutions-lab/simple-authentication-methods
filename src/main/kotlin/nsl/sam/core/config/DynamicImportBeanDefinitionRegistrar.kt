@@ -82,6 +82,7 @@ class DynamicImportBeanDefinitionRegistrar: ImportBeanDefinitionRegistrar, BeanF
         registry.registerBeanDefinition(
                 dynamicConfigurerClass.canonicalName, bd
         )
+        log.info("Bean definition for ASM generated class registered under name ${dynamicConfigurerClass.canonicalName}")
     }
 
     private fun findReservedOrderNumbers(): List<Int> {

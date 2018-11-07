@@ -66,7 +66,7 @@ class FileTokenCredentialsImporterFactory : TokenCredentialsImporterFactory {
 
     ): Boolean {
 
-        val propertyValue = environment.getProperty("sam.detect-tokens-file-changes")
+        val propertyValue = environment.getProperty("nsl.sam.detect-tokens-file-changes")
         if(propertyValue != null && propertyValue.toBoolean()) {
             log.info("Tokens file change detection is enabled by external configuration.")
             return true

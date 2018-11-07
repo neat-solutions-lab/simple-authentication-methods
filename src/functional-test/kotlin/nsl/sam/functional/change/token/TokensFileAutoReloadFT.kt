@@ -30,7 +30,7 @@ import java.io.File
         classes = [TokensFileAutoReloadFTConfiguration::class])
 @AutoConfigureMockMvc(secure = false)
 @TestPropertySource(properties = [
-    "sam.detect-tokens-file-changes=true"
+    "nsl.sam.detect-tokens-file-changes=true"
 ])
 class TokensFileAutoReloadFT {
 

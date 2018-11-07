@@ -177,9 +177,9 @@ open class InstrumentedWebSecurityConfigurerTemplate(
         applyAuthenticationRules(http)
 
         authMethodInternalConfigurers.filter {
-            log.info("Checking if authorization method ${it.methodName()} is active.")
+            log.info("Checking if authentication method ${it.methodName()} is active.")
             val isAvailable = it.hasItems()
-            log.info("Check result for authorization method ${it.methodName()}: $isAvailable")
+            log.info("Check result for authentication method ${it.methodName()}: $isAvailable")
             isAvailable
         }.forEach {
             log.info("Registering authorization mechanism: ${it.methodName()}")
@@ -215,7 +215,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
         /*
          * it is only for the sake of clarity, the default settings seems to be the same
-         * as the ones being set by the below code
+         * as the ones being set by the code below
          */
         http.authorizeRequests().anyRequest().permitAll()
     }
@@ -225,6 +225,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
         log.info("Applying common security settings for simple-authorization-methods")
 
         http
+                //.anonymous().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
