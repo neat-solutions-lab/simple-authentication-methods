@@ -20,6 +20,7 @@ class InMemoryTokensResolver private constructor(
     companion object {
 
         val log by logger()
+
         fun createInstance(
                 tokensImporter: TokensCredentialsImporter,
                 configProperties: Properties
@@ -28,8 +29,13 @@ class InMemoryTokensResolver private constructor(
             instance.initialize()
             return instance
         }
-
     }
+
+    override fun hasItems(): Boolean {
+        return tokensImporter.hasItems()
+    }
+
+
     private val tokensMap: MutableMap<String, ResolvedToken> = mutableMapOf()
 
     private lateinit var readWriteSynchronizer: ConditionalReadWriteSynchronizer

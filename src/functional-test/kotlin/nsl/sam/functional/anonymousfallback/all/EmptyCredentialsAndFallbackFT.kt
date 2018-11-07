@@ -82,42 +82,42 @@ class EmptyCredentialsAndFallbackFT {
         // ASSERT
         Assertions.assertThat(response.status).isEqualTo(HttpStatus.OK.value())
     }
-//
-//    /*
-//     * it should succeed only because anonymous access has been enabled
-//     */
-//    @Test
-//    fun userInfoEndpointReportsAnonymousUserWhenOtherBasicAuthCredentialAreProvided() {
-//        // ACT
-//        val response: MockHttpServletResponse = mvc
-//                .perform(
-//                        MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT)
-//                                .with(
-//                                        SecurityMockMvcRequestPostProcessors.httpBasic(
-//                                                FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_NAME,
-//                                                FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_CORRECT_PASSWORD)
-//                                )
-//                )
-//                .andReturn().response
-//
-//        // ASSERT
-//        Assertions.assertThat(response.status).isEqualTo(HttpStatus.OK.value())
-//        Assertions.assertThat(response.contentAsString).isEqualTo("anonymousUser")
-//    }
-//
-//    @Test
-//    fun userInfoEndpointReportsAnonymousUserWhenNoCredentialsAtAll() {
-//        // ACT
-//        val response: MockHttpServletResponse = mvc
-//                .perform(MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT))
-//                .andReturn().response
-//
-//        println("response: ${response.contentAsString}")
-//
-//        Assertions.assertThat(response.status).isEqualTo(HttpStatus.OK.value())
-//        Assertions.assertThat(response.contentAsString).isEqualTo("anonymousUser")
-//    }
 
+
+    /*
+     * it should succeed only because anonymous access has been enabled
+     */
+    @Test
+    fun userInfoEndpointReportsAnonymousUserWhenOtherBasicAuthCredentialAreProvided() {
+        // ACT
+        val response: MockHttpServletResponse = mvc
+                .perform(
+                        MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT)
+                                .with(
+                                        SecurityMockMvcRequestPostProcessors.httpBasic(
+                                                FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_NAME,
+                                                FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_CORRECT_PASSWORD)
+                                )
+                )
+                .andReturn().response
+
+        // ASSERT
+        Assertions.assertThat(response.status).isEqualTo(HttpStatus.OK.value())
+        Assertions.assertThat(response.contentAsString).isEqualTo("anonymousUser")
+    }
+
+    @Test
+    fun userInfoEndpointReportsAnonymousUserWhenNoCredentialsAtAll() {
+        // ACT
+        val response: MockHttpServletResponse = mvc
+                .perform(MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT))
+                .andReturn().response
+
+        println("response: ${response.contentAsString}")
+
+        Assertions.assertThat(response.status).isEqualTo(HttpStatus.OK.value())
+        Assertions.assertThat(response.contentAsString).isEqualTo("anonymousUser")
+    }
 
     @Configuration
     @EnableSimpleAuthenticationMethods([

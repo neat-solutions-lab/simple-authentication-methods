@@ -43,6 +43,9 @@ open class InstrumentedWebSecurityConfigurerTemplate(
     @Autowired
     private lateinit var environment: Environment
 
+    private var areActivationConditionsChecked = false
+    private var areActivationConditionsMet = false
+
     /**
      * NOTE: This property is "injected" with the help of DynamicImportBeanDefinitionRegistar,
      * it holds values of attributes used with [nsl.sam.core.annotation.EnableSimpleAuthenticationMethods]
@@ -109,13 +112,13 @@ open class InstrumentedWebSecurityConfigurerTemplate(
     }
 
     override fun configure(authBuilder: AuthenticationManagerBuilder) {
+        if(!areActivationConditionsMet()) return
         for (registar in this.authMethodInternalConfigurers) {
             registar.configure(authBuilder)
         }
     }
 
-    private fun areActivationConditionsMet(): Boolean {
-
+    private fun _areActivationConditionsMet(): Boolean {
         /*
          * if at least one underlying UsersSource is able to provide at least one user then
          * authentication should be activated
@@ -129,12 +132,20 @@ open class InstrumentedWebSecurityConfigurerTemplate(
          */
         if (areLocalAnonymousAccessConditionsMet()) return false
 
-
         /*
          * even if all UserSource(s) are 'empty' still activate authorization rules
          * to NOT ACCIDENTALLY OPEN ACCESS to protected resources
          */
         return true
+    }
+
+    private fun areActivationConditionsMet(): Boolean {
+
+        if(!areActivationConditionsChecked) {
+            areActivationConditionsMet = _areActivationConditionsMet()
+            areActivationConditionsChecked = true
+        }
+        return areActivationConditionsMet
     }
 
     /*

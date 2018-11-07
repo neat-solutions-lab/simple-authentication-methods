@@ -19,7 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails
 class DefaultTokenDetailsService(private val tokensResolver: TokensResolver) : AvailabilityAwareTokenDetailsService {
 
     override fun hasItems(): Boolean {
-        return true
+        return tokensResolver.hasItems()
     }
 
     companion object {

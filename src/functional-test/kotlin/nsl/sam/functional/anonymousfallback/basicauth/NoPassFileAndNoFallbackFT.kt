@@ -29,7 +29,7 @@ class NoPassFileAndNoFallbackFT {
     private lateinit var mvc: MockMvc
 
     @Test
-    fun failedBasicAuthWhenPasswordsFileIsEmptyWithOtherwiseValidUser() {
+    fun failedBasicAuthWhenNoPasswordsFileAndNoFallback() {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
