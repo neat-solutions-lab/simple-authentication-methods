@@ -35,9 +35,9 @@ class InMemoryTokensResolverFactory : TokensResolverFactory {
         val confProperties = Properties()
 
         confProperties.setProperty(
-                "sam.tokens-file-change-detection-period",
+                "nsl.sam.tokens-file-change-detection-period",
                 environment.getProperty(
-                        "sam.tokens-file-change-detection-period",
+                        "nsl.sam.tokens-file-change-detection-period",
                         "1000"
                 )
         )

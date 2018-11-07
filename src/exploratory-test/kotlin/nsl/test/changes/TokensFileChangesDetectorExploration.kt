@@ -20,7 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 @TestPropertySource(properties = [
     "nsl.sam.tokens-file=/tmp/tokens.conf",
     "sam.detect-tokens-file-changes=true",
-    "sam.tokens-file-change-detection-period=10"
+    "nsl.sam.tokens-file-change-detection-period=10"
 ])
 class TokensFileChangesDetectorExploration {
 

@@ -68,6 +68,6 @@ class InMemoryTokensResolver private constructor(
     }
 
     private fun getFileChangeDetectionPeriod(): Long {
-        return configProperties.getProperty("sam.tokens-file-change-detection-period", "1000").toLong()
+        return configProperties.getProperty("nsl.sam.tokens-file-change-detection-period", "1000").toLong()
     }
 }
