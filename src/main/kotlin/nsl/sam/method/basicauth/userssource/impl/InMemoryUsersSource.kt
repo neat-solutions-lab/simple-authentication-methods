@@ -76,7 +76,7 @@ class InMemoryUsersSource private constructor(
 
     private fun getFileChangeDetectionPeriod(): Long {
         return configProperties.getProperty(
-                "sam.passwords-file-change-detection-period", "1000"
+                "nsl.sam.passwords-file-change-detection-period", "1000"
         ).toLong()
     }
 }

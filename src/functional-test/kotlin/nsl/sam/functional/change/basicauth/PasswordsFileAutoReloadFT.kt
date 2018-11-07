@@ -44,14 +44,14 @@ class PasswordsFileAutoReloadFT {
             tmpConfigFile = createTempFile()
             File("src/functional-test/config/passwords.conf").copyTo(tmpConfigFile!!, true)
             System.setProperty("nsl.sam.passwords-file", tmpConfigFile?.absolutePath)
-            System.setProperty("sam.passwords-file-change-detection-period", "10")
+            System.setProperty("nsl.sam.passwords-file-change-detection-period", "10")
         }
 
         @AfterAll
         @JvmStatic
         fun afterAll() {
             System.clearProperty("nsl.sam.passwords-file")
-            System.clearProperty("sam.passwords-file-change-detection-period")
+            System.clearProperty("nsl.sam.passwords-file-change-detection-period")
             tmpConfigFile?.delete()
 
             ScheduledExecutor.shutdownNow()

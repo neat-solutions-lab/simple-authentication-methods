@@ -38,9 +38,9 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
         val confProperties = Properties()
 
         confProperties.setProperty(
-                "sam.passwords-file-change-detection-period",
+                "nsl.sam.passwords-file-change-detection-period",
                 environment.getProperty(
-                        "sam.passwords-file-change-detection-period",
+                        "nsl.sam.passwords-file-change-detection-period",
                         "1000"
                 )
         )
