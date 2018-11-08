@@ -1,7 +1,9 @@
 package nsl.sam.core.annotation
 
+import nsl.sam.core.annotation.attrtypes.PortsMapping
 import org.springframework.core.type.AnnotationMetadata
 import org.springframework.util.Assert
+import kotlin.reflect.KClass
 
 /**
  * Represents attributes of [@EnableSimpleAuthentication] methods annotation
@@ -14,7 +16,8 @@ class EnableAnnotationAttributes private constructor(
         val order: Int,
         val anonymousFallback: Boolean,
         val authorizations: String,
-        val forceHttps: Boolean
+        val forceHttps: Boolean,
+        val portMapping: Array<KClass<out PortsMapping>>
 ) {
 
     class Builder {
@@ -26,6 +29,7 @@ class EnableAnnotationAttributes private constructor(
         var anonymousFallback = false
         var authorizations = ""
         var forceHttps = false
+        var portMapping: Array<KClass<out PortsMapping>> = emptyArray()
 
         fun enableAnnotationMetadata(enableAnnotationMetadata: AnnotationMetadata) =
                 apply { this.enableAnnotationMetadata = enableAnnotationMetadata }
@@ -51,12 +55,15 @@ class EnableAnnotationAttributes private constructor(
         fun forceHttps(value: Boolean) =
                 apply { this.forceHttps = value }
 
+        fun portMapping(value: Array<KClass<out PortsMapping>>) =
+                apply { this.portMapping = value}
+
         fun build(): EnableAnnotationAttributes {
             Assert.notNull(this.enableAnnotationMetadata, "enableAnnotationMetadata cannot be null")
             return EnableAnnotationAttributes(
                     this.enableAnnotationMetadata!!,
                     this.methods, this.match, this.debug, this.order, this.anonymousFallback,
-                    this.authorizations, this.forceHttps)
+                    this.authorizations, this.forceHttps, this.portMapping)
         }
     }
 }

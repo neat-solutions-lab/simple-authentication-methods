@@ -1,5 +1,6 @@
 package nsl.sam.core.annotation
 
+import nsl.sam.core.annotation.attrtypes.PortsMapping
 import nsl.sam.core.condition.SimpleNoMethodValueIsAbsent
 import nsl.sam.core.config.DynamicImportBeanDefinitionRegistrar
 import nsl.sam.core.config.EnableWebSecurityInDebugMode
@@ -67,6 +68,7 @@ annotation class EnableSimpleAuthenticationMethods(
 
         val forceHttps: Boolean = false,
 
+        val portMapping: Array<KClass<out PortsMapping>> = [],
 
         val debug: Boolean = false,
 

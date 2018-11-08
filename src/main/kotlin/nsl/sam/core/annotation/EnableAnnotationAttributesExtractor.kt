@@ -1,6 +1,7 @@
 package nsl.sam.core.annotation
 
 import nsl.sam.annotation.AnnotationMetadataResolver
+import nsl.sam.core.annotation.attrtypes.PortsMapping
 import nsl.sam.core.config.ordering.OrderingHelper
 import org.springframework.core.type.AnnotationMetadata
 
@@ -32,6 +33,9 @@ object EnableAnnotationAttributesExtractor {
                 ))
                 .forceHttps(annotationResolver.getRequiredAttributeValue(
                         ENABLE_ANNOTATION_FORCE_HTTPS_ATTRIBUTE_NAME, Boolean::class
+                ))
+                .portMapping(annotationResolver.getRequiredAttributeAsKClassArray(
+                        "portMapping", PortsMapping::class
                 ))
                 .build()
     }

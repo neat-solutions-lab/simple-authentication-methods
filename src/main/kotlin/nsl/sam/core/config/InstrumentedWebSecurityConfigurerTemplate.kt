@@ -21,6 +21,7 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.util.Assert
 import javax.annotation.PostConstruct
+import kotlin.reflect.full.createInstance
 
 
 open class InstrumentedWebSecurityConfigurerTemplate(
@@ -108,6 +109,10 @@ open class InstrumentedWebSecurityConfigurerTemplate(
         if(this.enableAnnotationAttributes.forceHttps) {
            log.info("Forcing HTTPS channel (forceHttps attribute is set to true)")
             http.requiresChannel().anyRequest().requiresSecure()
+            this.enableAnnotationAttributes.portMapping.forEach {
+                val mapping = it.createInstance()
+                http.portMapper().http(mapping.getMapping().first).mapsTo(mapping.getMapping().second)
+            }
         }
 
         /*
