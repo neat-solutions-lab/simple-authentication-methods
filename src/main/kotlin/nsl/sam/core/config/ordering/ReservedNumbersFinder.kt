@@ -8,7 +8,7 @@ import org.springframework.util.Assert
 
 class ReservedNumbersFinder(val listableBeanFactory: ListableBeanFactory) {
 
-    val metadataReaderFactory = SimpleMetadataReaderFactory()
+    private val metadataReaderFactory = SimpleMetadataReaderFactory()
 
 
     fun findReservedNumbers(): List<Int> {

@@ -30,6 +30,9 @@ object EnableAnnotationAttributesExtractor {
                 .authorizations(annotationResolver.getRequiredAttributeValue(
                         ENABLE_ANNOTATION_AUTHORIZATIONS_ATTRIBUTE_NAME, String::class
                 ))
+                .forceHttps(annotationResolver.getRequiredAttributeValue(
+                        ENABLE_ANNOTATION_FORCE_HTTPS_ATTRIBUTE_NAME, Boolean::class
+                ))
                 .build()
     }
 

@@ -13,7 +13,8 @@ class EnableAnnotationAttributes private constructor(
         val debug: Boolean,
         val order: Int,
         val anonymousFallback: Boolean,
-        val authorizations: String
+        val authorizations: String,
+        val forceHttps: Boolean
 ) {
 
     class Builder {
@@ -24,6 +25,7 @@ class EnableAnnotationAttributes private constructor(
         var order = 0
         var anonymousFallback = false
         var authorizations = ""
+        var forceHttps = false
 
         fun enableAnnotationMetadata(enableAnnotationMetadata: AnnotationMetadata) =
                 apply { this.enableAnnotationMetadata = enableAnnotationMetadata }
@@ -46,12 +48,15 @@ class EnableAnnotationAttributes private constructor(
         fun authorizations(authorizations: String) =
                 apply { this.authorizations = authorizations }
 
+        fun forceHttps(value: Boolean) =
+                apply { this.forceHttps = value }
+
         fun build(): EnableAnnotationAttributes {
             Assert.notNull(this.enableAnnotationMetadata, "enableAnnotationMetadata cannot be null")
             return EnableAnnotationAttributes(
                     this.enableAnnotationMetadata!!,
                     this.methods, this.match, this.debug, this.order, this.anonymousFallback,
-                    this.authorizations)
+                    this.authorizations, this.forceHttps)
         }
     }
 }

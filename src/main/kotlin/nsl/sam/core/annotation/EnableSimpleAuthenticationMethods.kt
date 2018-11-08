@@ -16,6 +16,7 @@ const val ENABLE_ANNOTATION_MATCH_ATTRIBUTE_NAME = "match"
 const val ENABLE_ANNOTATION_DEBUG_ATTRIBUTE_NAME = "debug"
 const val ENABLE_ANNOTATION_ORDER_ATTRIBUTE_NAME = "order"
 const val ENABLE_ANNOTATION_AUTHORIZATIONS_ATTRIBUTE_NAME = "authorizations"
+const val ENABLE_ANNOTATION_FORCE_HTTPS_ATTRIBUTE_NAME = "forceHttps"
 
 /**
  * Annotation to be used by simple-authorization-methods' consumers to enable

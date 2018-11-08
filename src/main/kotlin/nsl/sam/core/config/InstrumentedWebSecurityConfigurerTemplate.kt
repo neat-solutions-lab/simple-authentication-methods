@@ -94,11 +94,25 @@ open class InstrumentedWebSecurityConfigurerTemplate(
 
     override fun configure(http: HttpSecurity) {
 
+        /*
+         * select path handled by this security chain
+         */
         if (this.enableAnnotationAttributes.match != "") {
             log.info("Configuring security for path: ${this.enableAnnotationAttributes.match}")
             http.antMatcher(this.enableAnnotationAttributes.match)
         }
 
+        /*
+         * force https if required
+         */
+        if(this.enableAnnotationAttributes.forceHttps) {
+           log.info("Forcing HTTPS channel (forceHttps attribute is set to true)")
+            http.requiresChannel().anyRequest().requiresSecure()
+        }
+
+        /*
+         * configure authentication methods
+         */
         log.info("${this::class.simpleName} configuration entry point called [configure(HttpSecurity)].")
         if (areActivationConditionsMet()) {
             log.info("Enabling authorization mechanisms")
