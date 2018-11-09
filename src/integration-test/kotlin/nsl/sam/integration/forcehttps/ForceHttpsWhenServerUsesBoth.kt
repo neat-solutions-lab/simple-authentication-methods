@@ -83,11 +83,27 @@ class ForceHttpsWhenServerUsesBoth {
         return String(encodedByteArray)
     }
 
-
     @Test
-    fun test() {
-        println("bla")
+    fun redirectResponseCodeWhenClientDosntFollowRedirections() {
+
+        val request = HttpRequest
+                .newBuilder()
+                .uri(URI("http://localhost:$httpPort${IntegrationTestConstants.INTEGRATION_TEST_ENDPOINT}"))
+                .build()
+
+        val client = HttpClient
+                .newBuilder()
+                .build()
+
+        val response: HttpResponse<String> =
+                client.send(request, HttpResponse.BodyHandlers.ofString())
+
+        Assertions.assertThat(response.statusCode()).isEqualTo(HttpStatus.FOUND.value())
+        Assertions
+                .assertThat(response.headers().map()["location"]?.get(0))
+                .isEqualTo("https://localhost:$httpsPort/integration-test")
     }
+
 
     @Test
     fun successAuthenticationWithBasicAuthAndJava11Client() {
