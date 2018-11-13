@@ -62,16 +62,13 @@ annotation class EnableSimpleAuthenticationMethods(
          */
         val order: Int = -1,
 
-
         val authorizations: String = "",
-
 
         val forceHttps: Boolean = false,
 
         val portMapping: Array<KClass<out PortsMapping>> = [],
 
         val debug: Boolean = false,
-
 
         val authenticationEntryPointFactory: Array<KClass<out AuthenticationEntryPointFactory>> = []
 )

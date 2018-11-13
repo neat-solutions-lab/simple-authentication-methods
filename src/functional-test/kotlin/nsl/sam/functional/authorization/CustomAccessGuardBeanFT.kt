@@ -19,43 +19,42 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 
 @ExtendWith(SpringExtension::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(classes = [CustomPermissionEvaluatorFTConfiguration::class])
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
     "nsl.sam.passwords-file=src/functional-test/config/passwords.conf"])
-class CustomAuthorizationFT {
+class CustomPermissionEvaluatorFT {
 
     @Autowired
     private lateinit var mvc: MockMvc
 
     @Test
-    fun succeedAuthorizationToUserAreaWithBasicAuth() {
-
+    fun successfulAccessWhenGuardBeanAllowsAccess() {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
-                        MockMvcRequestBuilders.get("/user-area")
+                        MockMvcRequestBuilders.get("/allowed")
                                 .with(SecurityMockMvcRequestPostProcessors.httpBasic(
-                                        "user",
-                                        "user")
+                                        "test",
+                                        "test")
                                 )
                 )
                 .andReturn().response
 
         // ASSERT
         Assertions.assertThat(response.status).isEqualTo(HttpStatus.OK.value())
+        Assertions.assertThat(response.contentAsString).isEqualTo("Allowed endpoint!")
     }
 
     @Test
-    fun forbiddenAuthorizationToAdminAreaWithBasicAuth() {
-
+    fun failedAccessWhenGuardDeniesAccess() {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
-                        MockMvcRequestBuilders.get("/admin-area")
+                        MockMvcRequestBuilders.get("/disallowed")
                                 .with(SecurityMockMvcRequestPostProcessors.httpBasic(
-                                        "user",
-                                        "user")
+                                        "test",
+                                        "test")
                                 )
                 )
                 .andReturn().response
@@ -64,30 +63,30 @@ class CustomAuthorizationFT {
         Assertions.assertThat(response.status).isEqualTo(HttpStatus.FORBIDDEN.value())
     }
 
-
     @Test
-    fun forbiddenAuthorizationToUserAreaWithBasicAuth() {
-
-        // ACT
-        val response: MockHttpServletResponse = mvc
-                .perform(
-                        MockMvcRequestBuilders.get("/user-area")
-                                .with(SecurityMockMvcRequestPostProcessors.httpBasic(
-                                        "admin",
-                                        "admin")
-                                )
-                )
-                .andReturn().response
-
-        // ASSERT
-        Assertions.assertThat(response.status).isEqualTo(HttpStatus.FORBIDDEN.value())
+    fun test() {
+        println("Hello")
     }
 
-    @Configuration
-    @EnableSimpleAuthenticationMethods(
-            authorizations = "antMatchers('/user-area/**').hasRole('USER')")
-    class TestConfiguration {
-        @Bean
-        fun customAuthorizationTestController() = CustomAuthorizationTestController()
-    }
+
+}
+
+@Configuration
+@EnableSimpleAuthenticationMethods(authorizations =
+"antMatchers('/allowed/**').access('@accessGuard.isAllowed(true)')." +
+"antMatchers('/disallowed/**').access('@accessGuard.isAllowed(false)')"
+)
+class CustomPermissionEvaluatorFTConfiguration {
+
+    @Bean
+    fun accessGuard(): CustomAccessGuardBean = CustomAccessGuardBean()
+
+    @Bean
+    fun customAuthorizationTestController() = CustomAuthorizationTestController()
+
+}
+
+
+class CustomAccessGuardBean {
+    fun isAllowed(verdict: Boolean) = verdict
 }

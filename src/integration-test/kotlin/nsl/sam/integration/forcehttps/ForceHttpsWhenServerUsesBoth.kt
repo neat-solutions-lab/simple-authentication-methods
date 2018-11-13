@@ -60,11 +60,6 @@ class ForceHttpsWhenServerUsesBoth {
         fun beforeAll() {
             httpPort = SocketUtils.findAvailableTcpPort()
             httpsPort = SocketUtils.findAvailableTcpPort()
-            println("http port: $httpPort")
-            println("https port: $httpsPort")
-            //System.setProperty("spring.application.json",
-            //        "{\"server.port\":$httpsPort, \"http.port\":$httpPort}"
-            //)
             System.setProperty("server.port", "$httpsPort")
             System.setProperty("http.port", "$httpPort")
         }

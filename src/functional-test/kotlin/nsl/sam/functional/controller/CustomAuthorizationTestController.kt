@@ -10,4 +10,11 @@ class CustomAuthorizationTestController {
 
     @GetMapping("/user-area")
     fun userArea() = "Hello from User area!"
+
+    @GetMapping("/allowed")
+    fun allowedEndpoint() = "Allowed endpoint!"
+
+    @GetMapping("/disallowed")
+    fun disallowedEndpoint() = "Disallowed endpoint!"
+
 }
