@@ -1,7 +1,7 @@
-package nsl.sam.functional.authorization
+package nsl.sam.functional.principal.basicauth
 
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
-import nsl.sam.functional.controller.CustomAuthorizationTestController
+import nsl.sam.functional.controller.PrincipalAwareController
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -19,21 +19,24 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 
 @ExtendWith(SpringExtension::class)
-@SpringBootTest(classes = [CustomPermissionEvaluatorFTConfiguration::class])
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.MOCK,
+        classes = [AuthenticatedBasicAuthPrincipalFTConfiguration::class]
+)
 @AutoConfigureMockMvc
 @TestPropertySource(properties = [
     "nsl.sam.passwords-file=src/functional-test/config/passwords.conf"])
-class CustomPermissionEvaluatorFT {
+class AuthenticatedBasicAuthPrincipalFT {
 
     @Autowired
     private lateinit var mvc: MockMvc
 
     @Test
-    fun successfulAccessWhenGuardBeanAllowsAccess() {
+    fun controllerProperlyRecognizesAndReportsPrincipalNameWhenValidBasicAuthCredentialsUsed() {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
-                        MockMvcRequestBuilders.get("/allowed")
+                        MockMvcRequestBuilders.get("/principal-aware-endpoint")
                                 .with(SecurityMockMvcRequestPostProcessors.httpBasic(
                                         "test",
                                         "test")
@@ -43,44 +46,19 @@ class CustomPermissionEvaluatorFT {
 
         // ASSERT
         Assertions.assertThat(response.status).isEqualTo(HttpStatus.OK.value())
-        Assertions.assertThat(response.contentAsString).isEqualTo("Allowed endpoint!")
-    }
-
-    @Test
-    fun failedAccessWhenGuardDeniesAccess() {
-        // ACT
-        val response: MockHttpServletResponse = mvc
-                .perform(
-                        MockMvcRequestBuilders.get("/disallowed")
-                                .with(SecurityMockMvcRequestPostProcessors.httpBasic(
-                                        "test",
-                                        "test")
-                                )
-                )
-                .andReturn().response
-
-        // ASSERT
-        Assertions.assertThat(response.status).isEqualTo(HttpStatus.FORBIDDEN.value())
+        Assertions.assertThat(response.contentAsString).isEqualTo("User is test")
+        println("response: ${response.contentAsString}")
     }
 
 }
 
 @Configuration
-@EnableSimpleAuthenticationMethods(authorizations =
-"antMatchers('/allowed/**').access('@accessGuard.isAllowed(true)')." +
-"antMatchers('/disallowed/**').access('@accessGuard.isAllowed(false)')"
-)
-class CustomPermissionEvaluatorFTConfiguration {
+@EnableSimpleAuthenticationMethods
+class AuthenticatedBasicAuthPrincipalFTConfiguration {
 
     @Bean
-    fun accessGuard(): CustomAccessGuardBean = CustomAccessGuardBean()
+    fun principalAwareController(): PrincipalAwareController {
+        return PrincipalAwareController()
+    }
 
-    @Bean
-    fun customAuthorizationTestController() = CustomAuthorizationTestController()
-
-}
-
-
-class CustomAccessGuardBean {
-    fun isAllowed(verdict: Boolean) = verdict
 }
