@@ -6,7 +6,7 @@
 
     <groupId>com.github.neat-solutions-lab</groupId>
     <artifactId>simple-authentication-methods</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
 
     <name>simple-authentication-methods</name>
     <description>
