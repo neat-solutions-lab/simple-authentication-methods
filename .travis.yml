@@ -4,4 +4,4 @@ jdk:
   - openjdk11
 
 script:
-  - mvn package
+  - mvn package -Dgpg.skip

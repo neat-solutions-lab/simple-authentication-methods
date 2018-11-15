@@ -17,4 +17,4 @@ test-on-java11.0.0:
   tags:
   - docker
   script:
-  - mvn verify
+  - mvn verify -Dgpg.skip=true
