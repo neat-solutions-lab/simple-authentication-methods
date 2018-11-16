@@ -1,18 +1,16 @@
-image: neatsolutionslab/jdk:11.0.0open
+image: neatsolutionslab/jdk:11.0.1open
 
 before_script:
 - source ~/.sdkman/bin/sdkman-init.sh
 
-build-on-java11.0.0:
-  image: neatsolutionslab/jdk:11.0.0open
+build-on-java11.0.1:
   stage: build
   tags:
   - docker
   script:
   - mvn package
 
-test-on-java11.0.0:
-  image: neatsolutionslab/jdk:11.0.0open
+test-on-java11.0.1:
   stage: test
   tags:
   - docker
