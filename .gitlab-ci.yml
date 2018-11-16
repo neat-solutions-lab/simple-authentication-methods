@@ -9,7 +9,7 @@ build-on-java11.0.0:
   tags:
   - docker
   script:
-  - mvn package -Dmaven.test.skip=true
+  - mvn package
 
 test-on-java11.0.0:
   image: neatsolutionslab/jdk:11.0.0open
@@ -17,4 +17,4 @@ test-on-java11.0.0:
   tags:
   - docker
   script:
-  - mvn verify -Dgpg.skip=true
+  - mvn verify

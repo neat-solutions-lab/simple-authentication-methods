@@ -4,7 +4,4 @@ jdk:
   - openjdk11
 
 script:
-  - mvn package -Dgpg.skip
-
-install:
-  - mvn install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
+  - mvn package
