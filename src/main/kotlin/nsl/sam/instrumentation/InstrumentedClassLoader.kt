@@ -15,6 +15,10 @@ class InstrumentedClassLoader(parent: ClassLoader) : ClassLoader(parent) {
             log.error("Failed to define new class; " +
                       "name: $name, bytesArray: $bytesArray, bytes number: ${bytesArray.size}", e)
             throw e
+        } catch (e: Error) {
+            log.error("Failed to define new class; " +
+                    "name: $name, bytesArray: $bytesArray, bytes number: ${bytesArray.size}", e)
+            throw e
         }
     }
 }
