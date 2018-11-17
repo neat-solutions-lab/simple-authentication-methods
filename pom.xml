@@ -208,7 +208,6 @@
         <profile>
             <id>default</id>
             <activation>
-                <!--<activeByDefault>true</activeByDefault>-->
                 <property><name>!exploration</name></property>
             </activation>
             <build>
@@ -229,7 +228,6 @@
         <profile>
             <id>exploration</id>
             <activation>
-                <!--<activeByDefault>true</activeByDefault>-->
                 <property><name>exploration</name></property>
             </activation>
 
@@ -357,6 +355,18 @@
                                 <source>src/main/kotlin</source>
                                 <source>src/main/java</source>
                             </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-resource</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource><directory>src/main/resources</directory></resource>
+                            </resources>
                         </configuration>
                     </execution>
                     <execution>

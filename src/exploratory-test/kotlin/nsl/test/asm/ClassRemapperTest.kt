@@ -23,7 +23,7 @@ class ClassRemapperTest {
         val classReader = ClassReader(DummyObject::class.java.canonicalName)
         classReader.accept(classRemapper, 0)
 
-        val resultClass = InstrumentedClassLoader().defineClass("changed.ObjName", classWriter.toByteArray())
+        val resultClass = InstrumentedClassLoader(Thread.currentThread().contextClassLoader).defineClass("changed.ObjName", classWriter.toByteArray())
         println("resultClass: $resultClass")
 
 

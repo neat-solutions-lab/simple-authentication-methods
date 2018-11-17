@@ -61,6 +61,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
     @PostConstruct
     fun initialize() {
 
+
         authenticationEntryPoint = InjectedObjectsProvider.Builder(AuthenticationEntryPointFactory::class)
                 .attributeName("authenticationEntryPointFactory")
                 .defaultFactoryPropertyName("nsl.sam.authentication-entry-point.factory")

@@ -1,5 +1,7 @@
 package nsl.sam.core.config.ordering
 
+import nsl.sam.logger.logger
+
 class OrderingHelper(initialValue: Int = 0, private val delta: Int = 1) {
 
     private val consumedNumbers: MutableList<Int> = mutableListOf()
@@ -7,6 +9,9 @@ class OrderingHelper(initialValue: Int = 0, private val delta: Int = 1) {
     var isAlreadyInitializedWithRestrictedList = false
 
     companion object {
+
+        val log by logger()
+
         private var instance: OrderingHelper? = null
 
         @Synchronized
@@ -34,6 +39,7 @@ class OrderingHelper(initialValue: Int = 0, private val delta: Int = 1) {
     }
 
     fun occupyNumber(number: Int) {
+        log.debug("occupyNumber($number) called")
         if (consumedNumbers.contains(number))
             throw IllegalStateException("The number $number is already on the list of occupied number")
 
@@ -42,6 +48,8 @@ class OrderingHelper(initialValue: Int = 0, private val delta: Int = 1) {
 
     fun getNextNumber():Int {
 
+        log.debug("getNextNumer() called")
+
         var nextAutoNumber: Int = currentAutoNumber+delta
 
         while(consumedNumbers.contains(nextAutoNumber))
@@ -49,6 +57,8 @@ class OrderingHelper(initialValue: Int = 0, private val delta: Int = 1) {
 
         currentAutoNumber = nextAutoNumber
         consumedNumbers.add(currentAutoNumber)
+
+        log.debug("getNextNumber() = $currentAutoNumber")
 
         return currentAutoNumber
     }

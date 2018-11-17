@@ -1,7 +1,20 @@
 package nsl.sam.instrumentation
 
-class InstrumentedClassLoader : ClassLoader() {
+import nsl.sam.logger.logger
+
+class InstrumentedClassLoader(parent: ClassLoader) : ClassLoader(parent) {
+
+    companion object {
+        val log by logger()
+    }
+
     fun defineClass(name: String, bytesArray: ByteArray): Class<*> {
-        return defineClass(name, bytesArray, 0, bytesArray.size)
+        try {
+            return defineClass(name, bytesArray, 0, bytesArray.size)
+        } catch (e: Exception) {
+            log.error("Failed to define new class; " +
+                      "name: $name, bytesArray: $bytesArray, bytes number: ${bytesArray.size}", e)
+            throw e
+        }
     }
 }

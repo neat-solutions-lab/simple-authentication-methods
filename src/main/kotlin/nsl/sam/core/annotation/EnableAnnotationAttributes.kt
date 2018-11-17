@@ -3,6 +3,7 @@ package nsl.sam.core.annotation
 import nsl.sam.core.annotation.attrtypes.PortsMapping
 import org.springframework.core.type.AnnotationMetadata
 import org.springframework.util.Assert
+import java.util.*
 import kotlin.reflect.KClass
 
 /**
@@ -66,4 +67,16 @@ class EnableAnnotationAttributes private constructor(
                     this.authorizations, this.forceHttps, this.portMapping)
         }
     }
+
+    override fun toString(): String {
+        return "methods: ${Arrays.toString(methods)}; " +
+                "match: $match; " +
+                "order: $order; " +
+                "anonymousFallback: $anonymousFallback; " +
+                "forceHttps: $forceHttps; " +
+                "portMapping: ${Arrays.toString(portMapping)}"
+    }
+
+//    val portMapping: Array<KClass<out PortsMapping>>
+
 }

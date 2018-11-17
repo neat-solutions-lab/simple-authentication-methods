@@ -24,7 +24,7 @@ class AsmTest {
 
         cr.accept(renamingClassVisitor, 0)
 
-        val testClass = InstrumentedClassLoader().defineClass(
+        val testClass = InstrumentedClassLoader(Thread.currentThread().contextClassLoader).defineClass(
                 "nsl.sam.core.config.DynamicWebSecurityConfigurer001", cw.toByteArray()
         )
         println("testClass: ${testClass}")
@@ -44,7 +44,7 @@ class AsmTest {
         val classReader = ClassReader("nsl.sam.core.config.InstrumentedWebSecurityConfigurerTemplate")
         classReader.accept(classVisitor, 0)
 
-        val testClass = InstrumentedClassLoader().defineClass(
+        val testClass = InstrumentedClassLoader(Thread.currentThread().contextClassLoader).defineClass(
                 "nsl.sam.core.config.DynamicWebSecurityConfigurer001", classWriter.toByteArray()
         )
 

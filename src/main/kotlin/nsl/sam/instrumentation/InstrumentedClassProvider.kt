@@ -1,12 +1,17 @@
 package nsl.sam.instrumentation
 
+import org.slf4j.LoggerFactory
+
 object InstrumentedClassProvider {
 
-    private val dynamicClassLoader = InstrumentedClassLoader()
+    val log = LoggerFactory.getLogger(this::class.java)
+
+    private val dynamicClassLoader = InstrumentedClassLoader(Thread.currentThread().contextClassLoader)
 
     fun generateRenamedClass(originalClass: Class<*>, newName: String): Class<*> {
         val renamedClassBytesSource = RenamedClassBytesSource(newName, originalClass)
-        return dynamicClassLoader.defineClass(newName, renamedClassBytesSource.getBytes())
+        val bytesSet = renamedClassBytesSource.getBytes()
+        return dynamicClassLoader.defineClass(newName, bytesSet)
     }
 
 }
