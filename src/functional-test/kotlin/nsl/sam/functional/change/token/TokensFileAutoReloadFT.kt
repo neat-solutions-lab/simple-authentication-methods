@@ -34,6 +34,11 @@ import java.io.File
 ])
 class TokensFileAutoReloadFT {
 
+    //@Test
+    //fun test() {
+    //    println("hello")
+    //}
+
     companion object {
 
         var tmpConfigFile: File? = null

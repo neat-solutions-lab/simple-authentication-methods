@@ -1,5 +1,6 @@
 package nsl.test.bufferedreader
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import java.io.BufferedReader
@@ -9,6 +10,7 @@ import java.io.FileReader
 class BufferedReaderExploration {
 
     @Test
+    @Disabled("Relevant only during individual, supervised tests.")
     fun test() {
         val tmpFile = createTempFile()
         println("tmpFile: ${tmpFile.absoluteFile}")

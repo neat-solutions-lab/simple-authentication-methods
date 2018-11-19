@@ -66,12 +66,15 @@ class InMemoryUsersSource private constructor(
     private fun importUsersFromImporter() = readWriteSynchronizer.writeLock {
         usersMap.clear()
         passwordsImporter.reset()
+        //var usersCounter = 0
         passwordsImporter.use { importer ->
             for (userTraits in importer) {
                 log.debug("Adding user to in-memory users map: ${userTraits.name}")
                 usersMap[userTraits.name] = userTraits
+                //usersCounter++
             }
         }
+        //log.info("Number of imported users: $usersCounter")
     }
 
     private fun getFileChangeDetectionPeriod(): Long {

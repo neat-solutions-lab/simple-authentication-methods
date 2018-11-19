@@ -34,6 +34,12 @@ import java.io.File
 ])
 class PasswordsFileAutoReloadFT {
 
+    //@Test
+    //fun test() {
+    //    println("hello")
+    //}
+
+
     companion object {
 
         var tmpConfigFile: File?  = null

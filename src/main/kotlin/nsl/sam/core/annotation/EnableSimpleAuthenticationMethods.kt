@@ -9,6 +9,7 @@ import nsl.sam.core.config.GeneralConfiguration
 import nsl.sam.core.entrypoint.factory.AuthenticationEntryPointFactory
 import org.springframework.context.annotation.Conditional
 import org.springframework.context.annotation.Import
+import org.springframework.context.annotation.PropertySource
 import kotlin.reflect.KClass
 
 const val ENABLE_ANNOTATION_METHODS_ATTRIBUTE_NAME = "methods"
@@ -29,6 +30,7 @@ const val ENABLE_ANNOTATION_FORCE_HTTPS_ATTRIBUTE_NAME = "forceHttps"
  */
 @Target(AnnotationTarget.CLASS)
 @Conditional(SimpleNoMethodValueIsAbsent::class)
+@PropertySource("classpath:sam.properties")
 @Import(value =
 [
     DynamicImportBeanDefinitionRegistrar::class,
