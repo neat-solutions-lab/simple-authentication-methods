@@ -39,7 +39,7 @@ class OrderingHelper(initialValue: Int = 0, private val delta: Int = 1) {
     }
 
     fun occupyNumber(number: Int) {
-        log.debug("occupyNumber($number) called")
+        //log.debug("occupyNumber($number) called")
         if (consumedNumbers.contains(number))
             throw IllegalStateException("The number $number is already on the list of occupied number")
 

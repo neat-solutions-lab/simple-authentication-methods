@@ -6,12 +6,13 @@
 
     <groupId>com.github.neat-solutions-lab</groupId>
     <artifactId>simple-authentication-methods</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <name>simple-authentication-methods</name>
     <description>
-        A library for Spring Boot based applications.
-        The library provides java annotations which selectively activate and configure
+        An authentication library for Spring MVC back-end applications build on top of Spring Security
+        framework and Spring Boot platform.
+        It provides java annotations which selectively activate and configure
         authentication methods implemented by the library.
     </description>
     <url>https://github.com/neat-solutions-lab/simple-authentication-methods</url>
@@ -19,7 +20,7 @@
     <properties>
         <kotlin.version>1.3.10</kotlin.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.11</java.version>
+        <java.version>1.8</java.version>
         <dokka.version>0.9.17</dokka.version>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -133,11 +134,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-security</artifactId>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
@@ -202,6 +198,12 @@
             <artifactId>gson</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.12.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -241,9 +243,6 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
                             <groups>exploratory</groups>
-                            <!--<additionalClasspathElements>-->
-                                <!--<additionalClasspathElement>src/exploratory-test/resources</additionalClasspathElement>-->
-                            <!--</additionalClasspathElements>-->
                         </configuration>
                     </plugin>
                 </plugins>
@@ -288,13 +287,6 @@
         </testResources>
 
         <plugins>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration><release>11</release></configuration>
-            </plugin>
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -323,6 +315,42 @@
                     <execution>
                         <id>test-compile</id>
                         <goals> <goal>test-compile</goal> </goals>
+                        <configuration>
+                            <sourceDirs>
+                                <sourceDir>${project.basedir}/src/functional-test/kotlin</sourceDir>
+                                <sourceDir>${project.basedir}/src/integration-test/kotlin</sourceDir>
+                                <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
+                                <sourceDir>${project.basedir}/src/exploratory-test/kotlin</sourceDir>
+                                <sourceDir>${project.basedir}/src/integration-test/java</sourceDir>
+                            </sourceDirs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <executions>
+                    <!-- Replacing default-compile as it is treated specially by maven -->
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>none</phase>
+                    </execution>
+                    <!-- Replacing default-testCompile as it is treated specially by maven -->
+                    <execution>
+                        <id>default-testCompile</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>java-compile</id>
+                        <phase>compile</phase>
+                        <goals> <goal>compile</goal> </goals>
+                    </execution>
+                    <execution>
+                        <id>java-test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals> <goal>testCompile</goal> </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -332,12 +360,6 @@
                 <version>${dokka.version}</version>
                 <configuration>
                     <jdkVersion>8</jdkVersion>
-                    <sourceRoots>
-                        <root>
-                            <path>src/main/kotlin</path>
-                            <platforms>JVM</platforms>
-                        </root>
-                    </sourceRoots>
                 </configuration>
             </plugin>
             <plugin>
@@ -380,6 +402,7 @@
                                 <source>src/integration-test/kotlin</source>
                                 <source>src/functional-test/kotlin</source>
                                 <source>src/exploratory-test/kotlin</source>
+                                <source>src/integration-test/java</source>
                             </sources>
                         </configuration>
                     </execution>

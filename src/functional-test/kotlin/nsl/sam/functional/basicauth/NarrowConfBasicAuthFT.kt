@@ -1,7 +1,5 @@
 package nsl.sam.functional.basicauth
 
-//import org.junit.Test
-//import org.junit.Rule
 import nsl.sam.FunctionalTestConstants
 import nsl.sam.FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_CORRECT_PASSWORD
 import nsl.sam.FunctionalTestConstants.EXISTING_BASIC_AUTH_USER_INCORRECT_PASSWORD

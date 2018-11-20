@@ -1,6 +1,5 @@
 package nsl.sam.integration.forcehttps
 
-//import org.springframework.boot.context.embedded.
 import nsl.sam.IntegrationTestConstants
 import nsl.sam.core.annotation.AuthenticationMethod
 import nsl.sam.core.annotation.EnableSimpleAuthenticationMethods
@@ -47,8 +46,7 @@ import javax.net.ssl.X509TrustManager
     "server.ssl.key-store-password=123456",
     "server.ssl.keyAlias=localhost"
 ])
-class ForceHttpsWhenServerUsesBoth {
-
+class ForceHttpsWhenServerUsesBothIT {
 
     companion object {
 
@@ -126,7 +124,6 @@ class ForceHttpsWhenServerUsesBoth {
                 return null
             }
         }
-
         sslContext.init(null, arrayOf(trustManager), null)
 
         val client = HttpClient
@@ -172,8 +169,7 @@ class CustomContainer:WebServerFactoryCustomizer<JettyServletWebServerFactory> {
 
             // HTTP
             val connector = ServerConnector(it)
-            connector.setPort(ForceHttpsWhenServerUsesBoth.httpPort)
-
+            connector.setPort(ForceHttpsWhenServerUsesBothIT.httpPort)
 
             // HTTPS
             val sslContextFactory = SslContextFactory()
@@ -187,7 +183,7 @@ class CustomContainer:WebServerFactoryCustomizer<JettyServletWebServerFactory> {
             val sslConnector = ServerConnector(
                     it, SslConnectionFactory(sslContextFactory, "http/1.1"),
                     HttpConnectionFactory(https))
-            sslConnector.setPort(ForceHttpsWhenServerUsesBoth.httpsPort)
+            sslConnector.setPort(ForceHttpsWhenServerUsesBothIT.httpsPort)
 
             it.connectors = arrayOf(connector, sslConnector)
         })
@@ -196,6 +192,6 @@ class CustomContainer:WebServerFactoryCustomizer<JettyServletWebServerFactory> {
 
 class PortsMappingImpl : PortsMapping {
     override fun getMapping(): Pair<Int, Int> {
-        return ForceHttpsWhenServerUsesBoth.httpPort to ForceHttpsWhenServerUsesBoth.httpsPort
+        return ForceHttpsWhenServerUsesBothIT.httpPort to ForceHttpsWhenServerUsesBothIT.httpsPort
     }
 }

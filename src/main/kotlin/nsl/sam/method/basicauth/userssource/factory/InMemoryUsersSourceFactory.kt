@@ -78,8 +78,8 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
     private fun getPasswordsImportersFactories(): Array<KClass<out PasswordsCredentialsImporterFactory>> {
         return arrayOf(
                 FilePasswordCredentialsImporterFactory::class,
-                AnnotationPasswordsCredentialsImporterFactory::class,
-                EnvironmentPasswordsCredentialsImporterFactory::class
+                EnvironmentPasswordsCredentialsImporterFactory::class,
+                AnnotationPasswordsCredentialsImporterFactory::class
         )
     }
 }

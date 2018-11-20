@@ -33,7 +33,7 @@ class EmptyCredentialsAndNoFallbackFT {
     private lateinit var mvc: MockMvc
 
     @Test
-    fun failedBasicAuthWithValidPasswordsOtherwiseWhenEmptyPasswordsFileAndNoFallback() {
+    fun failedBasicAuthWithOtherwiseValidPasswordsWhenEmptyPasswordsFileAndNoFallback() {
         // ACT
         val response: MockHttpServletResponse = mvc
                 .perform(
@@ -52,7 +52,7 @@ class EmptyCredentialsAndNoFallbackFT {
     }
 
     @Test
-    fun failedAuthenticationWithValidTokenOtherwiseWhenEmptyTokensFileAndNoFallback() {
+    fun failedAuthenticationWithOtherwiseValidTokenWhenEmptyTokensFileAndNoFallback() {
         val response: MockHttpServletResponse = mvc.perform(
                 MockMvcRequestBuilders.get(FunctionalTestConstants.MOCK_MVC_USER_INFO_ENDPOINT)
                         .header(
@@ -77,6 +77,7 @@ class EmptyCredentialsAndNoFallbackFT {
 
         // ASSERT
         Assertions.assertThat(response.status).isEqualTo(HttpStatus.UNAUTHORIZED.value())
+        println("response: \n" + response.contentAsString)
     }
 
     @Configuration

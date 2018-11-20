@@ -71,8 +71,8 @@ class InMemoryTokensResolverFactory : TokensResolverFactory {
     private fun getTokensImportersFactories(): Array<KClass<out TokenCredentialsImporterFactory>> {
         return arrayOf(
                 FileTokenCredentialsImporterFactory::class,
-                AnnotationTokensCredentialsImporterFactory::class,
-                EnvironmentTokensCredentialsImportFactory::class
+                EnvironmentTokensCredentialsImportFactory::class,
+                AnnotationTokensCredentialsImporterFactory::class
         )
     }
 }
