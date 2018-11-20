@@ -26,14 +26,11 @@ class InMemoryUsersSourceFactory : UsersSourceFactory {
     ): UsersSource {
 
         val passwordsImporter = getPasswordsImporter(attributes, environment)
-        val confProperties = getConfigurationProperties(attributes, environment)
+        val confProperties = getConfigurationProperties(environment)
         return InMemoryUsersSource.createInstance(passwordsImporter, confProperties)
     }
 
-    private fun getConfigurationProperties(
-            attributes: EnableAnnotationAttributes,
-            environment: Environment
-    ): Properties {
+    private fun getConfigurationProperties(environment: Environment): Properties {
 
         val confProperties = Properties()
 

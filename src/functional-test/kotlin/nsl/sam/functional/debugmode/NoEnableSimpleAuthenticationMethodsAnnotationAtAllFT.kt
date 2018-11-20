@@ -14,16 +14,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(secure = false)
 class NoEnableSimpleAuthenticationMethodsAnnotationAtAllFT {
 
     @Autowired
     lateinit var applicationContext: ApplicationContext
 
-    //TODO: After introduction of instrumentation configurators this test shuld pass
-    @Disabled
     @Test
-    fun noBeanWithEnableWebSecurityAnnotationInApplicationContext() {
+    fun noBeanWithEnableWebSecurityAnnotationInApplicationContextWhenNoSmsEnabledAndAutoConfigureMockMvcSetsSecureToFalse() {
         val beanNames = applicationContext.getBeanNamesForAnnotation(EnableWebSecurity::class.java)
         Assertions.assertThat(beanNames).isEmpty()
     }

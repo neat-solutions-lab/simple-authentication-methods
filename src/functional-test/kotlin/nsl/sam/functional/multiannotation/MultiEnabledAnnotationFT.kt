@@ -31,12 +31,6 @@ class MultiEnabledAnnotationFT {
                 FirstEnablingConfiguration::class.java, SecondEnablingConfiguration::class.java)
     }
 
-    @Test
-    @Disabled
-    fun twoDynamicallyCreatedWebSecurityConfigurers() {
-        // TODO: Finish when instrumentation configurers start working properly.
-    }
-
     @Configuration
     @EnableSimpleAuthenticationMethods(debug = false, order = 10)
     class FirstEnablingConfiguration

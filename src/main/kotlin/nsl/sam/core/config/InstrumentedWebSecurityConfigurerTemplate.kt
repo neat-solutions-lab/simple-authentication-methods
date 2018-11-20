@@ -85,7 +85,7 @@ open class InstrumentedWebSecurityConfigurerTemplate(
                     Assert.notNull(factory, "There is no AuthMethodInternalConfigurerFactory registered " +
                             "for ${it.name} authorization method")
                     log.info("Factory to create internal configurer for $it method is ${factory!!::class.qualifiedName}")
-                    this.authMethodInternalConfigurers.add(factory!!.create(enableAnnotationAttributes))
+                    this.authMethodInternalConfigurers.add(factory.create(enableAnnotationAttributes))
                 }
     }
 

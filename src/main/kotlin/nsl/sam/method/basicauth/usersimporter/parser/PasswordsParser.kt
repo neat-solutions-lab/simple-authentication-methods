@@ -11,12 +11,12 @@ class PasswordsParser : CredentialsParser<UserTraits> {
                 "Could not parse passed string line into Triple with user, password and roles."
     }
 
-    override fun parse(line: String): UserTraits {
+    override fun parse(credentialsLine: String): UserTraits {
 
-        if (line.isBlank())
+        if (credentialsLine.isBlank())
             throw CredentialsParsingException(SYNTAX_ERROR_MESSAGE)
 
-        val lineParts: List<String> = line.trim().split(Regex("\\s+"))
+        val lineParts: List<String> = credentialsLine.trim().split(Regex("\\s+"))
         if (lineParts.isEmpty())
             throw CredentialsParsingException(SYNTAX_ERROR_MESSAGE)
 
@@ -29,7 +29,6 @@ class PasswordsParser : CredentialsParser<UserTraits> {
 
         val roles = if (lineParts.size > 1) lineParts.subList(1, lineParts.lastIndex + 1) else emptyList()
 
-        //return Triple(user, pass, roles.toTypedArray())
         return UserTraits(user, pass, roles.toTypedArray())
     }
 

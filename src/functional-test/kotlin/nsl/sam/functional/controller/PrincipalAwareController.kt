@@ -12,7 +12,7 @@ class PrincipalAwareController {
     @GetMapping(path = ["/principal-aware-endpoint"])
     fun principalAwareEndpoint(@AuthenticationPrincipal user: UserDetails?): String {
         return if(user != null) {
-            "User is " + user?.username
+            "User is " + user.username
         } else {
             val authentication = SecurityContextHolder.getContext().authentication
             "User is " + authentication?.principal as String

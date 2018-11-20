@@ -10,7 +10,7 @@ import java.io.FileReader
 class BufferedReaderExploration {
 
     @Test
-    @Disabled("Relevant only during individual, supervised tests.")
+    @Disabled("Relevant only during 'manual', supervised tests.")
     fun test() {
         val tmpFile = createTempFile()
         println("tmpFile: ${tmpFile.absoluteFile}")

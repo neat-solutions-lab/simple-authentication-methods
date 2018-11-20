@@ -65,12 +65,15 @@ class InMemoryTokensResolver private constructor(
 
     private fun importTokensFromImporter() = readWriteSynchronizer.writeLock {
         tokensImporter.reset()
+        var tokensCounter = 0
         tokensImporter.use { tokensImporter ->
             for (token in tokensImporter) {
                 log.debug("Adding token to in-memory tokens map: $token")
                 tokensMap[token.tokenValue] = token
+                tokensCounter++
             }
         }
+        log.info("Number of imported tokens: $tokensCounter")
     }
 
     private fun getFileChangeDetectionPeriod(): Long {

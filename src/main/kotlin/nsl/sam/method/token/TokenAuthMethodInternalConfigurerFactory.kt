@@ -52,11 +52,11 @@ class TokenAuthMethodInternalConfigurerFactory(override val name: String) : Auth
     }
 
     private fun getTokensResolver(attributes: EnableAnnotationAttributes): TokensResolver {
-        val resolverFactory = getTokensResolverFactory(attributes)
+        val resolverFactory = getTokensResolverFactory()
         return resolverFactory.create(attributes, environment)
     }
 
-    private fun getTokensResolverFactory(attributes: EnableAnnotationAttributes): TokensResolverFactory {
+    private fun getTokensResolverFactory(): TokensResolverFactory {
         return InMemoryTokensResolverFactory()
     }
 

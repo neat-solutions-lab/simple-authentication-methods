@@ -25,6 +25,8 @@ class DefaultUserDetailsService(private val usersSource: UsersSource) : Availabi
 
         val userTraits = usersSource.getUserTraits(username)
 
+        log.debug("User $username loaded")
+
         return User.builder()
                 .username(username)
                 .password(userTraits.password)
