@@ -176,7 +176,7 @@ pieces of a code, much less convoluted than a bit long, rather not engaging docu
 The simple examples of the usage of the simple-authentication-methods library with Spring Boot based HTTP services can be 
 found through this two links:
 - [kotlin-sam-example](https://github.com/neat-solutions-lab/kotlin-sam-example)
-- [java-sam-example](https://github.com/neat-solutions-lab/kotlin-sam-example)
+- [java-sam-example](https://github.com/neat-solutions-lab/java-sam-example)
 
 These examples show how to associate different authentication polices with different HTTP end-points and how
 to obtain the list of credentials (users, tokens, roles) from different source types.
