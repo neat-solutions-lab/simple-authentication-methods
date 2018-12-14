@@ -154,6 +154,8 @@ The requirements imposed on the application which can use the library:
 
 ## Compilation and installation procedure
 
+**NOTE:** The library is hosted on Maven Central repository, so there is no need to compile and install it locally and the bellow procedure is optional.
+
 Assuming that your development environment adheres to the above compilation requirements, to compile and install 
 the library locally follow these steps:
 
@@ -188,8 +190,7 @@ managed by either Maven or Gradle, which probably are the two most popular proje
 
 ### Maven managed project
 
-Assuming you have compiled and installed the library according to the procedure presented in 
-the _Compilation and installation procedure_ section, to include the simple-authentication-methods library into 
+To include the simple-authentication-methods library into 
 your application add this dependencies definition to your `pom.xml` file:
 
 ```xml
@@ -210,14 +211,14 @@ your application add this dependencies definition to your `pom.xml` file:
 
 ### Gradle managed project
 
-Assuming you have compiled and installed the library according to the procedure presented in 
-the _Compilation and installation procedure_ section, to include the simple-authentication-methods library into 
+To include the simple-authentication-methods library into 
 your application apply these changes to your `gradle.build` file:
 
 ```groovy
 ...
 repositories {
-    // by default Gradle dosn't include artifacts form local Maven repository, so we have to add it
+    // by default Gradle dosn't include artifacts form local Maven repository, so it is required only
+    // if you want to work with the locally compiled and installed library
     mavenLocal()
     ...
 }
