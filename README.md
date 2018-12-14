@@ -154,7 +154,7 @@ The requirements imposed on the application which can use the library:
 
 ## Compilation and installation procedure
 
-**NOTE:** The library is hosted on Maven Central repository, so there is no need to compile and install it locally and the bellow procedure is optional.
+**NOTE:** The library is hosted on the Maven Central repository, so there is no need to compile and install it locally and the bellow procedure is optional.
 
 Assuming that your development environment adheres to the above compilation requirements, to compile and install 
 the library locally follow these steps:
